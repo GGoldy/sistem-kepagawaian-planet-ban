@@ -2,29 +2,6 @@
 
 @section('title', 'Absen Edit')
 
-@push('select2')
-<!-- Ensure Select2 CSS is loaded properly -->
-<style>
-    /* Improve Select2 styling to match your Bootstrap theme */
-    .select2-container--default .select2-selection--single {
-        height: 38px !important;
-        padding: 0.375rem 0.75rem !important;
-        border: 1px solid #ced4da !important;
-        border-radius: 0.25rem !important;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        line-height: 1.5 !important;
-        padding-left: 0 !important;
-    }
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 36px !important;
-    }
-    .select2-dropdown {
-        z-index: 9999;
-    }
-</style>
-@endpush
-
 @section('content')
     <div>
         <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>

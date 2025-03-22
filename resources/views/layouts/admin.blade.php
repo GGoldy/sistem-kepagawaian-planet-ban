@@ -10,7 +10,28 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
 
-    @stack('select2')
+    <style>
+        /* Improve Select2 styling to match your Bootstrap theme */
+        .select2-container--default .select2-selection--single {
+            height: 38px !important;
+            padding: 0.375rem 0.75rem !important;
+            border: 1px solid #ced4da !important;
+            border-radius: 0.25rem !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 1.5 !important;
+            padding-left: 0 !important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px !important;
+        }
+        .select2-dropdown {
+            z-index: 9999;
+        }
+    </style>
+
+    @stack('style')
+    
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
