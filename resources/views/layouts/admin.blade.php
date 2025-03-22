@@ -31,7 +31,7 @@
     </style>
 
     @stack('style')
-    
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -61,7 +61,7 @@
 
     @include('sweetalert::alert')
     @stack('scripts')
-    
+
     <!-- Global initialization scripts -->
     <script>
         // This ensures jQuery is available globally
