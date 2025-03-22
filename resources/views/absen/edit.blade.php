@@ -1,0 +1,197 @@
+@extends('layouts.admin')
+
+@section('title', 'Absen Edit')
+@section('content')
+    <div>
+        <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <form action="{{ route('absens.update', ['absen' => $absen->id]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('put')
+
+            @foreach ($lokasi_kerjas as $lokasi_kerja)
+                <input type="hidden" class="work-location" data-id="{{ $lokasi_kerja->id }}"
+                    data-nama="{{ $lokasi_kerja->nama }}" data-lat="{{ $lokasi_kerja->latitude }}"
+                    data-lng="{{ $lokasi_kerja->longitude }}">
+            @endforeach
+
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Absen Data Edit</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {{-- <div class="col-md-6 mb-3">
+                            <label for="perusahaan" class="form-label">Perusahaan</label>
+                            <input class="form-control @error('perusahaan') is-invalid @enderror" type="text"
+                                name="perusahaan" id="perusahaan" value="{{ $errors->any() ? old('perusahaan') : $penugasan->perusahaan }}"
+                                placeholder="Enter Perusahaan">
+                            @error('perusahaan')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div> --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="absen_pulang" class="form-label">Absen / Pulang</label>
+                            <select class="form-control @error('absen_pulang') is-invalid @enderror" name="absen_pulang"
+                                id="absen_pulang">
+                                @php
+                                    $selectedGrade = old('absen_pulang', $absen->absen_pulang);
+                                @endphp
+                                <option value="">Select Absen/Pulang</option>
+                                <option value=1 {{ $selectedGrade == 1 ? 'selected' : '' }}>Absen</option>
+                                <option value=0 {{ $selectedGrade == 0 ? 'selected' : '' }}>Pulang</option>
+                            </select>
+                            @error('absen_pulang')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="waktu" class="form-label">Waktu Absen</label>
+                            <input class="form-control @error('waktu') is-invalid @enderror" type="datetime-local"
+                                name="waktu" id="waktu"
+                                value="{{ $errors->any() ? old('waktu') : ($absen->waktu ? \Carbon\Carbon::parse($absen->waktu)->format('Y-m-d\TH:i') : '') }}">
+
+                            @error('waktu')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="lokasi_kerja" class="form-label">Lokasi Kerja</label>
+                            <select name="lokasi_kerja" id="lokasi_kerja" class="form-select">
+                                @php
+                                    $selected = '';
+                                    if ($errors->any()) {
+                                        $selected = old('lokasi_kerja');
+                                    } else {
+                                        $selected = $absen->lokasi_kerja_id;
+                                    }
+                                @endphp
+                                @foreach ($lokasi_kerjas as $lokasi_kerja)
+                                    <option value="{{ $lokasi_kerja->id }}"
+                                        {{ $selected == $lokasi_kerja->id ? 'selected' : '' }}>
+                                        {{ $lokasi_kerja->nama }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('lokasi_kerja')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div>
+
+                        {{-- <div class="col-md-6 mb-3">
+                            <label for="karyawan" class="form-label">Lokasi Kerja</label>
+                            <select name="karyawan" id="karyawan" class="form-select">
+                                @php
+                                    $selected = '';
+                                    if ($errors->any()) {
+                                        $selected = old('karyawan');
+                                    } else {
+                                        $selected = $absen->karyawan_id;
+                                    }
+                                @endphp
+                                @foreach ($karyawans as $karyawan)
+                                    <option value="{{ $karyawan->id }}"
+                                        {{ $selected == $karyawan->id ? 'selected' : '' }}>
+                                        {{ $karyawan->nama }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('karyawan')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div> --}}
+
+                        <div class="col-md-6 mb-3">
+                            <label for="karyawan" class="form-label">Lokasi Kerja</label>
+                            <select name="karyawan" id="karyawan" class="form-select select2">
+                                <option value="">-- Select Karyawan --</option>
+                                @php
+                                    $selected = $errors->any() ? old('karyawan') : $absen->karyawan_id ?? '';
+                                @endphp
+                                @foreach ($karyawans as $karyawan)
+                                    <option value="{{ $karyawan->id }}"
+                                        {{ $selected == $karyawan->id ? 'selected' : '' }}>
+                                        {{ $karyawan->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('karyawan')
+                                <div class="text-danger"><small>{{ $message }}</small></div>
+                            @enderror
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 d-grid">
+                    <a href="{{ route('absens.data') }}" class="btn btn-outline-dark btn-lg mt-3"><i
+                            class="bi-arrow-left-circle me-2"></i>
+                        Cancel</a>
+                </div>
+                <div class="col-md-6 d-grid">
+                    <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>
+                        Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+@endsection
+@push('scripts')
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        const workLocations = document.querySelectorAll('.work-location');
+        console.log(workLocations)
+
+        $(document).ready(function() {
+            console.log("jQuery is loaded, initializing Select2...");
+            if ($.fn.select2) {
+                $('#karyawan').select2({
+                    placeholder: "Search for an employee...",
+                    allowClear: true,
+                    width: "100%" // Ensures styling consistency
+                });
+            } else {
+                console.error("Select2 is not loaded properly.");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const lokasiKerjaSelect = document.getElementById("lokasi_kerja");
+            const latitudeInput = document.getElementById("latitude");
+            const longitudeInput = document.getElementById("longitude");
+            const workLocations = document.querySelectorAll(".work-location");
+
+            function setLocationValues() {
+                const selectedId = lokasiKerjaSelect.value;
+                workLocations.forEach((loc) => {
+                    if (loc.dataset.id === selectedId) {
+                        latitudeInput.value = loc.dataset.lat;
+                        longitudeInput.value = loc.dataset.lng;
+                    }
+                });
+            }
+
+            // Run once on page load
+            setLocationValues();
+
+            // Update when user selects a different location
+            lokasiKerjaSelect.addEventListener("change", setLocationValues);
+            console.log(latitudeInput.value)
+            console.log(longitudeInput.value)
+        });
+    </script>
+@endpush
+@push('select2')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+@endpush
