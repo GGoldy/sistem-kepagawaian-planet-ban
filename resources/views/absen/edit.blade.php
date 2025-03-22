@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('title', 'Absen Edit')
+
 @section('content')
     <div>
         <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
@@ -24,15 +25,6 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        {{-- <div class="col-md-6 mb-3">
-                            <label for="perusahaan" class="form-label">Perusahaan</label>
-                            <input class="form-control @error('perusahaan') is-invalid @enderror" type="text"
-                                name="perusahaan" id="perusahaan" value="{{ $errors->any() ? old('perusahaan') : $penugasan->perusahaan }}"
-                                placeholder="Enter Perusahaan">
-                            @error('perusahaan')
-                                <div class="text-danger"><small>{{ $message }}</small></div>
-                            @enderror
-                        </div> --}}
                         <div class="col-md-6 mb-3">
                             <label for="absen_pulang" class="form-label">Absen / Pulang</label>
                             <select class="form-control @error('absen_pulang') is-invalid @enderror" name="absen_pulang"
@@ -82,32 +74,9 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="col-md-6 mb-3">
-                            <label for="karyawan" class="form-label">Lokasi Kerja</label>
-                            <select name="karyawan" id="karyawan" class="form-select">
-                                @php
-                                    $selected = '';
-                                    if ($errors->any()) {
-                                        $selected = old('karyawan');
-                                    } else {
-                                        $selected = $absen->karyawan_id;
-                                    }
-                                @endphp
-                                @foreach ($karyawans as $karyawan)
-                                    <option value="{{ $karyawan->id }}"
-                                        {{ $selected == $karyawan->id ? 'selected' : '' }}>
-                                        {{ $karyawan->nama }}</option>
-                                @endforeach
-                            </select>
-
-                            @error('karyawan')
-                                <div class="text-danger"><small>{{ $message }}</small></div>
-                            @enderror
-                        </div> --}}
-
                         <div class="col-md-6 mb-3">
-                            <label for="karyawan" class="form-label">Lokasi Kerja</label>
-                            <select name="karyawan" id="karyawan" class="form-select select2">
+                            <label for="karyawan" class="form-label">Karyawan</label>
+                            <select name="karyawan" id="karyawan" class="form-control select2">
                                 <option value="">-- Select Karyawan --</option>
                                 @php
                                     $selected = $errors->any() ? old('karyawan') : $absen->karyawan_id ?? '';
@@ -124,8 +93,6 @@
                                 <div class="text-danger"><small>{{ $message }}</small></div>
                             @enderror
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -144,26 +111,10 @@
         </form>
     </div>
 @endsection
+
 @push('scripts')
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module">
-        const workLocations = document.querySelectorAll('.work-location');
-        console.log(workLocations)
-
-        $(document).ready(function() {
-            console.log("jQuery is loaded, initializing Select2...");
-            if ($.fn.select2) {
-                $('#karyawan').select2({
-                    placeholder: "Search for an employee...",
-                    allowClear: true,
-                    width: "100%" // Ensures styling consistency
-                });
-            } else {
-                console.error("Select2 is not loaded properly.");
-            }
-        });
-
+    <script>
+        // First script for location handling
         document.addEventListener("DOMContentLoaded", function() {
             const lokasiKerjaSelect = document.getElementById("lokasi_kerja");
             const latitudeInput = document.getElementById("latitude");
@@ -185,13 +136,30 @@
 
             // Update when user selects a different location
             lokasiKerjaSelect.addEventListener("change", setLocationValues);
-            console.log(latitudeInput.value)
-            console.log(longitudeInput.value)
         });
+        
+        // Separate script for Select2 initialization with jQuery check
+        (function($) {
+            if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
+                console.error('jQuery or Select2 is not loaded properly!');
+                return;
+            }
+            
+            console.log('jQuery version:', $.fn.jquery);
+            console.log('Select2 available:', !!$.fn.select2);
+            
+            $(function() {
+                try {
+                    $('#karyawan').select2({
+                        placeholder: "Search for an employee...",
+                        allowClear: true,
+                        width: "100%"
+                    });
+                    console.log("Select2 initialized successfully");
+                } catch (e) {
+                    console.error("Error initializing Select2:", e);
+                }
+            });
+        })(jQuery);
     </script>
-@endpush
-@push('select2')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 @endpush
