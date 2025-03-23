@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aefc3b935f44dfc331913146a089b713",
+    "content-hash": "298998d28e60adcabb88dd08edae1557",
     "packages": [
         {
             "name": "brick/math",
@@ -1952,6 +1952,89 @@
             "time": "2024-09-21T08:32:55+00:00"
         },
         {
+            "name": "mjaschen/phpgeo",
+            "version": "6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mjaschen/phpgeo.git",
+                "reference": "71074ce618dbaa4f048c8ee6b4e0c2d0e51a0931"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mjaschen/phpgeo/zipball/71074ce618dbaa4f048c8ee6b4e0c2d0e51a0931",
+                "reference": "71074ce618dbaa4f048c8ee6b4e0c2d0e51a0931",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^11.0",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Location\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcus Jaschen",
+                    "email": "mjaschen@gmail.com",
+                    "homepage": "https://www.marcusjaschen.de/"
+                }
+            ],
+            "description": "Simple Yet Powerful Geo Library",
+            "homepage": "https://phpgeo.marcusjaschen.de/",
+            "keywords": [
+                "Polygon",
+                "area",
+                "bearing",
+                "bounds",
+                "calculation",
+                "coordinate",
+                "distance",
+                "earth",
+                "ellipsoid",
+                "geo",
+                "geofence",
+                "gis",
+                "gps",
+                "haversine",
+                "length",
+                "perpendicular",
+                "point",
+                "polyline",
+                "projection",
+                "simplify",
+                "track",
+                "vincenty"
+            ],
+            "support": {
+                "docs": "https://phpgeo.marcusjaschen.de/Installation.html",
+                "email": "mjaschen@gmail.com",
+                "issues": "https://github.com/mjaschen/phpgeo/issues",
+                "source": "https://github.com/mjaschen/phpgeo/tree/6.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/paypalme/mjaschen",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/mjaschen",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-12T09:09:15+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.7.0",
             "source": {
@@ -3015,6 +3098,50 @@
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.4"
             },
             "time": "2024-06-10T01:18:23+00:00"
+        },
+        {
+            "name": "rafaelfragoso/haversini-formula",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/orafaelfragoso/php-haversine-formula.git",
+                "reference": "4595e517ffdac9406a85a450a3d6f957791704fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orafaelfragoso/php-haversine-formula/zipball/4595e517ffdac9406a85a450a3d6f957791704fd",
+                "reference": "4595e517ffdac9406a85a450a3d6f957791704fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "RFHaversini": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rafael Fragoso",
+                    "email": "rafaelfragosom@gmail.com"
+                }
+            ],
+            "description": "This PHP class can replace the Google Distance Matrix to calculate the distance between two points using latitude and longitude. It will prevent you to do massive requests to Google servers and enhance your service performance.",
+            "homepage": "https://github.com/rafaelfragosom/php-haversine-formula",
+            "support": {
+                "issues": "https://github.com/orafaelfragoso/php-haversine-formula/issues",
+                "source": "https://github.com/orafaelfragoso/php-haversine-formula/tree/1.0.0"
+            },
+            "time": "2015-08-28T19:33:26+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -8358,12 +8485,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }

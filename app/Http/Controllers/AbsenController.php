@@ -10,6 +10,8 @@ use App\Models\LokasiKerja;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Location\Coordinate;
+use Location\Distance\Vincenty;
 
 class AbsenController extends Controller
 {
@@ -31,7 +33,7 @@ class AbsenController extends Controller
 
     public function data()
     {
-        $pageTitle = 'Absen Data';
+        $pageTitle = 'Data Absen';
 
         $karyawans = Karyawan::all();
         $absens = Absen::all();
@@ -44,10 +46,7 @@ class AbsenController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -130,7 +129,7 @@ class AbsenController extends Controller
     public function edit(string $id)
     {
 
-        $pageTitle = 'Absen Edit';
+        $pageTitle = 'Edit Data Absen';
         $absen = Absen::find($id);
         $karyawans = Karyawan::all();
         $lokasi_kerjas = LokasiKerja::all();
@@ -199,5 +198,14 @@ class AbsenController extends Controller
                 })
                 ->toJson();
         }
+    }
+    public function calculateDistance(Request $request)
+    {
+        $coordinate1 = new Coordinate(-7.3777773, 112.6455698);
+        $coordinate2 = new Coordinate(-7.31121345, 112.72886485);
+
+        $calculator = new Vincenty();
+
+        echo $calculator->getDistance($coordinate1, $coordinate2);
     }
 }

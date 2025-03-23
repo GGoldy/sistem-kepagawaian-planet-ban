@@ -17,7 +17,7 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $pageTitle = 'Karyawan List';
+        $pageTitle = 'Daftar Karyawan';
 
         confirmDelete();
 
@@ -33,7 +33,7 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        $pageTitle = 'Create Karyawan';
+        $pageTitle = 'Tambah Karyawan';
         return view('karyawan.create', compact('pageTitle'));
     }
 
@@ -141,7 +141,7 @@ class KaryawanController extends Controller
      */
     public function show(string $id)
     {
-        $pageTitle = 'Karyawan Detail';
+        $pageTitle = 'Detail Karyawan';
         // RAW SQL QUERY
         $karyawan = Karyawan::with(['statuspegawai', 'penugasan', 'gaji'])->findOrFail($id);
 
@@ -153,7 +153,7 @@ class KaryawanController extends Controller
      */
     public function edit(string $id)
     {
-        $pageTitle = 'Karyawan Edit';
+        $pageTitle = 'Mengubah Data Karyawan';
         $karyawan = Karyawan::find($id);
         $status_pegawai = $karyawan->statuspegawai;
         $penugasan = $karyawan->penugasan;

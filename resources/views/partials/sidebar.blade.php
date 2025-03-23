@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{ route('dashboard') }}" class="brand-link">
-        <span class="brand-text font-weight-light">Admin Panel</span>
+    <a href="{{ route('dashboard') }}" class="brand-link px-3">
+        <span class="brand-text font-weight-light">Panel Admin</span>
     </a>
 
     <!-- Sidebar -->

@@ -10,14 +10,19 @@
             </div>
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 float-end">
+                    {{-- <li class="list-inline-item">
+                        <a href="{{ route('absens.calculateDistance') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i> Test Button
+                        </a>
+                    </li> --}}
                     <li class="list-inline-item">
                         <a href="{{ route('lokasikerjas.index') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Manage Lokasi kerja
+                            <i class="bi bi-plus-circle me-1"></i> Mengelola Lokasi kerja
                         </a>
                     </li>
                     <li class="list-inline-item">
                         <a href="{{ route('absens.data') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Manage Absen Data
+                            <i class="bi bi-plus-circle me-1"></i> Mengelola Data Absen
                         </a>
                     </li>
                 </ul>
@@ -53,10 +58,10 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow">
                             <div class="card-header bg-primary text-white">
-                                <h5 class="m-0">Check-In</h5>
+                                <h5 class="m-0">Absen</h5>
                             </div>
                             <div class="text-center">
-                                <p class="display-7 fw-bold text-primary mt-3">Normal Work Hours</p>
+                                <p class="display-7 fw-bold text-primary mt-3">Jam Kerja Normal</p>
                                 <p class="display-6 text-secondary mt-3">08:00 - 17:00</p>
                             </div>
                             <div class="card-body d-flex gap-3 justify-content-center">
@@ -65,14 +70,14 @@
                                     <span class="icon text-white-50">
                                         <i class="fas fa-check"></i>
                                     </span>
-                                    <span class="text">Check In</span>
+                                    <span class="text">Masuk</span>
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-icon-split"
                                     onclick="validateTimeLocation(0)">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-times"></i>
                                     </span>
-                                    <span class="text">Check Out</span>
+                                    <span class="text">Pulang</span>
                                 </button>
                             </div>
                         </div>
@@ -82,7 +87,7 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow">
                             <div class="card-header bg-primary text-white">
-                                <h5 class="m-0">Location</h5>
+                                <h5 class="m-0">Lokasi</h5>
                             </div>
                             <div class="text-center p-4">
                                 <!-- Loading Animation (Default State) -->
@@ -167,7 +172,7 @@
             document.getElementById('loading-animation').style.display = 'none';
             const locationText1 = document.getElementById('location-text-1');
             const locationText2 = document.getElementById('location-text-2');
-            locationText1.textContent = "You are close to:";
+            locationText1.textContent = "Dekat dengan:";
             locationText2.textContent = locationName;
             locationText1.classList.remove('d-none');
             locationText2.classList.remove('d-none');
@@ -183,6 +188,7 @@
         function findNearestLocation(userLat, userLng) {
             const workLocations = document.querySelectorAll('.work-location');
             let nearestLocation = null;
+            let validLocation = false
             let nearestDistance = Infinity; // Start with a large number
 
             console.log("From FindNearest. Current Latitude: " + userLat + ", Longitude: " + userLng);
