@@ -167,6 +167,12 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->merge([
+            'tunjangan_bpjs' => str_replace('.', '', $request->tunjangan_bpjs),
+            'uang_makan' => str_replace('.', '', $request->uang_makan),
+            'gaji_pokok' => str_replace('.', '', $request->gaji_pokok),
+        ]);
+
         $messages = [
             'required' => ':Attribute harus diisi.',
             'email' => 'Isi :attribute dengan format yang benar',
