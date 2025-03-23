@@ -15,6 +15,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">Lokasi Kerja</h6>
                         </div>
                         <div class="card-body">
+                            <div id="map" style="height: 400px;"></div> <!-- Map Container -->
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="nama" class="form-label">Nama Tempat</label>
@@ -27,9 +28,16 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="latitude" class="form-label">Latitude</label>
-                                    <input class="form-control @error('latitude') is-invalid @enderror" type="text"
-                                        name="latitude" id="latitude" value="{{ old('latitude') }}"
+                                    {{-- <input class="form-control @error('latitude') is-invalid @enderror" type="text"
+                                        name="latitude" id="latitude" value="{{ $errors->any() ? old('latitude') : $lokasi_kerja->latitude }}"
                                         placeholder="Enter Latitude (Decimal Format)">
+                                    @error('latitude')
+                                        <div class="text-danger"><small>{{ $message }}</small></div>
+                                    @enderror --}}
+
+                                    <input class="form-control @error('latitude') is-invalid @enderror" type="number"
+                                        name="latitude" id="latitude" step="0.00000001" min="-90" max="90"
+                                        value="{{ old('latitude') }}" placeholder="Latitude (Max 8 decimal places)">
                                     @error('latitude')
                                         <div class="text-danger"><small>{{ $message }}</small></div>
                                     @enderror
@@ -37,13 +45,20 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="longitude" class="form-label">Longitude</label>
-                                    <input class="form-control @error('longitude') is-invalid @enderror" type="text"
-                                        name="longitude" id="longitude" value="{{ old('longitude') }}"
+                                    {{-- <input class="form-control @error('longitude') is-invalid @enderror" type="text"
+                                        name="longitude" id="longitude" value="{{ $errors->any() ? old('longitude') : $lokasi_kerja->longitude }}"
                                         placeholder="Enter Longitude (Decimal Format)">
+                                    @error('longitude')
+                                        <div class="text-danger"><small>{{ $message }}</small></div>
+                                    @enderror --}}
+                                    <input class="form-control @error('longitude') is-invalid @enderror" type="number"
+                                        name="longitude" id="longitude" step="0.00000001" min="-180" max="180"
+                                        value="{{ old('longitude') }}" placeholder="Longitude (Max 8 decimal places)">
                                     @error('longitude')
                                         <div class="text-danger"><small>{{ $message }}</small></div>
                                     @enderror
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -64,3 +79,37 @@
         </form>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var map = L.map('map').setView([-7.31112317, 112.72883614], 12);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            var marker;
+
+            function formatCoordinate(value, decimalPlaces) {
+                return parseFloat(value).toFixed(decimalPlaces);
+            }
+
+            function updateMarker(lat, lng) {
+                lat = formatCoordinate(lat, 8); // Ensure 8 decimal places for latitude
+                lng = formatCoordinate(lng, 8); // Ensure 8 decimal places for longitude
+
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                marker = L.marker([lat, lng]).addTo(map);
+
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+            }
+
+            map.on('click', function(e) {
+                updateMarker(e.latlng.lat, e.latlng.lng);
+            });
+        });
+    </script>
+@endpush
