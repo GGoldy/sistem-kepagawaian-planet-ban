@@ -1,44 +1,80 @@
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-        <div class="sidebar-brand-icon">
-            <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">Admin</div>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ route('dashboard') }}" class="brand-link">
+        <span class="brand-text font-weight-light">Admin Panel</span>
     </a>
-    <hr class="sidebar-divider">
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-        <hr class="sidebar-divider">
 
-        <div class="sidebar-heading">
-            Interface
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Employee Name -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="info">
+                <a href="{{ route('karyawans.show', [Auth::user()->karyawan->id]) }}" class="d-block">
+                    {{ Auth::user()->karyawan->nama ?? 'Guest' }}
+                </a>
+            </div>
         </div>
-        <a class="nav-link" href="{{ route('karyawans.index') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Karyawan</span>
-        </a>
-        <a class="nav-link" href="{{ route('absens.index') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Absen</span>
-        </a>
-        <a class="nav-link" href="{{ route('ketidakhadirans.index') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Ketidakhadiran</span>
-        </a>
-        <a class="nav-link" href="">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Lembur</span>
-        </a>
-        <a class="nav-link" href="">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Gaji</span>
-        </a>
-        <a class="nav-link" href="">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Penilaian</span>
-        </a>
-    </li>
-</ul>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+
+                <!-- Tab 1 -->
+                <li class="nav-item">
+                    <a href="{{ route('karyawans.index') }}" class="nav-link {{ request()->is('karyawans*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>Karyawan</p>
+                    </a>
+                </li>
+
+                <!-- Tab 2 -->
+                <li class="nav-item">
+                    <a href="{{ route('absens.index') }}" class="nav-link {{ request()->is('absens*') || request()->is('lokasikerjas*') ? 'active' : '' }}
+">
+                        <i class="nav-icon fas fa-clipboard"></i>
+                        <p>Absen</p>
+                    </a>
+                </li>
+
+                <!-- Tab 3 -->
+                <li class="nav-item">
+                    <a href="{{ route('ketidakhadirans.index') }}" class="nav-link {{ request()->is('ketidakhadirans*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Ketidakhadiran</p>
+                    </a>
+                </li>
+
+                <!-- Tab 4 -->
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>Lembur</p>
+                    </a>
+                </li>
+
+                <!-- Tab 5 -->
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>Gaji</p>
+                    </a>
+                </li>
+
+                <!-- Tab 6 -->
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-info-circle"></i>
+                        <p>Penilaian</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

@@ -11,7 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
 
     <style>
-        /* Improve Select2 styling to match your Bootstrap theme */
+        /* Improve Select2 styling to match your theme */
         .select2-container--default .select2-selection--single {
             height: 38px !important;
             padding: 0.375rem 0.75rem !important;
@@ -35,7 +35,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body id="page-top">
+{{-- <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
         @include('partials.sidebar')
@@ -50,7 +50,25 @@
             </div>
             @include('partials.footer')
         </div>
-    </div>
+    </div> --}}
+
+<body class="hold-transition sidebar-mini">
+        <!-- Page Wrapper -->
+        <div class="wrapper">
+            @include('partials.sidebar')
+
+            @include('partials.topbar')
+            <!-- Content Wrapper -->
+            <div class="content-wrapper pt-5 px-4">
+                <section class="content">
+                    <div class="container-fluid">
+                        @yield('content')
+                    </div>
+                </section>
+            </div>
+
+            @include('partials.footer')
+        </div>
 
     <!-- Scripts - Load jQuery first, then other scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

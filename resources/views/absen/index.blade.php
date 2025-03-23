@@ -23,7 +23,8 @@
                 </ul>
             </div>
         </div>
-        <hr>
+        <hr class="my-3 border-top border-secondary">
+
 
         <form action="{{ route('absens.store') }}" method="POST" id="absen-form">
             @csrf
@@ -44,7 +45,7 @@
                 <h1 class="display-4 fw-bold" id="current-date"></h1>
                 <h2 class="display-1 fw-bold text-primary mt-3" id="current-time"></h2>
             </div>
-            <hr>
+            <hr class="my-3 border-top border-secondary">
 
             <div class="container d-flex justify-content-center">
                 <div class="row w-75">
