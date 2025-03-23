@@ -52,8 +52,8 @@ class LokasiKerjaController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
+            'latitude' => 'required|numeric|between:-90,90|regex:/^-?\d{1,2}\.\d{1,8}$/',
+            'longitude' => 'required|numeric|between:-180,180|regex:/^-?\d{1,3}\.\d{1,8}$/',
         ], $messages);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -61,8 +61,8 @@ class LokasiKerjaController extends Controller
 
         $lokasi_kerja = new LokasiKerja;
         $lokasi_kerja->nama = $request->nama;
-        $lokasi_kerja->latitude = $request->latitude;
-        $lokasi_kerja->longitude = $request->longitude;
+        $lokasi_kerja->latitude = number_format((float) $request->latitude, 8, '.', '');
+        $lokasi_kerja->longitude = number_format((float) $request->longitude, 8, '.', '');
         $lokasi_kerja->save();
 
         Alert::success('Added Successfully', 'Lokasi Kerja Data Added Successfully.');
