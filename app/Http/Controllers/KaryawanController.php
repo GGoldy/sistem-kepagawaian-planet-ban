@@ -142,7 +142,7 @@ class KaryawanController extends Controller
     public function show(string $id)
     {
         $pageTitle = 'Detail Karyawan';
-        // RAW SQL QUERY
+
         $karyawan = Karyawan::with(['statuspegawai', 'penugasan', 'gaji'])->findOrFail($id);
 
         return view('karyawan.show', compact('pageTitle', 'karyawan'));

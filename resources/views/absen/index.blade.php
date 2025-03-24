@@ -252,49 +252,60 @@
                 document.getElementById("longitude").value = null;
 
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        let latitude = position.coords.latitude.toFixed(8);
-                        let longitude = position.coords.longitude.toFixed(8);
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            let latitude = position.coords.latitude.toFixed(8);
+                            let longitude = position.coords.longitude.toFixed(8);
 
-                        console.log(`User current latitude: ${latitude} and Longitude: ${longitude}`)
-                        // Send data to Laravel
-                        fetch('absens/calculateDistance', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                        .getAttribute('content')
-                                },
-                                body: JSON.stringify({
-                                    latitude: latitude,
-                                    longitude: longitude
+                            console.log(`User current latitude: ${latitude} and Longitude: ${longitude}`);
+
+                            // Send data to Laravel for distance calculation
+                            fetch('absens/calculateDistance', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                            .getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        latitude: latitude,
+                                        longitude: longitude
+                                    })
                                 })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log("Closest Location:", data.closest_lokasi);
-                                console.log("Distance:", data.distance);
-                                if (data && data.distance <= 500) {
-                                    document.getElementById('latitude').value = latitude;
-                                    document.getElementById('longitude').value = longitude;
-                                    document.getElementById("lokasi_kerja").value = data.closest_lokasi
-                                        .id
-                                    document.getElementById("lokasi_nama").value = data.closest_lokasi
-                                        .nama
-                                    updateLocationText(data.closest_lokasi.nama);
-                                } else {
-                                    resetToLoading();
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
-                    });
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log("Closest Location:", data.closest_lokasi);
+                                    console.log("Distance:", data.distance);
 
+                                    if (data && data.distance <= 500) {
+                                        document.getElementById('latitude').value = latitude;
+                                        document.getElementById('longitude').value = longitude;
+                                        document.getElementById("lokasi_kerja").value = data.closest_lokasi
+                                            .id;
+                                        document.getElementById("lokasi_nama").value = data.closest_lokasi
+                                            .nama;
+                                        updateLocationText(data.closest_lokasi.nama);
+                                    } else {
+                                        resetToLoading();
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        },
+                        function(error) {
+                            console.error("Geolocation error:", error.message);
+                            alert("Could not retrieve accurate location. Please enable GPS and try again.");
+                        }, {
+                            enableHighAccuracy: true, // Forces GPS for best accuracy
+                            timeout: 10000, // Wait up to 10 seconds
+                            maximumAge: 0 // Prevent cached location
+                        }
+                    );
                 } else {
                     console.log("Geolocation is not supported by this browser.");
                 }
-
             });
         }
+
 
         updateLocation();
 

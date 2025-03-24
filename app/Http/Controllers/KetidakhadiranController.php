@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Ketidakhadiran;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 
 class KetidakhadiranController extends Controller
 {
@@ -35,8 +39,7 @@ class KetidakhadiranController extends Controller
         ]);
     }
 
-    public function approve()
-    {
+    public function approve() {
 
     }
 
@@ -45,7 +48,8 @@ class KetidakhadiranController extends Controller
      */
     public function create()
     {
-        //
+        $pageTitle = 'Mengajukan Ketidakhadiran';
+        return view('ketidakhadiran.create', compact('pageTitle'));
     }
 
     /**
@@ -53,7 +57,39 @@ class KetidakhadiranController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => ':Attribute harus diisi.',
+            'email' => 'Isi :attribute dengan format yang benar',
+            'numeric' => 'Isi :attribute dengan angka',
+            'date' => 'Isi :attribute dengan format tanggal yang benar (YYYY-MM-DD)'
+        ];
+        $validator = Validator::make($request->all(), [
+            'jenis_ketidakhadiran' => 'required',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_berakhir' => 'required|date',
+            'tujuan' => 'required',
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $ketidakhadiran = new Ketidakhadiran;
+        $ketidakhadiran->karyawan_id = Auth::user()->karyawan_id;
+        $ketidakhadiran->tanggal_pengajuan = Carbon::now()->addHours(7);
+        $ketidakhadiran->status_pengajuan = false;
+        $ketidakhadiran->jenis_ketidakhadiran = $request->jenis_ketidakhadiran;
+        $ketidakhadiran->tanggal_mulai = $request->tanggal_mulai;
+        $ketidakhadiran->tanggal_berakhir = $request->tanggal_berakhir;
+        $ketidakhadiran->tujuan = $request->tujuan;
+        $ketidakhadiran->catatan = $request->catatan;
+        $ketidakhadiran->approved_by = null;
+        $ketidakhadiran->tanggal_sah = null;
+        $ketidakhadiran->tanggal_aktif = null;
+        $ketidakhadiran->save();
+
+        Alert::success('Success', 'Your form will be processed in time.');
+
+        return redirect()->route('ketidakhadirans.index');
     }
 
     /**
@@ -61,7 +97,11 @@ class KetidakhadiranController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $pageTitle = 'Form Ketidakhadiran';
+
+        $ketidakhadiran = Ketidakhadiran::with(['karyawan'])->findOrFail($id);
+
+        return view('ketidakhadiran.show', compact('pageTitle', 'ketidakhadiran'));
     }
 
     /**
@@ -69,7 +109,11 @@ class KetidakhadiranController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $pageTitle = 'Edit Data Absen';
+        $ketidakhadiran = Ketidakhadiran::find($id);
+        $karyawans = Karyawan::all();
+
+        return view('ketidakhadiran.edit', compact('pageTitle', 'karyawans', 'ketidakhadiran'));
     }
 
     /**
@@ -77,7 +121,21 @@ class KetidakhadiranController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $messages = [
+            'required' => ':Attribute harus diisi.',
+            'email' => 'Isi :attribute dengan format yang benar',
+            'numeric' => 'Isi :attribute dengan angka',
+            'date' => 'Isi :attribute dengan format tanggal yang benar (YYYY-MM-DD)'
+        ];
+        $validator = Validator::make($request->all(), [
+            'jenis_ketidakhadiran' => 'required',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_berakhir' => 'required|date',
+            'tujuan' => 'required',
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
@@ -85,7 +143,10 @@ class KetidakhadiranController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $ketidakhadiran = Ketidakhadiran::find($id);
+        $ketidakhadiran->delete();
+        Alert::success('Deleted Successfully', 'Karyawan Data Deleted Successfully.');
+        return redirect()->route('ketidakhadirans.index');
     }
 
     public function getDataSelf(Request $request)
