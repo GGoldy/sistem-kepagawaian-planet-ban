@@ -36,7 +36,7 @@ Route::get('getKaryawans', [KaryawanController::class, 'getData'])->name('karyaw
 
 Route::prefix('absens')->name('absens.')->group(function () {
     Route::get('data', [AbsenController::class, 'data'])->name('data');
-    Route::get('calculateDistance', [AbsenController::class, 'calculateDistance'])->name('calculateDistance');
+    Route::post('calculateDistance', [AbsenController::class, 'calculateDistance'])->name('calculateDistance');
     Route::get('getAbsens', [AbsenController::class, 'getData'])->name('absens.getData');
     Route::resource('/', AbsenController::class)->parameters(['' => 'absen']);
 });

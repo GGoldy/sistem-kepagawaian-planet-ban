@@ -24,7 +24,15 @@ class KetidakhadiranController extends Controller
 
     public function data()
     {
+        $pageTitle = 'Data Ketidakhadiran';
 
+        $karyawans = Karyawan::all();
+        $ketidakhadirans = Ketidakhadiran::all();
+        return view('ketidakhadiran.data', [
+            'pageTitle' => $pageTitle,
+            'karyawans' => $karyawans,
+            'ketidakhadirans' => $ketidakhadirans,
+        ]);
     }
 
     public function approve()
@@ -89,14 +97,14 @@ class KetidakhadiranController extends Controller
             return datatables()->of($ketidakhadirans)
                 ->addIndexColumn()
                 ->addColumn('actions', function ($ketidakhadiran) {
-                    return view('ketidakhadiran.actions', compact('ketidakhadiran'));
+                    return view('ketidakhadiran.actionsrestricted', compact('ketidakhadiran'));
                 })
                 ->toJson();
         }
     }
     public function getDataAll(Request $request)
     {
-        $ketidakhadirans = Ketidakhadiran::with(['karyawan']);
+        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approved_by']);
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)
                 ->addIndexColumn()

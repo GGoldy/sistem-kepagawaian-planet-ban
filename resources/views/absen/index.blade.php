@@ -138,36 +138,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        function haversineDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Earth's radius in km
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c; // Returns distance in km
-        }
-
-        function haversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius of the Earth in kilometers
-            const toRad = angle => angle * (Math.PI / 180);
-
-            const dLat = toRad(lat2 - lat1);
-            const dLon = toRad(lon2 - lon1);
-
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-            return R * c; // Distance in kilometers
-        }
-
-
         function updateLocationText(locationName) {
             document.getElementById('loading-animation').style.display = 'none';
             const locationText1 = document.getElementById('location-text-1');
@@ -185,79 +155,147 @@
             document.getElementById('location-text-2').classList.add('d-none');
         }
 
-        function findNearestLocation(userLat, userLng) {
-            const workLocations = document.querySelectorAll('.work-location');
-            let nearestLocation = null;
-            let validLocation = false
-            let nearestDistance = Infinity; // Start with a large number
+        function haversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
 
-            console.log("From FindNearest. Current Latitude: " + userLat + ", Longitude: " + userLng);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
-            workLocations.forEach((loc) => {
-                const workLat = parseFloat(loc.dataset.lat);
-                const workLng = parseFloat(loc.dataset.lng);
-                const workId = loc.dataset.id;
-                const workNama = loc.dataset.nama;
-
-                if (!isNaN(workLat) && !isNaN(workLng)) {
-                    const distance = haversineDistance(userLat, userLng, workLat, workLng);
-                    console.log(` From Validate. Distance to work location: ${distance.toFixed(2)} km`);
-
-                    if (distance <= 1 && distance < nearestDistance) {
-                        validLocation = true;
-                        nearestLocation = {
-                            id: workId,
-                            nama: workNama,
-                            distance: distance
-                        };
-                        nearestDistance = distance;
-                    }
-                }
-            });
-
-            if (validLocation && nearestLocation) {
-                document.getElementById("lokasi_kerja").value = nearestLocation.id;
-                document.getElementById("lokasi_nama").value = nearestLocation.nama;
-                updateLocationText(nearestLocation.nama);
-            } else {
-                resetToLoading();
-            }
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // Returns distance in km
         }
+
+        // function findNearestLocation(userLat, userLng) {
+        //     const workLocations = document.querySelectorAll('.work-location');
+        //     let nearestLocation = null;
+        //     let validLocation = false
+        //     let nearestDistance = Infinity; // Start with a large number
+
+        //     console.log("From FindNearest. Current Latitude: " + userLat + ", Longitude: " + userLng);
+
+        //     workLocations.forEach((loc) => {
+        //         const workLat = Number(loc.dataset.lat);
+        //         const workLng = Number(loc.dataset.lng);
+        //         const workId = loc.dataset.id;
+        //         const workNama = loc.dataset.nama;
+
+        //         if (!isNaN(workLat) && !isNaN(workLng)) {
+        //             const distance = haversineDistance(userLat, userLng, workLat, workLng);
+        //             console.log(
+        //                 ` From Validate. Distance to work location: ${distance.toFixed(2)} km. Work Latitude: ${workLat} Work Longitude: ${workLng}`
+        //             );
+
+        //             if (distance <= 1 && distance < nearestDistance) {
+        //                 validLocation = true;
+        //                 nearestLocation = {
+        //                     id: workId,
+        //                     nama: workNama,
+        //                     distance: distance
+        //                 };
+        //                 nearestDistance = distance;
+        //             }
+        //         }
+        //     });
+
+        //     if (validLocation && nearestLocation) {
+        //         document.getElementById("lokasi_kerja").value = nearestLocation.id;
+        //         document.getElementById("lokasi_nama").value = nearestLocation.nama;
+        //         updateLocationText(nearestLocation.nama);
+        //     } else {
+        //         resetToLoading();
+        //         // setTimeout(() => {
+        //         //     findNearestLocation(userLat, userLng);
+        //         // }, 1000);
+        //     }
+        // }
+
+        // function updateLocation() {
+        //     document.addEventListener("DOMContentLoaded", function() {
+        //         document.getElementById("latitude").value = null;
+        //         document.getElementById("longitude").value = null;
+
+        //         if ("geolocation" in navigator) {
+        //             navigator.geolocation.getCurrentPosition(
+        //                 function(position) {
+        //                     const userLat = position.coords.latitude;
+        //                     const userLng = position.coords.longitude;
+
+        //                     document.getElementById("latitude").value = userLat;
+        //                     document.getElementById("longitude").value = userLng;
+        //                     console.log("From Normal Location. Latitude: " + position.coords.latitude +
+        //                         ", Longitude: " + position
+        //                         .coords
+        //                         .longitude);
+
+        //                     findNearestLocation(userLat, userLng);
+        //                 },
+        //                 function(error) {
+        //                     document.getElementById("latitude").value = null;
+        //                     document.getElementById("longitude").value = null;
+        //                     console.warn("Geolocation error:", error.message);
+        //                 }
+        //             );
+        //         } else {
+        //             document.getElementById("latitude").value = null;
+        //             document.getElementById("longitude").value = null;
+        //             console.warn("Geolocation is not supported by this browser.");
+        //         }
+        //     });
+        // }
 
         function updateLocation() {
             document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("latitude").value = null;
                 document.getElementById("longitude").value = null;
 
-                if ("geolocation" in navigator) {
-                    navigator.geolocation.getCurrentPosition(
-                        function(position) {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        let latitude = position.coords.latitude.toFixed(8);
+                        let longitude = position.coords.longitude.toFixed(8);
 
-                            document.getElementById("latitude").value = userLat;
-                            document.getElementById("longitude").value = userLng;
-                            console.log("From Normal Location. Latitude: " + position.coords.latitude +
-                                ", Longitude: " + position
-                                .coords
-                                .longitude);
+                        console.log(`User current latitude: ${latitude} and Longitude: ${longitude}`)
+                        // Send data to Laravel
+                        fetch('absens/calculateDistance', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .getAttribute('content')
+                                },
+                                body: JSON.stringify({
+                                    latitude: latitude,
+                                    longitude: longitude
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Closest Location:", data.closest_lokasi);
+                                console.log("Distance:", data.distance);
+                                if (data && data.distance <= 500) {
+                                    document.getElementById('latitude').value = latitude;
+                                    document.getElementById('longitude').value = longitude;
+                                    document.getElementById("lokasi_kerja").value = data.closest_lokasi
+                                        .id
+                                    document.getElementById("lokasi_nama").value = data.closest_lokasi
+                                        .nama
+                                    updateLocationText(data.closest_lokasi.nama);
+                                } else {
+                                    resetToLoading();
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
 
-                            findNearestLocation(userLat, userLng);
-                        },
-                        function(error) {
-                            document.getElementById("latitude").value = null;
-                            document.getElementById("longitude").value = null;
-                            console.warn("Geolocation error:", error.message);
-                        }
-                    );
                 } else {
-                    document.getElementById("latitude").value = null;
-                    document.getElementById("longitude").value = null;
-                    console.warn("Geolocation is not supported by this browser.");
+                    console.log("Geolocation is not supported by this browser.");
                 }
+
             });
         }
-        setInterval(updateLocation, 1000);
+
         updateLocation();
 
         function validateTimeLocation(isPresent) {
@@ -269,6 +307,7 @@
             let nearestLocation = null;
             let nearestDistance = Infinity;
 
+            console.log("Hours: " + hours)
             if ((hours >= 7 && hours <= 17) && isPresent == 1) {
                 validTime = true;
             } else if (hours >= 17 && isPresent == 0) {
@@ -310,15 +349,14 @@
                     }
                 });
             }
+            console.log("Location: " + validLocation)
+            console.log("Time: " + validTime)
 
             if (validTime && validLocation) {
                 document.getElementById('lokasi_nama').value = nearestLocation.nama;
                 let lokasiTerdekat = nearestLocation.id
 
                 submitAbsen(isPresent, now, lokasiTerdekat)
-
-                validLocation = false
-                validTime = false
 
             } else if (!validTime && validLocation) {
                 Swal.fire({
@@ -327,8 +365,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK',
                 });
-                validLocation = false
-                validTime = false
+
             } else if (validTime && !validLocation) {
                 Swal.fire({
                     title: 'Out of Range!',
@@ -336,8 +373,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
-                validLocation = false
-                validTime = false
+
             } else {
                 Swal.fire({
                     title: 'Error!',
@@ -345,9 +381,11 @@
                     icon: 'error',
                     confirmButtonText: 'OK',
                 });
-                validLocation = false
-                validTime = false
+
             }
+
+            validLocation = false
+            validTime = false
         }
 
         function submitAbsen(isPresent, now, lokasiTerdekat) {

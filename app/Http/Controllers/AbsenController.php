@@ -201,7 +201,45 @@ class AbsenController extends Controller
     }
     public function calculateDistance(Request $request)
     {
-        $coordinate1 = new Coordinate(-7.3777773, 112.6455698);
+        // Get user's latitude and longitude from the request
+        $userLatitude = $request->latitude;
+        $userLongitude = $request->longitude;
+
+        if (!$userLatitude || !$userLongitude) {
+            return response()->json(['error' => 'Latitude and longitude are required'], 400);
+        }
+
+        // Convert user location to a coordinate object
+        $userCoordinate = new Coordinate($userLatitude, $userLongitude);
+
+        // Get all work locations
+        $lokasi_kerja = LokasiKerja::all();
+
+        $calculator = new Vincenty();
+        $closestLokasi = null;
+        $shortestDistance = PHP_FLOAT_MAX;
+
+        // Loop through each work location to find the closest one
+        foreach ($lokasi_kerja as $lokasi) {
+            $lokasiCoordinate = new Coordinate($lokasi->latitude, $lokasi->longitude);
+            $distance = $calculator->getDistance($userCoordinate, $lokasiCoordinate); // Distance in meters
+
+            if ($distance < $shortestDistance) {
+                $shortestDistance = $distance;
+                $closestLokasi = $lokasi;
+            }
+        }
+
+        // Return the closest work location
+        return response()->json([
+            'closest_lokasi' => $closestLokasi,
+            'distance' => $shortestDistance
+        ]);
+    }
+
+    public function testCalculateDistance(Request $request)
+    {
+        $coordinate1 = new Coordinate(-7.37777730, 112.64556980);
         $coordinate2 = new Coordinate(-7.31121345, 112.72886485);
 
         $calculator = new Vincenty();
