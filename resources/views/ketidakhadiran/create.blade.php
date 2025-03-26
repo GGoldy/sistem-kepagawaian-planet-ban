@@ -23,7 +23,8 @@
                                         Sakit</option>
                                     <option value="Cuti" {{ old('jenis_ketidakhadiran') == 'Cuti' ? 'selected' : '' }}>
                                         Cuti</option>
-                                    <option value="Penggantian Hari" {{ old('jenis_ketidakhadiran') == 'Penggantian Hari' ? 'selected' : '' }}>
+                                    <option value="Penggantian Hari"
+                                        {{ old('jenis_ketidakhadiran') == 'Penggantian Hari' ? 'selected' : '' }}>
                                         Penggantian Hari</option>
                                 </select>
                                 @error('jenis_ketidakhadiran')
@@ -61,12 +62,10 @@
                             </div>
 
                             <div class="col-md-6 mb-3 d-none" id="hari_pengganti_container">
-                                <label for="hari_pengganti" class="form-label">Hari Pengganti</label>
-                                <input type="date" class="form-control @error('hari_pengganti') is-invalid @enderror"
-                                    name="hari_pengganti" id="hari_pengganti" value="{{ old('hari_pengganti') }}">
-                                @error('hari_pengganti')
-                                    <div class="text-danger"><small>{{ $message }}</small></div>
-                                @enderror
+                                <label class="form-label">Hari Pengganti</label>
+                                <div id="hari_pengganti_wrapper">
+                                    <!-- Dynamic Inputs will be inserted here -->
+                                </div>
                             </div>
 
                             <div class="col-md-12 mb-3">
@@ -102,27 +101,48 @@
 
 @push('scripts')
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const jenisKetidakhadiran = document.getElementById("jenis_ketidakhadiran");
+            const tanggalMulai = document.getElementById("tanggal_mulai");
+            const tanggalBerakhir = document.getElementById("tanggal_berakhir");
             const hariPenggantiContainer = document.getElementById("hari_pengganti_container");
-            const hariPenggantiInput = document.getElementById("hari_pengganti");
+            const hariPenggantiWrapper = document.getElementById("hari_pengganti_wrapper");
 
-            jenisKetidakhadiran.addEventListener("change", function () {
-                if (this.value === "Penggantian Hari") {
-                    hariPenggantiContainer.classList.remove("d-none");
-                    hariPenggantiInput.setAttribute("required", "required");
-                } else {
+            function generateDateInputs() {
+                hariPenggantiWrapper.innerHTML = ""; // Clear previous inputs
+
+                let startDate = new Date(tanggalMulai.value);
+                let endDate = new Date(tanggalBerakhir.value);
+
+                if (
+                    jenisKetidakhadiran.value !== "Penggantian Hari" || // Check if "Penggantian Hari" is selected
+                    isNaN(startDate) || isNaN(endDate) || startDate > endDate
+                ) {
                     hariPenggantiContainer.classList.add("d-none");
-                    hariPenggantiInput.removeAttribute("required");
+                    return;
                 }
-            });
 
-            // Ensure correct state on page load (in case of validation errors)
-            if (jenisKetidakhadiran.value === "Penggantian Hari") {
+                let daysBetween = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1; // Including start date
                 hariPenggantiContainer.classList.remove("d-none");
-                hariPenggantiInput.setAttribute("required", "required");
-            }
-        });
 
+                for (let i = 0; i < daysBetween; i++) {
+                    let inputDate = new Date(startDate);
+                    inputDate.setDate(startDate.getDate() + i);
+
+                    let inputElement = document.createElement("input");
+                    inputElement.type = "date";
+                    inputElement.name = "tanggal_pengganti[]"; // Store as array
+                    inputElement.classList.add("form-control", "mb-2");
+                    inputElement.value = inputDate.toISOString().split("T")[0]; // Default to same date
+
+                    hariPenggantiWrapper.appendChild(inputElement);
+                }
+            }
+
+            // Listen for changes in inputs
+            jenisKetidakhadiran.addEventListener("change", generateDateInputs);
+            tanggalMulai.addEventListener("change", generateDateInputs);
+            tanggalBerakhir.addEventListener("change", generateDateInputs);
+        });
     </script>
 @endpush

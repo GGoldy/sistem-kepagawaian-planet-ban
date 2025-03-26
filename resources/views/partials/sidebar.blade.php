@@ -17,26 +17,40 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <!-- Dashboard -->
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}"
+                        class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
 
                 <!-- Tab 1 -->
-                <li class="nav-item">
-                    <a href="{{ route('karyawans.index') }}" class="nav-link {{ request()->is('karyawans*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-folder"></i>
-                        <p>Karyawan</p>
-                    </a>
-                </li>
+                @if (Auth::user()->hasRole('admin'))
+                    <li class="nav-item">
+                        <a href="{{ route('karyawans.index') }}"
+                            class="nav-link {{ request()->is('karyawans*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>Karyawan</p>
+                        </a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route('karyawans.show', Auth::user()->karyawan->id) }}"
+                            class="nav-link {{ request()->is('karyawans*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>Karyawan</p>
+                        </a>
+                    </li>
+                @endif
 
                 <!-- Tab 2 -->
                 <li class="nav-item">
-                    <a href="{{ route('absens.index') }}" class="nav-link {{ request()->is('absens*') || request()->is('lokasikerjas*') ? 'active' : '' }}
+                    <a href="{{ route('absens.index') }}"
+                        class="nav-link {{ request()->is('absens*') || request()->is('lokasikerjas*') ? 'active' : '' }}
 ">
                         <i class="nav-icon fas fa-clipboard"></i>
                         <p>Absen</p>
@@ -45,7 +59,8 @@
 
                 <!-- Tab 3 -->
                 <li class="nav-item">
-                    <a href="{{ route('ketidakhadirans.index') }}" class="nav-link {{ request()->is('ketidakhadirans*') ? 'active' : '' }}">
+                    <a href="{{ route('ketidakhadirans.index') }}"
+                        class="nav-link {{ request()->is('ketidakhadirans*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Ketidakhadiran</p>
                     </a>

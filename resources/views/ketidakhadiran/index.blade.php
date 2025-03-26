@@ -10,13 +10,15 @@
             </div>
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 float-end">
+                    @if (Auth::user()->hasRole('admin'))
                     <li class="list-inline-item">
                         <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> Mengelola Ketidakhadiran
                         </a>
                     </li>
+                    @endif
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
+                        <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> Menyetujui Ketidakhadiran
                         </a>
                     </li>
@@ -47,7 +49,6 @@
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Berakhir</th>
                                 <th>Status Pengajuan</th>
-                                <th>Disetujui Oleh</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -106,10 +107,6 @@
                         render: function(data, type, row) {
                             return data == 1 ? "Sudah Approved" : "Belum Approved";
                         }
-                    },
-                    {
-                        data: "approved_by.nama",
-                        name: "approved_by.nama"
                     },
                     {
                         data: "actions",

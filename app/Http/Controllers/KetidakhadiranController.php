@@ -39,8 +39,30 @@ class KetidakhadiranController extends Controller
         ]);
     }
 
-    public function approve() {
+    public function approve()
+    {
+        $pageTitle = 'Penyetujuan Ketidakhadiran';
 
+        $currentUser = Auth::user();
+        $currentUserLevel = $currentUser->karyawan->penugasan->level ?? null;
+
+        if ($currentUserLevel === null) {
+            return abort(403, "User does not have a valid level to approve requests.");
+        }
+
+        // Get only Ketidakhadiran where the Karyawan's level is lower
+        $ketidakhadirans = Ketidakhadiran::whereHas('karyawan.penugasan', function ($query) use ($currentUserLevel) {
+            $query->where('level', '<', $currentUserLevel);
+        })->get();
+
+        $karyawans = Karyawan::all();
+        $all = Ketidakhadiran::all();
+        return view('ketidakhadiran.approve', [
+            'pageTitle' => $pageTitle,
+            'karyawans' => $karyawans,
+            'ketidakhadirans' => $ketidakhadirans,
+            'all' => $all,
+        ]);
     }
 
     /**
@@ -68,6 +90,8 @@ class KetidakhadiranController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_berakhir' => 'required|date',
             'tujuan' => 'required',
+            'tanggal_pengganti' => 'array', // Ensure it's an array
+            'tanggal_pengganti.*' => 'date', // Validate each date
         ], $messages);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -80,9 +104,17 @@ class KetidakhadiranController extends Controller
         $ketidakhadiran->jenis_ketidakhadiran = $request->jenis_ketidakhadiran;
         $ketidakhadiran->tanggal_mulai = $request->tanggal_mulai;
         $ketidakhadiran->tanggal_berakhir = $request->tanggal_berakhir;
+
+        if ($request->tanggal_pengganti) {
+            $ketidakhadiran->tanggal_pengganti = json_encode($request->tanggal_pengganti);
+        } else {
+            $ketidakhadiran->tanggal_pengganti = null;
+        }
+
         $ketidakhadiran->tujuan = $request->tujuan;
         $ketidakhadiran->catatan = $request->catatan;
         $ketidakhadiran->approved_by = null;
+        $ketidakhadiran->approved_by_hcm = null;
         $ketidakhadiran->tanggal_sah = null;
         $ketidakhadiran->tanggal_aktif = null;
         $ketidakhadiran->save();
@@ -110,10 +142,13 @@ class KetidakhadiranController extends Controller
     public function edit(string $id)
     {
         $pageTitle = 'Edit Data Absen';
-        $ketidakhadiran = Ketidakhadiran::find($id);
+        $ketidakhadiran = Ketidakhadiran::findOrFail($id);
         $karyawans = Karyawan::all();
 
-        return view('ketidakhadiran.edit', compact('pageTitle', 'karyawans', 'ketidakhadiran'));
+        // Ensure tanggal_pengganti is always an array
+        $tanggal_pengganti = $ketidakhadiran->tanggal_pengganti ? json_decode($ketidakhadiran->tanggal_pengganti, true) : [];
+
+        return view('ketidakhadiran.edit', compact('pageTitle', 'karyawans', 'ketidakhadiran', 'tanggal_pengganti'));
     }
 
     /**
@@ -132,10 +167,39 @@ class KetidakhadiranController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_berakhir' => 'required|date',
             'tujuan' => 'required',
+            'tanggal_pengganti' => 'array', // Ensure it's an array
+            'tanggal_pengganti.*' => 'date', // Validate each date
         ], $messages);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        $ketidakhadiran = Ketidakhadiran::find($id);
+
+        if ($ketidakhadiran) {
+            $ketidakhadiran->status_pengajuan = (bool) $request->status_pengajuan;
+            $ketidakhadiran->jenis_ketidakhadiran = $request->jenis_ketidakhadiran;
+            $ketidakhadiran->tanggal_mulai = $request->tanggal_mulai;
+            $ketidakhadiran->tanggal_berakhir = $request->tanggal_berakhir;
+            if ($request->tanggal_pengganti) {
+                $ketidakhadiran->tanggal_pengganti = json_encode($request->tanggal_pengganti);
+            } else {
+                $ketidakhadiran->tanggal_pengganti = null;
+            }
+            $ketidakhadiran->tujuan = $request->tujuan;
+            $ketidakhadiran->catatan = $request->catatan;
+            $ketidakhadiran->approved_by = $request->approved_by;
+            $ketidakhadiran->approved_by_hcm = $request->approved_by_hcm;
+            $ketidakhadiran->tanggal_sah = $request->tanggal_sah;
+            $ketidakhadiran->tanggal_aktif = $request->tanggal_aktif;
+            $ketidakhadiran->save();
+
+            Alert::success('Success', 'The form has been successfully edited.');
+        } else {
+            Alert::error('Error', 'Form Does Not Exist');
+        }
+
+        return redirect()->route('ketidakhadirans.data');
     }
 
     /**

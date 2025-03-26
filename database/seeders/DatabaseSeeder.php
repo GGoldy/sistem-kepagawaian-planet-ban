@@ -46,7 +46,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             // LokasiKerjaSeeder::class
-            KetidakhadiranSeeder::class
+            // KetidakhadiranSeeder::class
+            RoleSeeder::class
         ]);
     }
 }

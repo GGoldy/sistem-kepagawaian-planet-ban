@@ -12,6 +12,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class KaryawanController extends Controller
 {
+    public function __construct()
+    {
+        // Apply 'role:admin' middleware to all routes except 'show'
+        $this->middleware('role:admin')->except(['show']);
+    }
     /**
      * Display a listing of the resource.
      */
