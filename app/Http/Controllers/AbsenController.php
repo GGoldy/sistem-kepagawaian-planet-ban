@@ -18,7 +18,7 @@ class AbsenController extends Controller
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
-        $this->middleware('role:admin')->except(['index', 'store']);
+        $this->middleware('role:admin')->except(['index', 'store', 'calculateDistance']);
     }
     /**
      * Display a listing of the resource.

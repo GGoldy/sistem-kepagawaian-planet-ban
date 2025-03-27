@@ -15,7 +15,7 @@ class KetidakhadiranController extends Controller
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
-        $this->middleware('role:admin')->except(['create', 'index', 'store', 'approve', 'getDataSelf']);
+        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'getDataAll', 'approvalHCM', 'signApprovalHCM']);
     }
     /**
      * Display a listing of the resource.
@@ -58,16 +58,72 @@ class KetidakhadiranController extends Controller
         // Get only Ketidakhadiran where the Karyawan's level is lower
         $ketidakhadirans = Ketidakhadiran::whereHas('karyawan.penugasan', function ($query) use ($currentUserLevel) {
             $query->where('level', '<', $currentUserLevel);
-        })->get();
+        })
+            ->where('status_pengajuan', false) // Filter only where status_pengajuan is false
+            ->with(['karyawan']) // Ensure karyawan is loaded
+            ->get();
+
 
         $karyawans = Karyawan::all();
-        $all = Ketidakhadiran::all();
+        $all = Ketidakhadiran::where('status_pengajuan', false)->with(['karyawan'])->get();
         return view('ketidakhadiran.approve', [
             'pageTitle' => $pageTitle,
             'karyawans' => $karyawans,
             'ketidakhadirans' => $ketidakhadirans,
             'all' => $all,
         ]);
+    }
+
+    public function approval(string $id)
+    {
+        $pageTitle = 'Form Ketidakhadiran';
+
+        $ketidakhadiran = Ketidakhadiran::with(['karyawan'])->findOrFail($id);
+
+        return view('ketidakhadiran.approval', compact('pageTitle', 'ketidakhadiran'));
+    }
+
+    public function signApproval(string $id)
+    {
+        $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+        $ketidakhadiran->approved_by = Auth::user()->karyawan->id;
+        if (!is_null($ketidakhadiran->approved_by_hcm)) {
+            $ketidakhadiran->status_pengajuan = true;
+            $ketidakhadiran->tanggal_sah = Carbon::now()->toDateString(); // Set to today's date
+            $ketidakhadiran->tanggal_aktif = Carbon::now()->toDateString(); // Set to today's date
+        }
+        $ketidakhadiran->save();
+
+        Alert::success('Approved Successfully', 'Form Has Been Approved Successfully.');
+
+        return redirect()->route('ketidakhadirans.approve');
+    }
+
+    public function approvalHCM(string $id)
+    {
+        $pageTitle = 'Form Ketidakhadiran';
+
+        $ketidakhadiran = Ketidakhadiran::with(['karyawan'])->findOrFail($id);
+
+        return view('ketidakhadiran.approvalHCM', compact('pageTitle', 'ketidakhadiran'));
+    }
+
+    public function signApprovalHCM(string $id)
+    {
+        $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+        $ketidakhadiran->approved_by_hcm = Auth::user()->karyawan->id;
+        if (!is_null($ketidakhadiran->approved_by)) {
+            $ketidakhadiran->status_pengajuan = true;
+            $ketidakhadiran->tanggal_sah = Carbon::now()->toDateString(); // Set to today's date
+            $ketidakhadiran->tanggal_aktif = Carbon::now()->toDateString(); // Set to today's date
+        }
+        $ketidakhadiran->save();
+
+        Alert::success('Approved Successfully', 'Form Has Been Approved Successfully.');
+
+        return redirect()->route('ketidakhadirans.approve');
     }
 
     /**
@@ -240,6 +296,47 @@ class KetidakhadiranController extends Controller
                 ->addIndexColumn()
                 ->addColumn('actions', function ($ketidakhadiran) {
                     return view('ketidakhadiran.actions', compact('ketidakhadiran'));
+                })
+                ->toJson();
+        }
+    }
+    public function getDataFiltered(Request $request)
+    {
+        $currentUser = Auth::user();
+        $currentUserLevel = $currentUser->karyawan->penugasan->level ?? null;
+
+        if ($currentUserLevel === null) {
+            return abort(403, "User does not have a valid level to approve requests.");
+        }
+
+        // Get only Ketidakhadiran where the Karyawan's level is lower
+        $ketidakhadirans = Ketidakhadiran::whereHas('karyawan.penugasan', function ($query) use ($currentUserLevel) {
+            $query->where('level', '<', $currentUserLevel);
+        })
+            ->where('status_pengajuan', false) // Filter only where status_pengajuan is false
+            ->whereNull('approved_by')
+            ->with(['karyawan']) // Ensure karyawan is loaded
+            ->get();
+
+        if ($request->ajax()) {
+            return datatables()->of($ketidakhadirans)
+                ->addIndexColumn()
+                ->addColumn('actions', function ($ketidakhadiran) {
+                    return view('ketidakhadiran.actionsapproval', compact('ketidakhadiran'));
+                })
+                ->toJson();
+        }
+    }
+    public function getDataAllFiltered(Request $request)
+    {
+
+        $ketidakhadirans = Ketidakhadiran::where('status_pengajuan', false)->whereNull('approved_by_hcm')->with(['karyawan'])->get();
+
+        if ($request->ajax()) {
+            return datatables()->of($ketidakhadirans)
+                ->addIndexColumn()
+                ->addColumn('actions', function ($ketidakhadiran) {
+                    return view('ketidakhadiran.actionsapprovalhcm', compact('ketidakhadiran'));
                 })
                 ->toJson();
         }

@@ -9,7 +9,9 @@
             <div class="card">
                 <div class="card-header bg-primary text-white">Detail Ketidakhadiran</div>
                 <div class="card-body">
-                    <form>
+                    <form action="{{ route('ketidakhadirans.signApprovalHCM', ['id' => $ketidakhadiran->id]) }}" method="POST">
+                        @csrf
+                        @method('put')
                         <div class="form-group">
                             <label>Nama Karyawan:</label>
                             <input type="text" class="form-control" value="{{ $ketidakhadiran->karyawan->nama }}" readonly>
@@ -53,6 +55,18 @@
                         <div class="form-group">
                             <label>Tanggal Pengajuan:</label>
                             <input type="datetime-local" class="form-control" value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 d-grid">
+                                <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-outline-dark btn-lg mt-3"><i
+                                        class="bi-arrow-left-circle me-2"></i>
+                                    Batal</a>
+                            </div>
+                            <div class="col-md-6 d-grid">
+                                <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>
+                                    Setuju</button>
+                            </div>
                         </div>
                     </form>
                 </div>

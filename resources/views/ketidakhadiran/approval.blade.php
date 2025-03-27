@@ -9,22 +9,28 @@
             <div class="card">
                 <div class="card-header bg-primary text-white">Detail Ketidakhadiran</div>
                 <div class="card-body">
-                    <form>
+                    <form action="{{ route('ketidakhadirans.signApproval', ['id' => $ketidakhadiran->id]) }}" method="POST">
+                        @csrf
+                        @method('put')
                         <div class="form-group">
                             <label>Nama Karyawan:</label>
-                            <input type="text" class="form-control" value="{{ $ketidakhadiran->karyawan->nama }}" readonly>
+                            <input type="text" class="form-control" value="{{ $ketidakhadiran->karyawan->nama }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Jenis Ketidakhadiran:</label>
-                            <input type="text" class="form-control" value="{{ $ketidakhadiran->jenis_ketidakhadiran }}" readonly>
+                            <input type="text" class="form-control" value="{{ $ketidakhadiran->jenis_ketidakhadiran }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Mulai:</label>
-                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_mulai }}" readonly>
+                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_mulai }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Berakhir:</label>
-                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_berakhir }}" readonly>
+                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_berakhir }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Tujuan:</label>
@@ -36,7 +42,8 @@
                         </div>
                         <div class="form-group">
                             <label>Status Pengajuan:</label>
-                            <input type="text" class="form-control" value="{{ $ketidakhadiran->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ $ketidakhadiran->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="approved_by">Disetujui Oleh</label>
@@ -52,7 +59,21 @@
                         </div>
                         <div class="form-group">
                             <label>Tanggal Pengajuan:</label>
-                            <input type="datetime-local" class="form-control" value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
+                            <input type="datetime-local" class="form-control"
+                                value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6 d-grid">
+                                <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-outline-dark btn-lg mt-3"><i
+                                        class="bi-arrow-left-circle me-2"></i>
+                                    Batal</a>
+                            </div>
+                            <div class="col-md-6 d-grid">
+                                <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>
+                                    Setuju</button>
+                            </div>
                         </div>
                     </form>
                 </div>
