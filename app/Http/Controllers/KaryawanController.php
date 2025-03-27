@@ -12,12 +12,17 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class KaryawanController extends Controller
 {
+    public function __construct()
+    {
+        // Apply 'role:admin' middleware to all routes except 'show'
+        $this->middleware('role:admin')->except(['show']);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $pageTitle = 'Karyawan List';
+        $pageTitle = 'Daftar Karyawan';
 
         confirmDelete();
 
@@ -33,7 +38,7 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        $pageTitle = 'Create Karyawan';
+        $pageTitle = 'Tambah Karyawan';
         return view('karyawan.create', compact('pageTitle'));
     }
 
@@ -141,8 +146,8 @@ class KaryawanController extends Controller
      */
     public function show(string $id)
     {
-        $pageTitle = 'Karyawan Detail';
-        // RAW SQL QUERY
+        $pageTitle = 'Detail Karyawan';
+
         $karyawan = Karyawan::with(['statuspegawai', 'penugasan', 'gaji'])->findOrFail($id);
 
         return view('karyawan.show', compact('pageTitle', 'karyawan'));
@@ -153,7 +158,7 @@ class KaryawanController extends Controller
      */
     public function edit(string $id)
     {
-        $pageTitle = 'Karyawan Edit';
+        $pageTitle = 'Mengubah Data Karyawan';
         $karyawan = Karyawan::find($id);
         $status_pegawai = $karyawan->statuspegawai;
         $penugasan = $karyawan->penugasan;

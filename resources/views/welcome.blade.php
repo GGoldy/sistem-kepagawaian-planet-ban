@@ -9,7 +9,7 @@
                 <a href="#" class="h1"><b>Admin</b>LTE</a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+                <p class="login-box-msg">Silahkan Sign in untuk masuk</p>
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
@@ -17,7 +17,7 @@
                     <!-- Email/Username Input -->
                     <div class="input-group mb-3">
                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                            placeholder="Username" name="name" value="{{ old('name') }}" required autofocus>
+                            placeholder="NIK" name="name" value="{{ old('name') }}" required autofocus>
                         <div class="input-group-append">
                             <span class="input-group-text">
                                 <i class="fas fa-user"></i>
@@ -57,10 +57,7 @@
                 <hr>
                 <!-- Extra Links -->
                 <p class="mb-1">
-                    <a href="#">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="#" class="text-center">Register a new membership</a>
+                    <a href="#">Lupa Password</a>
                 </p>
             </div>
         </div>

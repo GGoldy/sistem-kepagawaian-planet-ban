@@ -101,11 +101,11 @@
                 <div class="col-md-6 d-grid">
                     <a href="{{ route('absens.data') }}" class="btn btn-outline-dark btn-lg mt-3"><i
                             class="bi-arrow-left-circle me-2"></i>
-                        Cancel</a>
+                        Batal</a>
                 </div>
                 <div class="col-md-6 d-grid">
                     <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>
-                        Save</button>
+                        Simpan</button>
                 </div>
             </div>
         </form>
@@ -137,17 +137,17 @@
             // Update when user selects a different location
             lokasiKerjaSelect.addEventListener("change", setLocationValues);
         });
-        
+
         // Separate script for Select2 initialization with jQuery check
         (function($) {
             if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
                 console.error('jQuery or Select2 is not loaded properly!');
                 return;
             }
-            
+
             console.log('jQuery version:', $.fn.jquery);
             console.log('Select2 available:', !!$.fn.select2);
-            
+
             $(function() {
                 try {
                     $('#karyawan').select2({

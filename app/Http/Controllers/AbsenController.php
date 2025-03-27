@@ -10,6 +10,8 @@ use App\Models\LokasiKerja;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Location\Coordinate;
+use Location\Distance\Vincenty;
 
 class AbsenController extends Controller
 {
@@ -31,7 +33,7 @@ class AbsenController extends Controller
 
     public function data()
     {
-        $pageTitle = 'Absen Data';
+        $pageTitle = 'Data Absen';
 
         $karyawans = Karyawan::all();
         $absens = Absen::all();
@@ -44,10 +46,7 @@ class AbsenController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -130,7 +129,7 @@ class AbsenController extends Controller
     public function edit(string $id)
     {
 
-        $pageTitle = 'Absen Edit';
+        $pageTitle = 'Edit Data Absen';
         $absen = Absen::find($id);
         $karyawans = Karyawan::all();
         $lokasi_kerjas = LokasiKerja::all();
@@ -199,5 +198,52 @@ class AbsenController extends Controller
                 })
                 ->toJson();
         }
+    }
+    public function calculateDistance(Request $request)
+    {
+        // Get user's latitude and longitude from the request
+        $userLatitude = $request->latitude;
+        $userLongitude = $request->longitude;
+
+        if (!$userLatitude || !$userLongitude) {
+            return response()->json(['error' => 'Latitude and longitude are required'], 400);
+        }
+
+        // Convert user location to a coordinate object
+        $userCoordinate = new Coordinate($userLatitude, $userLongitude);
+
+        // Get all work locations
+        $lokasi_kerja = LokasiKerja::all();
+
+        $calculator = new Vincenty();
+        $closestLokasi = null;
+        $shortestDistance = PHP_FLOAT_MAX;
+
+        // Loop through each work location to find the closest one
+        foreach ($lokasi_kerja as $lokasi) {
+            $lokasiCoordinate = new Coordinate($lokasi->latitude, $lokasi->longitude);
+            $distance = $calculator->getDistance($userCoordinate, $lokasiCoordinate); // Distance in meters
+
+            if ($distance < $shortestDistance) {
+                $shortestDistance = $distance;
+                $closestLokasi = $lokasi;
+            }
+        }
+
+        // Return the closest work location
+        return response()->json([
+            'closest_lokasi' => $closestLokasi,
+            'distance' => $shortestDistance
+        ]);
+    }
+
+    public function testCalculateDistance(Request $request)
+    {
+        $coordinate1 = new Coordinate(-7.37777730, 112.64556980);
+        $coordinate2 = new Coordinate(-7.31121345, 112.72886485);
+
+        $calculator = new Vincenty();
+
+        echo $calculator->getDistance($coordinate1, $coordinate2);
     }
 }

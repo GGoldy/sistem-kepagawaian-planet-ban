@@ -10,16 +10,32 @@
             </div>
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 float-end">
-                    <li class="list-inline-item">
+
+
+                    @if (Auth::user()->hasRole('admin'))
+                        <li class="list-inline-item">
+                            <a href="{{ route('lokasikerjas.index') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-1"></i> Mengelola Lokasi kerja
+                            </a>
+                        </li>
+
+                        <li class="list-inline-item">
+                            <a href="{{ route('absens.data') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-1"></i> Mengelola Data Absen
+                            </a>
+                        </li>
+                    @endif
+
+                    {{-- <li class="list-inline-item">
                         <a href="{{ route('lokasikerjas.index') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Manage Lokasi kerja
+                            <i class="bi bi-plus-circle me-1"></i> Mengelola Lokasi kerja
                         </a>
                     </li>
                     <li class="list-inline-item">
                         <a href="{{ route('absens.data') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Manage Absen Data
+                            <i class="bi bi-plus-circle me-1"></i> Mengelola Data Absen
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -53,10 +69,10 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow">
                             <div class="card-header bg-primary text-white">
-                                <h5 class="m-0">Check-In</h5>
+                                <h5 class="m-0">Absen</h5>
                             </div>
                             <div class="text-center">
-                                <p class="display-7 fw-bold text-primary mt-3">Normal Work Hours</p>
+                                <p class="display-7 fw-bold text-primary mt-3">Jam Kerja Normal</p>
                                 <p class="display-6 text-secondary mt-3">08:00 - 17:00</p>
                             </div>
                             <div class="card-body d-flex gap-3 justify-content-center">
@@ -65,14 +81,14 @@
                                     <span class="icon text-white-50">
                                         <i class="fas fa-check"></i>
                                     </span>
-                                    <span class="text">Check In</span>
+                                    <span class="text">Masuk</span>
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-icon-split"
                                     onclick="validateTimeLocation(0)">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-times"></i>
                                     </span>
-                                    <span class="text">Check Out</span>
+                                    <span class="text">Pulang</span>
                                 </button>
                             </div>
                         </div>
@@ -82,7 +98,7 @@
                     <div class="col-md-6 mb-4">
                         <div class="card shadow">
                             <div class="card-header bg-primary text-white">
-                                <h5 class="m-0">Location</h5>
+                                <h5 class="m-0">Lokasi</h5>
                             </div>
                             <div class="text-center p-4">
                                 <!-- Loading Animation (Default State) -->
@@ -133,6 +149,23 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        function updateLocationText(locationName) {
+            document.getElementById('loading-animation').style.display = 'none';
+            const locationText1 = document.getElementById('location-text-1');
+            const locationText2 = document.getElementById('location-text-2');
+            locationText1.textContent = "Dekat dengan:";
+            locationText2.textContent = locationName;
+            locationText1.classList.remove('d-none');
+            locationText2.classList.remove('d-none');
+        }
+
+        // Function to reset UI to loading state
+        function resetToLoading() {
+            document.getElementById('loading-animation').style.display = 'block';
+            document.getElementById('location-text-1').classList.add('d-none');
+            document.getElementById('location-text-2').classList.add('d-none');
+        }
+
         function haversineDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Earth's radius in km
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -146,112 +179,145 @@
             return R * c; // Returns distance in km
         }
 
-        function haversine(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius of the Earth in kilometers
-            const toRad = angle => angle * (Math.PI / 180);
+        // function findNearestLocation(userLat, userLng) {
+        //     const workLocations = document.querySelectorAll('.work-location');
+        //     let nearestLocation = null;
+        //     let validLocation = false
+        //     let nearestDistance = Infinity; // Start with a large number
 
-            const dLat = toRad(lat2 - lat1);
-            const dLon = toRad(lon2 - lon1);
+        //     console.log("From FindNearest. Current Latitude: " + userLat + ", Longitude: " + userLng);
 
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        //     workLocations.forEach((loc) => {
+        //         const workLat = Number(loc.dataset.lat);
+        //         const workLng = Number(loc.dataset.lng);
+        //         const workId = loc.dataset.id;
+        //         const workNama = loc.dataset.nama;
 
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        //         if (!isNaN(workLat) && !isNaN(workLng)) {
+        //             const distance = haversineDistance(userLat, userLng, workLat, workLng);
+        //             console.log(
+        //                 ` From Validate. Distance to work location: ${distance.toFixed(2)} km. Work Latitude: ${workLat} Work Longitude: ${workLng}`
+        //             );
 
-            return R * c; // Distance in kilometers
-        }
+        //             if (distance <= 1 && distance < nearestDistance) {
+        //                 validLocation = true;
+        //                 nearestLocation = {
+        //                     id: workId,
+        //                     nama: workNama,
+        //                     distance: distance
+        //                 };
+        //                 nearestDistance = distance;
+        //             }
+        //         }
+        //     });
 
+        //     if (validLocation && nearestLocation) {
+        //         document.getElementById("lokasi_kerja").value = nearestLocation.id;
+        //         document.getElementById("lokasi_nama").value = nearestLocation.nama;
+        //         updateLocationText(nearestLocation.nama);
+        //     } else {
+        //         resetToLoading();
+        //         // setTimeout(() => {
+        //         //     findNearestLocation(userLat, userLng);
+        //         // }, 1000);
+        //     }
+        // }
 
-        function updateLocationText(locationName) {
-            document.getElementById('loading-animation').style.display = 'none';
-            const locationText1 = document.getElementById('location-text-1');
-            const locationText2 = document.getElementById('location-text-2');
-            locationText1.textContent = "You are close to:";
-            locationText2.textContent = locationName;
-            locationText1.classList.remove('d-none');
-            locationText2.classList.remove('d-none');
-        }
+        // function updateLocation() {
+        //     document.addEventListener("DOMContentLoaded", function() {
+        //         document.getElementById("latitude").value = null;
+        //         document.getElementById("longitude").value = null;
 
-        // Function to reset UI to loading state
-        function resetToLoading() {
-            document.getElementById('loading-animation').style.display = 'block';
-            document.getElementById('location-text-1').classList.add('d-none');
-            document.getElementById('location-text-2').classList.add('d-none');
-        }
+        //         if ("geolocation" in navigator) {
+        //             navigator.geolocation.getCurrentPosition(
+        //                 function(position) {
+        //                     const userLat = position.coords.latitude;
+        //                     const userLng = position.coords.longitude;
 
-        function findNearestLocation(userLat, userLng) {
-            const workLocations = document.querySelectorAll('.work-location');
-            let nearestLocation = null;
-            let nearestDistance = Infinity; // Start with a large number
+        //                     document.getElementById("latitude").value = userLat;
+        //                     document.getElementById("longitude").value = userLng;
+        //                     console.log("From Normal Location. Latitude: " + position.coords.latitude +
+        //                         ", Longitude: " + position
+        //                         .coords
+        //                         .longitude);
 
-            console.log("From FindNearest. Current Latitude: " + userLat + ", Longitude: " + userLng);
-
-            workLocations.forEach((loc) => {
-                const workLat = parseFloat(loc.dataset.lat);
-                const workLng = parseFloat(loc.dataset.lng);
-                const workId = loc.dataset.id;
-                const workNama = loc.dataset.nama;
-
-                if (!isNaN(workLat) && !isNaN(workLng)) {
-                    const distance = haversineDistance(userLat, userLng, workLat, workLng);
-                    console.log(` From Validate. Distance to work location: ${distance.toFixed(2)} km`);
-
-                    if (distance <= 1 && distance < nearestDistance) {
-                        validLocation = true;
-                        nearestLocation = {
-                            id: workId,
-                            nama: workNama,
-                            distance: distance
-                        };
-                        nearestDistance = distance;
-                    }
-                }
-            });
-
-            if (validLocation && nearestLocation) {
-                document.getElementById("lokasi_kerja").value = nearestLocation.id;
-                document.getElementById("lokasi_nama").value = nearestLocation.nama;
-                updateLocationText(nearestLocation.nama);
-            } else {
-                resetToLoading();
-            }
-        }
+        //                     findNearestLocation(userLat, userLng);
+        //                 },
+        //                 function(error) {
+        //                     document.getElementById("latitude").value = null;
+        //                     document.getElementById("longitude").value = null;
+        //                     console.warn("Geolocation error:", error.message);
+        //                 }
+        //             );
+        //         } else {
+        //             document.getElementById("latitude").value = null;
+        //             document.getElementById("longitude").value = null;
+        //             console.warn("Geolocation is not supported by this browser.");
+        //         }
+        //     });
+        // }
 
         function updateLocation() {
             document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("latitude").value = null;
                 document.getElementById("longitude").value = null;
 
-                if ("geolocation" in navigator) {
+                if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         function(position) {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
+                            let latitude = position.coords.latitude.toFixed(8);
+                            let longitude = position.coords.longitude.toFixed(8);
 
-                            document.getElementById("latitude").value = userLat;
-                            document.getElementById("longitude").value = userLng;
-                            console.log("From Normal Location. Latitude: " + position.coords.latitude +
-                                ", Longitude: " + position
-                                .coords
-                                .longitude);
+                            console.log(`User current latitude: ${latitude} and Longitude: ${longitude}`);
 
-                            findNearestLocation(userLat, userLng);
+                            // Send data to Laravel for distance calculation
+                            fetch('absens/calculateDistance', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                            .getAttribute('content')
+                                    },
+                                    body: JSON.stringify({
+                                        latitude: latitude,
+                                        longitude: longitude
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log("Closest Location:", data.closest_lokasi);
+                                    console.log("Distance:", data.distance);
+
+                                    if (data && data.distance <= 500) {
+                                        document.getElementById('latitude').value = latitude;
+                                        document.getElementById('longitude').value = longitude;
+                                        document.getElementById("lokasi_kerja").value = data.closest_lokasi
+                                            .id;
+                                        document.getElementById("lokasi_nama").value = data.closest_lokasi
+                                            .nama;
+                                        updateLocationText(data.closest_lokasi.nama);
+                                    } else {
+                                        resetToLoading();
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
                         },
                         function(error) {
-                            document.getElementById("latitude").value = null;
-                            document.getElementById("longitude").value = null;
-                            console.warn("Geolocation error:", error.message);
+                            console.error("Geolocation error:", error.message);
+                            alert("Could not retrieve accurate location. Please enable GPS and try again.");
+                        }, {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
                         }
                     );
                 } else {
-                    document.getElementById("latitude").value = null;
-                    document.getElementById("longitude").value = null;
-                    console.warn("Geolocation is not supported by this browser.");
+                    console.log("Geolocation is not supported by this browser.");
                 }
             });
         }
-        setInterval(updateLocation, 1000);
+
+
         updateLocation();
 
         function validateTimeLocation(isPresent) {
@@ -263,6 +329,7 @@
             let nearestLocation = null;
             let nearestDistance = Infinity;
 
+            console.log("Hours: " + hours)
             if ((hours >= 7 && hours <= 17) && isPresent == 1) {
                 validTime = true;
             } else if (hours >= 17 && isPresent == 0) {
@@ -304,15 +371,14 @@
                     }
                 });
             }
+            console.log("Location: " + validLocation)
+            console.log("Time: " + validTime)
 
             if (validTime && validLocation) {
                 document.getElementById('lokasi_nama').value = nearestLocation.nama;
                 let lokasiTerdekat = nearestLocation.id
 
                 submitAbsen(isPresent, now, lokasiTerdekat)
-
-                validLocation = false
-                validTime = false
 
             } else if (!validTime && validLocation) {
                 Swal.fire({
@@ -321,8 +387,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK',
                 });
-                validLocation = false
-                validTime = false
+
             } else if (validTime && !validLocation) {
                 Swal.fire({
                     title: 'Out of Range!',
@@ -330,8 +395,7 @@
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
-                validLocation = false
-                validTime = false
+
             } else {
                 Swal.fire({
                     title: 'Error!',
@@ -339,9 +403,11 @@
                     icon: 'error',
                     confirmButtonText: 'OK',
                 });
-                validLocation = false
-                validTime = false
+
             }
+
+            validLocation = false
+            validTime = false
         }
 
         function submitAbsen(isPresent, now, lokasiTerdekat) {

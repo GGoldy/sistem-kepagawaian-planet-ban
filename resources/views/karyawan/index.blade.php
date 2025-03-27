@@ -12,7 +12,7 @@
                 <ul class="list-inline mb-0 float-end">
                     <li class="list-inline-item">
                         <a href="{{ route('karyawans.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Create Karyawan
+                            <i class="bi bi-plus-circle me-1"></i> Tambah Karyawan
                         </a>
                     </li>
                 </ul>

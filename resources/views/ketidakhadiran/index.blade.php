@@ -10,14 +10,16 @@
             </div>
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 float-end">
+                    @if (Auth::user()->hasRole('admin'))
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Manage Ketidakhadiran
+                        <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i> Mengelola Ketidakhadiran
                         </a>
                     </li>
+                    @endif
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Approve Ketidakhadiran
+                        <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i> Menyetujui Ketidakhadiran
                         </a>
                     </li>
                     <li class="list-inline-item">
@@ -47,7 +49,6 @@
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Berakhir</th>
                                 <th>Status Pengajuan</th>
-                                <th>Approved By</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -108,10 +109,6 @@
                         }
                     },
                     {
-                        data: "approved_by.nama",
-                        name: "approved_by.nama"
-                    },
-                    {
                         data: "actions",
                         name: "actions",
                         orderable: false,
@@ -127,25 +124,25 @@
                 ],
             });
 
-            // $('.datatable').on("click", '.btn-delete', function(e) {
-            //     e.preventDefault();
+            $('.datatable').on("click", '.btn-delete', function(e) {
+                e.preventDefault();
 
-            //     var form = $(this).closest("form");
-            //     var name = $(this).data('name');
+                var form = $(this).closest("form");
+                var name = $(this).data('name');
 
-            //     Swal.fire({
-            //         title: "Are you sure you want to delete this ?",
-            //         text: "You won't be able to revert this!",
-            //         icon: "warning",
-            //         showCancelButton: true,
-            //         confirmButtonClass: 'bg-primary',
-            //         confirmButtonText: "Yes, delete it!",
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             form.submit();
-            //         }
-            //     })
-            // })
+                Swal.fire({
+                    title: "Are you sure you want to delete this ?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: 'bg-primary',
+                    confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                })
+            })
         });
     </script>
 @endpush
