@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class KetidakhadiranController extends Controller
 {
+    public function __construct()
+    {
+        // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
+        $this->middleware('role:admin')->except(['create', 'index', 'store', 'approve', 'getDataSelf']);
+    }
     /**
      * Display a listing of the resource.
      */
