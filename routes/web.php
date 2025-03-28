@@ -8,6 +8,7 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\KetidakhadiranController;
 use App\Models\Ketidakhadiran;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,23 @@ Route::get('getLokasiKerjas', [LokasiKerjaController::class, 'getData'])->name('
 Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
     Route::get('data', [KetidakhadiranController::class, 'data'])->name('data');
     Route::get('approve', [KetidakhadiranController::class, 'approve'])->name('approve');
-    Route::get('getKetidakhadiranSelf', [KetidakhadiranController::class, 'getDataSelf'])->name('lokasikerjas.getDataSelf');
-    Route::get('getKetidakhadiranAll', [KetidakhadiranController::class, 'getDataAll'])->name('lokasikerjas.getDataAll');
+    Route::get('approval/{id}', [KetidakhadiranController::class, 'approval'])->name('approval');
+    Route::put('signApproval/{id}', [KetidakhadiranController::class, 'signApproval'])->name('signApproval');
+    Route::get('approvalHCM/{id}', [KetidakhadiranController::class, 'approvalHCM'])->name('approvalHCM');
+    Route::put('signApprovalHCM/{id}', [KetidakhadiranController::class, 'signApprovalHCM'])->name('signApprovalHCM');
+    Route::get('getKetidakhadiranSelf', [KetidakhadiranController::class, 'getDataSelf'])->name('ketidakhadirans.getDataSelf');
+    Route::get('getKetidakhadiranAll', [KetidakhadiranController::class, 'getDataAll'])->name('ketidakhadirans.getDataAll');
+    Route::get('getKetidakhadiranFiltered', [KetidakhadiranController::class, 'getDataFiltered'])->name('ketidakhadirans.getDataFiltered');
+    Route::get('getKetidakhadiranAllFiltered', [KetidakhadiranController::class, 'getDataAllFiltered'])->name('ketidakhadirans.getDataAllFiltered');
     Route::resource('/', KetidakhadiranController::class)->parameters(['' => 'ketidakhadiran']);
+});
+
+Route::get('/view-signature/{id}', function ($id) {
+    $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+    if (!$ketidakhadiran->signature || !Storage::disk('public')->exists($ketidakhadiran->signature)) {
+        return "Signature not found!";
+    }
+
+    return '<img src="'.asset('storage/' . $ketidakhadiran->signature).'" alt="Signature" width="300">';
 });

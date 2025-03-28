@@ -9,7 +9,7 @@
                 <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
             </div>
             <div class="col-lg-3 col-xl-6">
-                <ul class="list-inline mb-0 float-end">
+                <ul class="list-inline mb-0 my-2 float-end">
 
 
                     @if (Auth::user()->hasRole('admin'))
@@ -257,20 +257,22 @@
         //     });
         // }
 
-        function updateLocation() {
+        function updateLocationWithWatch() {
             document.addEventListener("DOMContentLoaded", function() {
+                // Clear the input fields
                 document.getElementById("latitude").value = null;
                 document.getElementById("longitude").value = null;
 
                 if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
+                    // Start watching the user's position
+                    let watchId = navigator.geolocation.watchPosition(
                         function(position) {
                             let latitude = position.coords.latitude.toFixed(8);
                             let longitude = position.coords.longitude.toFixed(8);
 
                             console.log(`User current latitude: ${latitude} and Longitude: ${longitude}`);
 
-                            // Send data to Laravel for distance calculation
+                            // Here you can send the updated coordinates to your server
                             fetch('absens/calculateDistance', {
                                     method: 'POST',
                                     headers: {
@@ -307,18 +309,81 @@
                             alert("Could not retrieve accurate location. Please enable GPS and try again.");
                         }, {
                             enableHighAccuracy: true,
-                            timeout: 10000,
+                            timeout: 15000,
                             maximumAge: 0
                         }
                     );
+
+                    // Optional: store watchId if you later want to stop watching the position
+                    // navigator.geolocation.clearWatch(watchId);
                 } else {
                     console.log("Geolocation is not supported by this browser.");
                 }
             });
         }
 
+        // function updateLocation() {
+        //     document.addEventListener("DOMContentLoaded", function() {
+        //         document.getElementById("latitude").value = null;
+        //         document.getElementById("longitude").value = null;
 
-        updateLocation();
+        //         if (navigator.geolocation) {
+        //             navigator.geolocation.getCurrentPosition(
+        //                 function(position) {
+        //                     let latitude = position.coords.latitude.toFixed(8);
+        //                     let longitude = position.coords.longitude.toFixed(8);
+
+        //                     console.log(`User current latitude: ${latitude} and Longitude: ${longitude}`);
+
+        //                     // Send data to Laravel for distance calculation
+        //                     fetch('absens/calculateDistance', {
+        //                             method: 'POST',
+        //                             headers: {
+        //                                 'Content-Type': 'application/json',
+        //                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+        //                                     .getAttribute('content')
+        //                             },
+        //                             body: JSON.stringify({
+        //                                 latitude: latitude,
+        //                                 longitude: longitude
+        //                             })
+        //                         })
+        //                         .then(response => response.json())
+        //                         .then(data => {
+        //                             console.log("Closest Location:", data.closest_lokasi);
+        //                             console.log("Distance:", data.distance);
+
+        //                             if (data && data.distance <= 500) {
+        //                                 document.getElementById('latitude').value = latitude;
+        //                                 document.getElementById('longitude').value = longitude;
+        //                                 document.getElementById("lokasi_kerja").value = data.closest_lokasi
+        //                                     .id;
+        //                                 document.getElementById("lokasi_nama").value = data.closest_lokasi
+        //                                     .nama;
+        //                                 updateLocationText(data.closest_lokasi.nama);
+        //                             } else {
+        //                                 resetToLoading();
+        //                             }
+        //                         })
+        //                         .catch(error => console.error('Error:', error));
+        //                 },
+        //                 function(error) {
+        //                     console.error("Geolocation error:", error.message);
+        //                     alert("Could not retrieve accurate location. Please enable GPS and try again.");
+        //                 }, {
+        //                     enableHighAccuracy: true,
+        //                     timeout: 10000,
+        //                     maximumAge: 0
+        //                 }
+        //             );
+        //         } else {
+        //             console.log("Geolocation is not supported by this browser.");
+        //         }
+        //     });
+        // }
+
+
+        updateLocationWithWatch();
 
         function validateTimeLocation(isPresent) {
             const now = new Date();

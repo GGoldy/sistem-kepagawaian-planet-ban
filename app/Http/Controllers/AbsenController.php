@@ -15,6 +15,11 @@ use Location\Distance\Vincenty;
 
 class AbsenController extends Controller
 {
+    public function __construct()
+    {
+        // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
+        $this->middleware('role:admin')->except(['index', 'store', 'calculateDistance']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -183,7 +188,7 @@ class AbsenController extends Controller
     {
         $absen = Absen::find($id);
         $absen->delete();
-        Alert::success('Deleted Successfully', 'Karyawan Data Deleted Successfully.');
+        Alert::success('Deleted Successfully', 'Absen Data Deleted Successfully.');
         return redirect()->route('karyawans.index');
     }
 

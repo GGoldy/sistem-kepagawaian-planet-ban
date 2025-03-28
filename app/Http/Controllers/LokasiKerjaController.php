@@ -11,6 +11,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class LokasiKerjaController extends Controller
 {
+    public function __construct()
+    {
+        // Apply 'role:admin' middleware to all routes
+        $this->middleware('role:admin');
+    }
     /**
      * Display a listing of the resource.
      */

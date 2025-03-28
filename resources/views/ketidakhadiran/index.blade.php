@@ -34,7 +34,7 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Izin Ketidakhadiran</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Izin Ketidakhadiran Milik {{Auth::user()->karyawan->nama}}</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -105,7 +105,7 @@
                         data: "status_pengajuan",
                         name: "status_pengajuan",
                         render: function(data, type, row) {
-                            return data == 1 ? "Sudah Approved" : "Belum Approved";
+                            return data == 1 ? "Disetujui" : "Pending";
                         }
                     },
                     {
