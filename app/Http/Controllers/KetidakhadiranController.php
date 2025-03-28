@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class KetidakhadiranController extends Controller
 {
@@ -83,11 +85,21 @@ class KetidakhadiranController extends Controller
         return view('ketidakhadiran.approval', compact('pageTitle', 'ketidakhadiran'));
     }
 
-    public function signApproval(string $id)
+    public function signApproval(Request $request, string $id)
     {
         $ketidakhadiran = Ketidakhadiran::findOrFail($id);
 
+        if ($request->has('signature')) {
+            $image = $request->input('signature');
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'signatures/' . uniqid() . '.png';
+            Storage::disk('public')->put($imageName, base64_decode($image));
+            $ketidakhadiran->signature = $imageName; // Save the image path to DB
+        }
+
         $ketidakhadiran->approved_by = Auth::user()->karyawan->id;
+
         if (!is_null($ketidakhadiran->approved_by_hcm)) {
             $ketidakhadiran->status_pengajuan = true;
             $ketidakhadiran->tanggal_sah = Carbon::now()->toDateString(); // Set to today's date
@@ -109,9 +121,18 @@ class KetidakhadiranController extends Controller
         return view('ketidakhadiran.approvalHCM', compact('pageTitle', 'ketidakhadiran'));
     }
 
-    public function signApprovalHCM(string $id)
+    public function signApprovalHCM(Request $request, string $id)
     {
         $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+        if ($request->has('signature')) {
+            $image = $request->input('signature');
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'signatures/' . uniqid() . '.png';
+            Storage::disk('public')->put($imageName, base64_decode($image));
+            $ketidakhadiran->signature_hcm = $imageName; // Save the image path to DB
+        }
 
         $ketidakhadiran->approved_by_hcm = Auth::user()->karyawan->id;
         if (!is_null($ketidakhadiran->approved_by)) {

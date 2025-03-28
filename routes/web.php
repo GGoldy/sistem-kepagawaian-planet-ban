@@ -8,6 +8,7 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\KetidakhadiranController;
 use App\Models\Ketidakhadiran;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,4 +59,14 @@ Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
     Route::get('getKetidakhadiranFiltered', [KetidakhadiranController::class, 'getDataFiltered'])->name('ketidakhadirans.getDataFiltered');
     Route::get('getKetidakhadiranAllFiltered', [KetidakhadiranController::class, 'getDataAllFiltered'])->name('ketidakhadirans.getDataAllFiltered');
     Route::resource('/', KetidakhadiranController::class)->parameters(['' => 'ketidakhadiran']);
+});
+
+Route::get('/view-signature/{id}', function ($id) {
+    $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+    if (!$ketidakhadiran->signature || !Storage::disk('public')->exists($ketidakhadiran->signature)) {
+        return "Signature not found!";
+    }
+
+    return '<img src="'.asset('storage/' . $ketidakhadiran->signature).'" alt="Signature" width="300">';
 });

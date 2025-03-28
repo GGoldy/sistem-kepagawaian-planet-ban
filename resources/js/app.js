@@ -11,12 +11,14 @@ import 'admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js'
 import 'admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js';
 import 'admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js';
 import 'leaflet/dist/leaflet.js';
+import 'admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js'
 
 // CSS Imports
 import 'admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css';
 import 'admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css';
 import 'admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css';
 import 'admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css'
+import 'admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css'
 import 'leaflet/dist/leaflet.css';
 
 // import $ from 'jquery';

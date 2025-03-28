@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header bg-primary text-white">Detail Ketidakhadiran</div>
                 <div class="card-body">
-                    <form action="{{ route('ketidakhadirans.signApprovalHCM', ['id' => $ketidakhadiran->id]) }}" method="POST">
+                    <form action="{{ route('ketidakhadirans.signApprovalHCM', ['id' => $ketidakhadiran->id]) }}" method="POST" onsubmit="return validateSignature()">
                         @csrf
                         @method('put')
                         <div class="form-group">
@@ -56,6 +56,17 @@
                             <label>Tanggal Pengajuan:</label>
                             <input type="datetime-local" class="form-control" value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
                         </div>
+                        <div class="form-group text-center">
+                            <label class="d-block mb-2" style="font-size: 1.2rem; font-weight: bold;">Tanda Tangan:</label>
+                            <div class="d-flex justify-content-center">
+                                <canvas id="signature-pad" class="border border-dark" width="450" height="250"></canvas>
+                            </div>
+                            <input type="hidden" name="signature" id="signature-input">
+                            <br>
+                            <button type="button" class="btn btn-outline-secondary mt-2" onclick="clearSignature()">Hapus
+                                Tanda Tangan</button>
+                        </div>
+
                         <hr>
                         <div class="row">
                             <div class="col-md-6 d-grid">
@@ -74,3 +85,28 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        let canvas = document.getElementById('signature-pad');
+        let signaturePad = new SignaturePad(canvas);
+
+        function clearSignature() {
+            signaturePad.clear();
+        }
+
+        function validateSignature() {
+            if (signaturePad.isEmpty()) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Please sign in the provided signature pad.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return false;
+            }
+            // Convert signature to image and store in hidden input
+            document.getElementById('signature-input').value = signaturePad.toDataURL('image/png');
+            return true;
+        }
+    </script>
+@endpush

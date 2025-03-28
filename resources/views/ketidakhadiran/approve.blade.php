@@ -35,7 +35,7 @@
                     <div class="col-lg-6 pl-2">
                         <div class="card shadow-sm">
                             <div class="card-header py-2">
-                                <h6 class="m-0 font-weight-bold text-primary">Izin Ketidakhadiran (Table 2)</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">Izin Ketidakhadiran (Khusus HCM)</h6>
                             </div>
                             <div class="card-body p-2">
                                 <div class="table-responsive">
@@ -63,7 +63,7 @@
 
 @endsection
 @push('scripts')
-    <script>
+    <script defer>
         $(document).ready(function() {
             $("#ketidakhadiranTable1").DataTable({
                 serverSide: true,
@@ -151,33 +151,28 @@
                 ],
             });
 
-            $('.datatable').on("click", '.btn-approve', function(e) {
-                e.preventDefault();
+            // $('.datatable').on("click", '.btn-approve', function(e) {
+            //     e.preventDefault();
 
-                var form = $(this).closest("form");
-                var name = $(this).data('name');
+            //     var form = $(this).closest("form");
+            //     var name = $(this).data('name');
 
-                Swal.fire({
-                    title: "Apakah yakin akan menyetujui ?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: 'bg-primary',
-                    confirmButtonText: "Confirm",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                })
-            })
+            //     Swal.fire({
+            //         title: "Apakah yakin akan menyetujui ?",
+            //         icon: "warning",
+            //         showCancelButton: true,
+            //         confirmButtonClass: 'bg-primary',
+            //         confirmButtonText: "Confirm",
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             form.submit();
+            //         }
+            //     })
+            // })
 
-
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            let ketidakhadirans = @json($ketidakhadirans); // Convert PHP to JSON
-            let all = @json($all);
-            console.log("Filtered Ketidakhadiran with lower level:", ketidakhadirans);
-            console.log("All Ketidakhadiran", all);
 
         });
+
+
     </script>
 @endpush
