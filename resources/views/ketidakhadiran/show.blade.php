@@ -48,7 +48,6 @@
                                 value="{{ optional($ketidakhadiran->approvedBy)->nama ?? 'Belum Disetujui'}}" readonly>
 
                         </div>
-
                         <div class="form-group">
                             <label for="approved_by_hcm">Disetujui Oleh HCM</label>
                             <input type="text" class="form-control"
@@ -59,6 +58,13 @@
                             <input type="datetime-local" class="form-control"
                                 value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
                         </div>
+                        {{-- <div class="form-group">
+                            <label>Tanggal Sah:</label>
+                            <input type="{{ $ketidakhadiran->tanggal_sah ? 'date' : 'text' }}"
+                                   class="form-control"
+                                   value="{{ $ketidakhadiran->tanggal_sah ?? '-----' }}"
+                                   readonly>
+                        </div> --}}
                     </form>
                 </div>
             </div>

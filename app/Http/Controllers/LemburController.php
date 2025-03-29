@@ -44,6 +44,92 @@ class LemburController extends Controller
         ]);
     }
 
+    public function approve()
+    {
+        $pageTitle = 'Penyetujuan Lembur';
+
+        $currentUser = Auth::user();
+        $currentUserLevel = $currentUser->karyawan->penugasan->level ?? null;
+
+        if ($currentUserLevel === null) {
+            return abort(403, "User does not have a valid level to approve requests.");
+        }
+
+        return view('lembur.approve', [
+            'pageTitle' => $pageTitle,
+        ]);
+    }
+
+    public function approval(string $id)
+    {
+        $pageTitle = 'Form Lembur';
+
+        $lembur = Lembur::with(['karyawan', 'perintahatasan'])->findOrFail($id);
+
+        return view('lembur.approval', compact('pageTitle', 'lembur'));
+    }
+
+    public function signApproval(Request $request, string $id)
+    {
+        $lembur = Lembur::findOrFail($id);
+
+        if ($request->has('signature')) {
+            $image = $request->input('signature');
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'signatures/' . uniqid() . '.png';
+            Storage::disk('public')->put($imageName, base64_decode($image));
+            $lembur->signature = $imageName; // Save the image path to DB
+        }
+
+        $lembur->approved_by = Auth::user()->karyawan->id;
+
+        if (!is_null($lembur->approved_by_hcm)) {
+            $lembur->status_pengajuan = true;
+            $lembur->tanggal_sah = Carbon::now()->toDateTimeString(); // Set to today's date
+        }
+        $lembur->save();
+
+        Alert::success('Approved Successfully', 'Form Has Been Approved Successfully.');
+
+        return redirect()->route('lemburs.approve');
+    }
+
+    public function approvalHCM(string $id)
+    {
+        $pageTitle = 'Form Lembur';
+
+        $lembur = Lembur::with(['karyawan', 'perintahatasan'])->findOrFail($id);
+
+        return view('lembur.approvalHCM', compact('pageTitle', 'lembur'));
+    }
+
+    public function signApprovalHCM(Request $request, string $id)
+    {
+        $lembur = Lembur::findOrFail($id);
+
+        if ($request->has('signature')) {
+            $image = $request->input('signature');
+            $image = str_replace('data:image/png;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'signatures/' . uniqid() . '.png';
+            Storage::disk('public')->put($imageName, base64_decode($image));
+            $lembur->signature_hcm = $imageName; // Save the image path to DB
+        }
+
+        $lembur->approved_by_hcm = Auth::user()->karyawan->id;
+
+        if (!is_null($lembur->approved_by)) {
+            $lembur->status_pengajuan = true;
+            $lembur->tanggal_sah = Carbon::now()->toDateTimeString(); // Set to today's date
+        }
+        $lembur->save();
+
+        Alert::success('Approved Successfully', 'Form Has Been Approved Successfully.');
+
+        return redirect()->route('lemburs.approve');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -204,6 +290,44 @@ class LemburController extends Controller
                 ->addIndexColumn()
                 ->addColumn('actions', function ($lembur) {
                     return view('lembur.actions', compact('lembur'));
+                })
+                ->toJson();
+        }
+    }
+    public function getDataFiltered(Request $request)
+    {
+        $currentUser = Auth::user();
+        $currentUserLevel = $currentUser->karyawan->penugasan->level ?? null;
+
+        if ($currentUserLevel === null) {
+            return abort(403, "User does not have a valid level to approve requests.");
+        }
+
+        $lemburs = Lembur::whereHas('karyawan.penugasan', function ($query) use ($currentUserLevel) {
+            $query->where('level', '<', $currentUserLevel);
+        })
+            ->whereNull('approved_by')
+            ->with(['karyawan', 'perintahatasan']) // Ensure karyawan is loaded
+            ->get();
+
+        if ($request->ajax()) {
+            return datatables()->of($lemburs)
+                ->addIndexColumn()
+                ->addColumn('actions', function ($lembur) {
+                    return view('lembur.actionsapproval', compact('lembur'));
+                })
+                ->toJson();
+        }
+    }
+    public function getDataAllFiltered(Request $request)
+    {
+        $lemburs = Lembur::whereNull('approved_by_hcm')->with(['karyawan', 'perintahatasan'])->get();
+
+        if ($request->ajax()) {
+            return datatables()->of($lemburs)
+                ->addIndexColumn()
+                ->addColumn('actions', function ($lembur) {
+                    return view('lembur.actionsapprovalhcm', compact('lembur'));
                 })
                 ->toJson();
         }

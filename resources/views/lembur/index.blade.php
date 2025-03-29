@@ -18,7 +18,7 @@
                     </li>
                     @endif
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
+                        <a href="{{ route('lemburs.approve') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> Menyetujui Lembur
                         </a>
                     </li>

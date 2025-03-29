@@ -64,6 +64,13 @@
                             <input type="datetime-local" class="form-control" value="{{ $lembur->tanggal_pengajuan }}"
                                 readonly>
                         </div>
+                        <div class="form-group">
+                            <label>Tanggal Sah:</label>
+                            <input type="{{ $lembur->tanggal_sah ? 'datetime-local' : 'text' }}"
+                                   class="form-control"
+                                   value="{{ $lembur->tanggal_sah ?? '-----' }}"
+                                   readonly>
+                        </div>
                     </form>
                 </div>
             </div>

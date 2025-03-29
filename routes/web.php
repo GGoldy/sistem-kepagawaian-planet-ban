@@ -70,9 +70,16 @@ Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
 
 Route::prefix('lemburs')->name('lemburs.')->group(function () {
     Route::get('data', [LemburController::class, 'data'])->name('data');
+    Route::get('approve', [LemburController::class, 'approve'])->name('approve');
     Route::get('showany/{id}', [LemburController::class, 'showany'])->name('showany');
+    Route::get('approval/{id}', [LemburController::class, 'approval'])->name('approval');
+    Route::put('signApproval/{id}', [LemburController::class, 'signApproval'])->name('signApproval');
+    Route::get('approvalHCM/{id}', [LemburController::class, 'approvalHCM'])->name('approvalHCM');
+    Route::put('signApprovalHCM/{id}', [LemburController::class, 'signApprovalHCM'])->name('signApprovalHCM');
     Route::get('getLemburSelf', [LemburController::class, 'getDataSelf'])->name('lemburs.getDataSelf');
     Route::get('getLemburAll', [LemburController::class, 'getDataAll'])->name('lemburs.getDataAll');
+    Route::get('getLemburFiltered', [LemburController::class, 'getDataFiltered'])->name('lemburs.getDataFiltered');
+    Route::get('getLemburAllFiltered', [LemburController::class, 'getDataAllFiltered'])->name('lemburs.getDataAllFiltered');
     Route::resource('/', LemburController::class)->parameters(['' => 'lembur']);
 });
 
