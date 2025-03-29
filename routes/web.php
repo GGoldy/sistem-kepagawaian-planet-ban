@@ -7,6 +7,8 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\KetidakhadiranController;
+use App\Http\Controllers\LemburController;
+use App\Models\Karyawan;
 use App\Models\Ketidakhadiran;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,8 +34,12 @@ Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 Route::post('/login', [LoginController::class, 'authenticate']);
-Route::resource('karyawans', KaryawanController::class);
-Route::get('getKaryawans', [KaryawanController::class, 'getData'])->name('karyawans.getData');
+
+Route::prefix('karyawans')->name('karyawans.')->group(function () {
+    Route::get('profile/{id}', [KaryawanController::class, 'profile'])->name('profile');
+    Route::get('getKaryawans', [KaryawanController::class, 'getData'])->name('karyawans.getData');
+    Route::resource('/', KaryawanController::class)->parameters(['' => 'karyawan']);
+});
 
 Route::prefix('absens')->name('absens.')->group(function () {
     Route::get('data', [AbsenController::class, 'data'])->name('data');
@@ -61,12 +67,17 @@ Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
     Route::resource('/', KetidakhadiranController::class)->parameters(['' => 'ketidakhadiran']);
 });
 
-Route::get('/view-signature/{id}', function ($id) {
-    $ketidakhadiran = Ketidakhadiran::findOrFail($id);
-
-    if (!$ketidakhadiran->signature || !Storage::disk('public')->exists($ketidakhadiran->signature)) {
-        return "Signature not found!";
-    }
-
-    return '<img src="'.asset('storage/' . $ketidakhadiran->signature).'" alt="Signature" width="300">';
+Route::prefix('lemburs')->name('lemburs.')->group(function () {
+    Route::get('getLemburSelf', [LemburController::class, 'getDataSelf'])->name('lemburs.getDataSelf');
+    Route::resource('/', LemburController::class)->parameters(['' => 'lembur']);
 });
+
+// Route::get('/view-signature/{id}', function ($id) {
+//     $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+//     if (!$ketidakhadiran->signature || !Storage::disk('public')->exists($ketidakhadiran->signature)) {
+//         return "Signature not found!";
+//     }
+
+//     return '<img src="'.asset('storage/' . $ketidakhadiran->signature).'" alt="Signature" width="300">';
+// });

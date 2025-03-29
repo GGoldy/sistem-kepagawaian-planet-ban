@@ -44,7 +44,7 @@
 
             <div class="dropdown-menu dropdown-menu-right">
                 <!-- Profile Option -->
-                <a class="dropdown-item" href="{{ route('karyawans.show', [Auth::user()->karyawan->id]) }}">
+                <a class="dropdown-item" href="{{ route('karyawans.profile', ['id' => Auth::user()->karyawan->id]) }}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-600"></i>
                     Profil
                 </a>

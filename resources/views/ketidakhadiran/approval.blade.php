@@ -48,14 +48,13 @@
                         <div class="form-group">
                             <label for="approved_by">Disetujui Oleh</label>
                             <input type="text" class="form-control"
-                                value="{{ optional($ketidakhadiran->approved_by)->nama ?? 'Belum Disetujui' }}" readonly>
+                            value="{{ optional($ketidakhadiran->approvedBy)->nama ?? 'Belum Disetujui' }}" readonly>
                         </div>
 
                         <div class="form-group">
                             <label for="approved_by_hcm">Disetujui Oleh HCM</label>
                             <input type="text" class="form-control"
-                                value="{{ optional($ketidakhadiran->approved_by_hcm)->nama ?? 'Belum Disetujui' }}"
-                                readonly>
+                                value="{{ optional($ketidakhadiran->approvedByHcm)->nama ?? 'Belum Disetujui'}}" readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Pengajuan:</label>

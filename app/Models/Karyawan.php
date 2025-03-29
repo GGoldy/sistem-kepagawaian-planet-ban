@@ -9,6 +9,9 @@ class Karyawan extends Model
 {
     use HasFactory;
 
+    protected $table = 'karyawans'; // Ensure it matches the actual table name
+    protected $fillable = ['nama'];
+
     public function users()
     {
         return $this->hasMany(User::class);
@@ -42,5 +45,9 @@ class Karyawan extends Model
     public function ketidakhadiran()
     {
         return $this->hasMany(Ketidakhadiran::class);
+    }
+    public function lembur()
+    {
+        return $this->hasMany(Lembur::class);
     }
 }

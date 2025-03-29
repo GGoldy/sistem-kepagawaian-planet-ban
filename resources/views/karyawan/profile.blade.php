@@ -60,16 +60,18 @@
             <div class="col-md-3">
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
-                        <h3 class="profile-username text-center">{{$karyawan->nama}}</h3>
-                        <p class="text-muted text-center">{{$karyawan->jabatan}}</p>
+                        <h3 class="profile-username text-center">{{ Auth::user()->karyawan->nama }}</h3>
+                        <p class="text-muted text-center">{{ Auth::user()->karyawan->jabatan }}</p>
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b>NIK</b> <a class="float-right">{{ $karyawan->nik }}</a>
+                                <b>NIK</b> <a class="float-right">{{ Auth::user()->karyawan->nik }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Email</b> <a class="float-right">{{ $karyawan->email }}</a>
+                                <b>Email</b> <a class="float-right">{{ Auth::user()->karyawan->email }}</a>
                             </li>
                         </ul>
+
+                        <button type="button" class="btn btn-outline-secondary mt-2" onclick="">Ganti Password</button>
                     </div>
                 </div>
             </div>
@@ -77,8 +79,10 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#tab1" data-toggle="tab">Personal Data</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#tab2" data-toggle="tab">Status Pegawai</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="#tab1" data-toggle="tab">Personal
+                                    Data</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tab2" data-toggle="tab">Status Pegawai</a>
+                            </li>
                             <li class="nav-item"><a class="nav-link" href="#tab3" data-toggle="tab">Penugasan</a></li>
                             <li class="nav-item"><a class="nav-link" href="#tab4" data-toggle="tab">Gaji</a></li>
                         </ul>
@@ -92,37 +96,37 @@
                                         <div class="form-group">
                                             <label>Nama Karyawan:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->nama }}" readonly>
+                                                value="{{ Auth::user()->karyawan->nama }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Tanggal Lahir:</label>
                                             <input type="date" class="form-control"
-                                                value="{{ $karyawan->tanggal_lahir }}" readonly>
+                                                value="{{ Auth::user()->karyawan->tanggal_lahir }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Tempat Lahir:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->tempat_lahir }}" readonly>
+                                                value="{{ Auth::user()->karyawan->tempat_lahir }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Jenis Kelamin:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->jenis_kelamin }}" readonly>
+                                                value="{{ Auth::user()->karyawan->jenis_kelamin }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Nomor Telepon Handphone:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->no_telepon_handphone }}" readonly>
+                                                value="{{ Auth::user()->karyawan->no_telepon_handphone }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Nomor Telepon Rumah:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->no_telepon_rumah }}" readonly>
+                                                value="{{ Auth::user()->karyawan->no_telepon_rumah }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Alamat:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->alamat }}" readonly>
+                                                value="{{ Auth::user()->karyawan->alamat }}" readonly>
                                         </div>
                                     </div>
 
@@ -131,62 +135,63 @@
                                         <div class="form-group">
                                             <label>Kota:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->kota }}" readonly>
+                                                value="{{ Auth::user()->karyawan->kota }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Provinsi:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->provinsi }}" readonly>
+                                                value="{{ Auth::user()->karyawan->provinsi }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Negara:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->negara }}" readonly>
+                                                value="{{ Auth::user()->karyawan->negara }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Kode Pos:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->kode_pos }}" readonly>
+                                                value="{{ Auth::user()->karyawan->kode_pos }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Status Pernikahan:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->status_pernikahan }}" readonly>
+                                                value="{{ Auth::user()->karyawan->status_pernikahan }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Agama:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->agama }}" readonly>
+                                                value="{{ Auth::user()->karyawan->agama }}" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label>Pendidikan Terakhir:</label>
                                             <input type="text" class="form-control"
-                                                value="{{ $karyawan->pendidikan_terakhir }}" readonly>
+                                                value="{{ Auth::user()->karyawan->pendidikan_terakhir }}" readonly>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="tab-pane" id="tab2">
                                 <div class="form-group">
                                     <label>Status Kerja:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $karyawan->statuspegawai->status_kerja }}" readonly>
+                                        value="{{ Auth::user()->karyawan->statuspegawai->status_kerja }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Mulai Kerja:</label>
                                     <input type="date" class="form-control"
-                                        value="{{ $karyawan->statuspegawai->mulai_kerja }}" readonly>
+                                        value="{{ Auth::user()->karyawan->statuspegawai->mulai_kerja }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Akhir Kerja:</label>
                                     <input type="date" id="akhirKerjaInput" class="form-control"
-                                        value="{{ $karyawan->statuspegawai->akhir_kerja ?? '' }}" readonly>
+                                        value="{{ Auth::user()->karyawan->statuspegawai->akhir_kerja ?? '' }}" readonly>
 
                                 </div>
                                 <div class="form-group">
                                     <label>Alasan Berhenti:</label>
                                     <input type="text" class="form-control" id="alasanBerhentiInput"
-                                        value="{{ $karyawan->statuspegawai->alasan_berhenti ?? '---' }}"
+                                        value="{{ Auth::user()->karyawan->statuspegawai->alasan_berhenti ?? '---' }}"
                                         readonly>
                                 </div>
                             </div>
@@ -194,46 +199,46 @@
                                 <div class="form-group">
                                     <label>Perusahaan:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $karyawan->penugasan->perusahaan }}" readonly>
+                                        value="{{ Auth::user()->karyawan->penugasan->perusahaan }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Area:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $karyawan->penugasan->area }}" readonly>
+                                        value="{{ Auth::user()->karyawan->penugasan->area }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Unit:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $karyawan->penugasan->unit }}" readonly>
+                                        value="{{ Auth::user()->karyawan->penugasan->unit }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Level:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $karyawan->penugasan->level }}" readonly>
+                                        value="{{ Auth::user()->karyawan->penugasan->level }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Grade:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ $karyawan->penugasan->grade }}" readonly>
+                                        value="{{ Auth::user()->karyawan->penugasan->grade }}" readonly>
                                 </div>
                             </div>
                             <div class="tab-pane" id="tab4">
                                 <div class="form-group">
                                     <label>Gaji Pokok:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ isset($karyawan->gaji->gaji_pokok) ? 'Rp ' . number_format($karyawan->gaji->gaji_pokok, 0, ',', '.') : '---' }}"
+                                        value="{{ isset(Auth::user()->karyawan->gaji->gaji_pokok) ? 'Rp ' . number_format(Auth::user()->karyawan->gaji->gaji_pokok, 0, ',', '.') : '---' }}"
                                         readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Uang Makan:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ isset($karyawan->gaji->uang_makan) ? 'Rp ' . number_format($karyawan->gaji->uang_makan, 0, ',', '.') : '---' }}"
+                                        value="{{ isset(Auth::user()->karyawan->gaji->uang_makan) ? 'Rp ' . number_format(Auth::user()->karyawan->gaji->uang_makan, 0, ',', '.') : '---' }}"
                                         readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Tunjangan BPJS:</label>
                                     <input type="text" class="form-control"
-                                        value="{{ isset($karyawan->gaji->tunjangan_bpjs) ? 'Rp ' . number_format($karyawan->gaji->tunjangan_bpjs, 0, ',', '.') : '---' }}"
+                                        value="{{ isset(Auth::user()->karyawan->gaji->tunjangan_bpjs) ? 'Rp ' . number_format(Auth::user()->karyawan->gaji->tunjangan_bpjs, 0, ',', '.') : '---' }}"
                                         readonly>
                                 </div>
                             </div>

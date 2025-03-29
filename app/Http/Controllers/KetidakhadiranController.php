@@ -213,7 +213,7 @@ class KetidakhadiranController extends Controller
     {
         $pageTitle = 'Form Ketidakhadiran';
 
-        $ketidakhadiran = Ketidakhadiran::with(['karyawan'])->findOrFail($id);
+        $ketidakhadiran = Ketidakhadiran::with(['karyawan', 'approvedBy', 'approvedByHcm'])->findOrFail($id);
 
         return view('ketidakhadiran.show', compact('pageTitle', 'ketidakhadiran'));
     }
@@ -298,7 +298,7 @@ class KetidakhadiranController extends Controller
     public function getDataSelf(Request $request)
     {
         $karyawanID = $request->karyawan_id;
-        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approved_by'])->where('karyawan_id', $karyawanID);
+        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approvedBy'])->where('karyawan_id', $karyawanID);
         // $ketidakhadirans = Ketidakhadiran::all();
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)
@@ -311,7 +311,7 @@ class KetidakhadiranController extends Controller
     }
     public function getDataAll(Request $request)
     {
-        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approved_by']);
+        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approvedBy']);
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)
                 ->addIndexColumn()

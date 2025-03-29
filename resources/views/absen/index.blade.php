@@ -25,17 +25,6 @@
                             </a>
                         </li>
                     @endif
-
-                    {{-- <li class="list-inline-item">
-                        <a href="{{ route('lokasikerjas.index') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Mengelola Lokasi kerja
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="{{ route('absens.data') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Mengelola Data Absen
-                        </a>
-                    </li> --}}
                 </ul>
             </div>
         </div>

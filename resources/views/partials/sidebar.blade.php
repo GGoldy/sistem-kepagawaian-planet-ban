@@ -10,7 +10,7 @@
         <!-- User Panel -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
             <div class="info">
-                <a href="{{ route('karyawans.show', [Auth::user()->karyawan->id]) }}" class="d-block">
+                <a href="{{ route('karyawans.profile', [Auth::user()->karyawan->id]) }}" class="d-block">
                     <i class="nav-icon fas fa-user-circle"></i>
                     {{ Auth::user()->karyawan->nama ?? 'Guest' }}
                 </a>
@@ -39,9 +39,9 @@
                 </li>
 		@else
 		<li class="nav-item">
-                    <a href="{{ route('karyawans.index') }}" class="nav-link {{ request()->is('karyawans*') ? 'active' : '' }}">
+                    <a href="{{ route('karyawans.profile', ['id' => Auth::user()->karyawan->id]) }}" class="nav-link {{ request()->is('karyawans*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
-                        <p>Karyawan</p>
+                        <p>Profil</p>
                     </a>
                 </li>
 		@endif
@@ -64,7 +64,7 @@
 
                 <!-- Lembur -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('lemburs.index') }}" class="nav-link {{ request()->is('lemburs*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-clock"></i>
                         <p>Lembur</p>
                     </a>

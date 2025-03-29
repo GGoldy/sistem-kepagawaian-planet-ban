@@ -16,15 +16,18 @@
                         </div>
                         <div class="form-group">
                             <label>Jenis Ketidakhadiran:</label>
-                            <input type="text" class="form-control" value="{{ $ketidakhadiran->jenis_ketidakhadiran }}" readonly>
+                            <input type="text" class="form-control" value="{{ $ketidakhadiran->jenis_ketidakhadiran }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Mulai:</label>
-                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_mulai }}" readonly>
+                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_mulai }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Berakhir:</label>
-                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_berakhir }}" readonly>
+                            <input type="date" class="form-control" value="{{ $ketidakhadiran->tanggal_berakhir }}"
+                                readonly>
                         </div>
                         <div class="form-group">
                             <label>Tujuan:</label>
@@ -36,23 +39,25 @@
                         </div>
                         <div class="form-group">
                             <label>Status Pengajuan:</label>
-                            <input type="text" class="form-control" value="{{ $ketidakhadiran->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
+                            <input type="text" class="form-control"
+                                value="{{ $ketidakhadiran->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
                         </div>
                         <div class="form-group">
                             <label for="approved_by">Disetujui Oleh</label>
                             <input type="text" class="form-control"
-                                value="{{ optional($ketidakhadiran->approved_by)->nama ?? 'Belum Disetujui' }}" readonly>
+                                value="{{ optional($ketidakhadiran->approvedBy)->nama ?? 'Belum Disetujui'}}" readonly>
+
                         </div>
 
                         <div class="form-group">
                             <label for="approved_by_hcm">Disetujui Oleh HCM</label>
                             <input type="text" class="form-control"
-                                value="{{ optional($ketidakhadiran->approved_by_hcm)->nama ?? 'Belum Disetujui' }}"
-                                readonly>
+                                value="{{ optional($ketidakhadiran->approvedByHcm)->nama ?? 'Belum Disetujui'}}" readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Pengajuan:</label>
-                            <input type="datetime-local" class="form-control" value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
+                            <input type="datetime-local" class="form-control"
+                                value="{{ $ketidakhadiran->tanggal_pengajuan }}" readonly>
                         </div>
                     </form>
                 </div>

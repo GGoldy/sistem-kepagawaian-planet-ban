@@ -83,7 +83,7 @@
             $("#karyawanTable").DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: "/getKaryawans",
+                ajax: "/karyawans/getKaryawans",
                 columns: [{
                         data: "id",
                         name: "id",

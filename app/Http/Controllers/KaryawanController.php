@@ -15,7 +15,7 @@ class KaryawanController extends Controller
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show'
-        $this->middleware('role:admin')->except(['show']);
+        $this->middleware('role:admin')->except(['show', 'profile']);
     }
     /**
      * Display a listing of the resource.
@@ -151,6 +151,15 @@ class KaryawanController extends Controller
         $karyawan = Karyawan::with(['statuspegawai', 'penugasan', 'gaji'])->findOrFail($id);
 
         return view('karyawan.show', compact('pageTitle', 'karyawan'));
+    }
+
+    public function profile(string $id)
+    {
+        $pageTitle = 'Profil Karyawan';
+
+        $karyawan = Karyawan::with(['statuspegawai', 'penugasan', 'gaji'])->findOrFail($id);
+
+        return view('karyawan.profile', compact('pageTitle', 'karyawan'));
     }
 
     /**
