@@ -17,7 +17,7 @@ class KetidakhadiranController extends Controller
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
-        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'getDataAll', 'approvalHCM', 'signApprovalHCM']);
+        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'showany', 'getDataAll', 'approvalHCM', 'signApprovalHCM']);
     }
     /**
      * Display a listing of the resource.
@@ -215,6 +215,19 @@ class KetidakhadiranController extends Controller
 
         $ketidakhadiran = Ketidakhadiran::with(['karyawan', 'approvedBy', 'approvedByHcm'])->findOrFail($id);
 
+        if (Auth::user()->karyawan_id !== $ketidakhadiran->karyawan_id) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        return view('ketidakhadiran.show', compact('pageTitle', 'ketidakhadiran'));
+    }
+
+    public function showany(string $id)
+    {
+        $pageTitle = 'Form Ketidakhadiran';
+
+        $ketidakhadiran = Ketidakhadiran::with(['karyawan', 'approvedBy', 'approvedByHcm'])->findOrFail($id);
+
         return view('ketidakhadiran.show', compact('pageTitle', 'ketidakhadiran'));
     }
 
@@ -223,7 +236,7 @@ class KetidakhadiranController extends Controller
      */
     public function edit(string $id)
     {
-        $pageTitle = 'Edit Data Absen';
+        $pageTitle = 'Edit Form Ketidakhadiran';
         $ketidakhadiran = Ketidakhadiran::findOrFail($id);
         $karyawans = Karyawan::all();
 
@@ -298,7 +311,10 @@ class KetidakhadiranController extends Controller
     public function getDataSelf(Request $request)
     {
         $karyawanID = $request->karyawan_id;
-        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approvedBy'])->where('karyawan_id', $karyawanID);
+        $ketidakhadirans = Ketidakhadiran::with(['karyawan', 'approvedBy'])
+            ->where('karyawan_id', $karyawanID)
+            ->get();
+
         // $ketidakhadirans = Ketidakhadiran::all();
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)
@@ -334,7 +350,6 @@ class KetidakhadiranController extends Controller
         $ketidakhadirans = Ketidakhadiran::whereHas('karyawan.penugasan', function ($query) use ($currentUserLevel) {
             $query->where('level', '<', $currentUserLevel);
         })
-            ->where('status_pengajuan', false) // Filter only where status_pengajuan is false
             ->whereNull('approved_by')
             ->with(['karyawan']) // Ensure karyawan is loaded
             ->get();
@@ -351,7 +366,7 @@ class KetidakhadiranController extends Controller
     public function getDataAllFiltered(Request $request)
     {
 
-        $ketidakhadirans = Ketidakhadiran::where('status_pengajuan', false)->whereNull('approved_by_hcm')->with(['karyawan'])->get();
+        $ketidakhadirans = Ketidakhadiran::whereNull('approved_by_hcm')->with(['karyawan'])->get();
 
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)

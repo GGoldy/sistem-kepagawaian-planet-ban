@@ -37,11 +37,11 @@
                             <label>Catatan:</label>
                             <textarea class="form-control" readonly>{{ $ketidakhadiran->catatan }}</textarea>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label>Status Pengajuan:</label>
                             <input type="text" class="form-control"
                                 value="{{ $ketidakhadiran->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="approved_by">Disetujui Oleh</label>
                             <input type="text" class="form-control"

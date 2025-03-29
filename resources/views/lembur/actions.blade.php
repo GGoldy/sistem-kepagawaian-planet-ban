@@ -1,5 +1,5 @@
 <div class="d-flex">
-    <a href="{{ route('lemburs.show', ['lembur' => $lembur->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
+    <a href="{{ route('lemburs.showany', ['id' => $lembur->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
             class="fas fa-fw fa-book"></i></a>
     <a href="{{ route('lemburs.edit', ['lembur' => $lembur->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
             class="fas fa-fw fa-pencil-alt"></i></a>

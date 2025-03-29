@@ -11,6 +11,10 @@ class Lembur extends Model
 
     protected $table = 'lemburs';
 
+    protected $casts = [
+        'jam_lembur' => 'array',
+    ];
+
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'karyawan_id');
@@ -26,7 +30,7 @@ class Lembur extends Model
         return $this->belongsTo(Karyawan::class, 'approved_by_hcm', 'id');
     }
 
-    public function atasan()
+    public function perintahatasan()
     {
         return $this->belongsTo(Karyawan::class, 'atasan', 'id');
     }

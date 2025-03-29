@@ -12,7 +12,7 @@
                 <ul class="list-inline mb-0 float-end">
                     @if (Auth::user()->hasRole('admin'))
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
+                        <a href="{{ route('lemburs.data') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> Mengelola Lembur
                         </a>
                     </li>
@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
+                        <a href="{{ route('lemburs.create') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> Mengajukan Lembur
                         </a>
                     </li>
@@ -88,8 +88,8 @@
                         name: "tanggal_pengajuan"
                     },
                     {
-                        data: "atasan.nama",
-                        name: "atasan.nama"
+                        data: "perintahatasan.nama",
+                        name: "perintahatasan.nama"
                     },
                     {
                         data: "tugas",

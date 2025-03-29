@@ -94,7 +94,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            {{-- <div class="col-md-6 mb-3">
                                 <label for="approved_by" class="form-label">Disetujui Oleh (Atasan)</label>
                                 <select name="approved_by" id="approved_by" class="form-control select2">
                                     <option value="">-- Select Karyawan --</option>
@@ -136,7 +136,7 @@
                                 @error('approved_by_hcm')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-6 mb-3 {{ old('jenis_ketidakhadiran', $ketidakhadiran->jenis_ketidakhadiran) == 'Penggantian Hari' ? '' : 'd-none' }}"
                                 id="hari_pengganti_container">
@@ -151,7 +151,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            {{-- <div class="col-md-6 mb-3">
                                 <label for="status_pengajuan" class="form-label">Status Pengajuan</label>
                                 <div class="form-check form-switch mx-4">
                                     <!-- Hidden input to ensure 0 is always sent -->
@@ -172,7 +172,7 @@
                                 @error('status_pengajuan')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
 
 
@@ -259,49 +259,49 @@
             tanggalBerakhir.addEventListener("change", generateDateInputs);
         });
 
-        (function($) {
-            if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
-                console.error('jQuery or Select2 is not loaded properly!');
-                return;
-            }
+        // (function($) {
+        //     if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
+        //         console.error('jQuery or Select2 is not loaded properly!');
+        //         return;
+        //     }
 
-            console.log('jQuery version:', $.fn.jquery);
-            console.log('Select2 available:', !!$.fn.select2);
+        //     console.log('jQuery version:', $.fn.jquery);
+        //     console.log('Select2 available:', !!$.fn.select2);
 
-            $(function() {
-                try {
-                    $('#approved_by').select2({
-                        placeholder: "Search for an employee...",
-                        allowClear: true,
-                        width: "100%"
-                    });
-                    $('#approved_by_hcm').select2({
-                        placeholder: "Search for an employee...",
-                        allowClear: true,
-                        width: "100%"
-                    });
-                    console.log("Select2 initialized successfully");
-                } catch (e) {
-                    console.error("Error initializing Select2:", e);
-                }
-            });
-        })(jQuery);
+        //     $(function() {
+        //         try {
+        //             $('#approved_by').select2({
+        //                 placeholder: "Search for an employee...",
+        //                 allowClear: true,
+        //                 width: "100%"
+        //             });
+        //             $('#approved_by_hcm').select2({
+        //                 placeholder: "Search for an employee...",
+        //                 allowClear: true,
+        //                 width: "100%"
+        //             });
+        //             console.log("Select2 initialized successfully");
+        //         } catch (e) {
+        //             console.error("Error initializing Select2:", e);
+        //         }
+        //     });
+        // })(jQuery);
 
 
-        function updateStatusLabel() {
-            let checkbox = document.getElementById('status_pengajuan');
-            let label = document.getElementById('status_label');
+        // function updateStatusLabel() {
+        //     let checkbox = document.getElementById('status_pengajuan');
+        //     let label = document.getElementById('status_label');
 
-            if (checkbox.checked) {
-                label.textContent = 'Disetujui';
-            } else {
-                label.textContent = 'Tidak Disetujui';
-            }
-        }
+        //     if (checkbox.checked) {
+        //         label.textContent = 'Disetujui';
+        //     } else {
+        //         label.textContent = 'Tidak Disetujui';
+        //     }
+        // }
 
-        // Ensure label updates correctly when the page loads
-        document.addEventListener("DOMContentLoaded", function() {
-            updateStatusLabel();
-        });
+        // // Ensure label updates correctly when the page loads
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     updateStatusLabel();
+        // });
     </script>
 @endpush
