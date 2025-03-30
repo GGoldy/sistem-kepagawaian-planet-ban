@@ -11,6 +11,11 @@
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 my-2 float-end">
 
+                    @if (Auth::check() && Auth::user()->karyawan)
+                        <a href="{{ route('absens.self') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-1"></i> Riwayat Absen
+                        </a>
+                    @endif
 
                     @if (Auth::user()->hasRole('admin'))
                         <li class="list-inline-item">

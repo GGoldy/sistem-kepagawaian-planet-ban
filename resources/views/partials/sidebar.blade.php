@@ -71,20 +71,19 @@
                 </li>
 
                 <!-- Gaji -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                {{-- <li class="nav-item">
+                    <a href="{{ route('gajis.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-money-bill-wave"></i>
                         <p>Gaji</p>
                     </a>
-                </li>
-
+                </li> --}}
+                @if (Auth::user()->hasRole('admin'))
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-book-open"></i>
                         <p>Laporan</p>
                     </a>
                 </li>
-
                 <!-- Penilaian -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -92,6 +91,7 @@
                         <p>Penilaian</p>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
     </div>

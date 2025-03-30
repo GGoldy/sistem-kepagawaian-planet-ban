@@ -7,55 +7,26 @@ use App\Models\Ketidakhadiran;
 use App\Models\Karyawan;
 use App\Models\Lembur;
 use App\Models\Absen;
-use App\Models\Gaji;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class HomeController extends Controller
+class GajiController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function index()
     {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index(Request $request)
-    {
-        $pageTitle = 'Dashboard';
+        $pageTitle = 'Gaji';
 
         $ketidakhadirans = Ketidakhadiran::where('karyawan_id', Auth::user()->karyawan->id)->get();
-
+        $lemburs = Lembur::where('karyawan_id', Auth::user()->karyawan->id)->get();
         $absens = Absen::where('karyawan_id', Auth::user()->karyawan->id)->get();
-        $gaji = Gaji::where('karyawan_id', Auth::user()->karyawan->id)->first();
         $karyawan = Karyawan::where('id', Auth::user()->karyawan->id)->get();
 
-        $month = $request->input('month', now()->month);
-        $year = $request->input('year', now()->year);
-
-        $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
-        $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
-        $lemburs = Lembur::whereBetween('tanggal_mulai', [$startDate, $endDate])
-            ->where('karyawan_id', Auth::user()->karyawan->id)
-            ->get();
-
-        // dd($gaji, $lemburs);
-
-        return view('home', [
+        return view('gaji.index', [
             'pageTitle' => $pageTitle,
             'ketidakhadirans' => $ketidakhadirans,
             'lemburs' => $lemburs,
             'absens' => $absens,
             'karyawan' => $karyawan,
-            'gaji' => $gaji,
         ]);
     }
     public function getFilteredData(Request $request)
@@ -79,8 +50,6 @@ class HomeController extends Controller
             ->where('karyawan_id', $karyawan_id)
             ->get();
 
-        $gaji = Gaji::where('karyawan_id', Auth::user()->karyawan->id)->first();
-
         return response()->json([
             'ketidakhadirans' => $ketidakhadirans,
             'absens' => $absens,
@@ -100,14 +69,6 @@ class HomeController extends Controller
             // Count Absen types
             'absenCount' => $absens->where('absen_pulang', true)->count(),
             'pulangCount' => $absens->where('absen_pulang', false)->count(),
-
-            'uangMakan' => $gaji->uang_makan,
-            'gajiPokok' => $gaji->gaji_pokok,
-            'tunjanganBpjs' => $gaji->tunjangan_bpjs,
-            'approvedLemburs' => $lemburs->whereNotNull('approved_by_hcm'),
-            'totalApprovedJamLembur' => $lemburs
-                ->whereNotNull('approved_by_hcm')
-                ->sum(fn($lembur) => collect(json_decode($lembur->jam_lembur, true))->sum()),
         ]);
     }
 }

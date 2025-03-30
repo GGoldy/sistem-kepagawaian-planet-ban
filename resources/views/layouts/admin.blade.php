@@ -34,6 +34,16 @@
             z-index: 9999;
         }
 
+        .small-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            /* Ensures equal height */
+            min-height: 120px;
+            /* Adjust as needed */
+        }
+
         @media (max-width: 768px) {
             .main-sidebar {
                 width: 70px;

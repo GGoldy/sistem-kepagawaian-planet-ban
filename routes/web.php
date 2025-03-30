@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\GajiController;
 use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\KetidakhadiranController;
 use App\Http\Controllers\LemburController;
@@ -33,6 +34,7 @@ Route::get('/login', function () {
 Auth::routes();
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/filter', [App\Http\Controllers\HomeController::class, 'getFilteredData'])->name('filter');
 Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::prefix('karyawans')->name('karyawans.')->group(function () {
@@ -43,10 +45,13 @@ Route::prefix('karyawans')->name('karyawans.')->group(function () {
 
 Route::prefix('absens')->name('absens.')->group(function () {
     Route::get('data', [AbsenController::class, 'data'])->name('data');
+    Route::get('self', [AbsenController::class, 'self'])->name('self');
     Route::post('calculateDistance', [AbsenController::class, 'calculateDistance'])->name('calculateDistance');
     Route::get('getAbsens', [AbsenController::class, 'getData'])->name('absens.getData');
+    Route::get('getAbsenSelf', [AbsenController::class, 'getDataSelf'])->name('absens.getDataSelf');
     Route::resource('/', AbsenController::class)->parameters(['' => 'absen']);
 });
+
 
 Route::prefix('lokasikerjas')->name('lokasikerjas.')->group(function () {
     Route::resource('/', LokasiKerjaController::class)->parameters(['' => 'lokasikerja']);
@@ -82,6 +87,11 @@ Route::prefix('lemburs')->name('lemburs.')->group(function () {
     Route::get('getLemburAllFiltered', [LemburController::class, 'getDataAllFiltered'])->name('lemburs.getDataAllFiltered');
     Route::resource('/', LemburController::class)->parameters(['' => 'lembur']);
 });
+
+// Route::prefix('gajis')->name('gajis.')->group(function () {
+//     Route::get('filter', [GajiController::class, 'getFilteredData'])->name('filter');
+//     Route::get('/', [GajiController::class, 'index'])->name('index');
+// });
 
 // Route::get('/view-signature/{id}', function ($id) {
 //     $ketidakhadiran = Ketidakhadiran::findOrFail($id);
