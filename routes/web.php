@@ -8,6 +8,7 @@ use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\GajiController;
 use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\KetidakhadiranController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LemburController;
 use App\Models\Karyawan;
 use App\Models\Ketidakhadiran;
@@ -86,6 +87,11 @@ Route::prefix('lemburs')->name('lemburs.')->group(function () {
     Route::get('getLemburFiltered', [LemburController::class, 'getDataFiltered'])->name('lemburs.getDataFiltered');
     Route::get('getLemburAllFiltered', [LemburController::class, 'getDataAllFiltered'])->name('lemburs.getDataAllFiltered');
     Route::resource('/', LemburController::class)->parameters(['' => 'lembur']);
+});
+
+Route::prefix('laporans')->name('laporans.')->group(function () {
+    Route::get('filter', [LaporanController::class, 'getFilteredData'])->name('filter');
+    Route::resource('/', LaporanController::class)->parameters(['' => 'laporan']);
 });
 
 // Route::prefix('gajis')->name('gajis.')->group(function () {
