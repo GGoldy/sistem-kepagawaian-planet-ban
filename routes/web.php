@@ -10,9 +10,12 @@ use App\Http\Controllers\LokasiKerjaController;
 use App\Http\Controllers\KetidakhadiranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LemburController;
+use App\Http\Controllers\PenilaianController;
 use App\Models\Karyawan;
 use App\Models\Ketidakhadiran;
+use App\Models\Penilaian;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +35,7 @@ Route::get('/login', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 Route::get('/filter', [App\Http\Controllers\HomeController::class, 'getFilteredData'])->name('filter');
@@ -40,6 +43,8 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::prefix('karyawans')->name('karyawans.')->group(function () {
     Route::get('profile/{id}', [KaryawanController::class, 'profile'])->name('profile');
+    Route::get('changepassword/{id}', [KaryawanController::class, 'password'])->name('changepassword');
+    Route::put('updatepassword/{id}', [KaryawanController::class, 'changePassword'])->name('updatepassword');
     Route::get('getKaryawans', [KaryawanController::class, 'getData'])->name('karyawans.getData');
     Route::resource('/', KaryawanController::class)->parameters(['' => 'karyawan']);
 });
@@ -93,6 +98,19 @@ Route::prefix('laporans')->name('laporans.')->group(function () {
     Route::get('filter', [LaporanController::class, 'getFilteredData'])->name('filter');
     Route::resource('/', LaporanController::class)->parameters(['' => 'laporan']);
 });
+
+Route::prefix('penilaians')->name('penilaians.')->group(function () {
+    Route::get('getPenilaians', [PenilaianController::class, 'getData'])->name('penilaians.getData');
+    Route::resource('/', PenilaianController::class)->parameters(['' => 'penilaian']);
+});
+
+// Route::get('/test-mail', function () {
+//     Mail::raw('This is a test email from Laravel to Mailpit.', function ($message) {
+//         $message->to('someone@example.com')->subject('Test Email');
+//     });
+
+//     return 'Email sent';
+// });
 
 // Route::prefix('gajis')->name('gajis.')->group(function () {
 //     Route::get('filter', [GajiController::class, 'getFilteredData'])->name('filter');

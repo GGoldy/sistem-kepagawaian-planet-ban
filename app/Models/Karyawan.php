@@ -50,4 +50,8 @@ class Karyawan extends Model
     {
         return $this->hasMany(Lembur::class);
     }
+    public function penilaian()
+    {
+        return $this->hasMany(Lembur::class);
+    }
 }

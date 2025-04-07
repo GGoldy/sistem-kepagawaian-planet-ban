@@ -86,7 +86,7 @@
                 </li>
                 <!-- Penilaian -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('penilaians.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>Penilaian</p>
                     </a>

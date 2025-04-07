@@ -71,7 +71,10 @@
                             </li>
                         </ul>
 
-                        <button type="button" class="btn btn-outline-secondary mt-2" onclick="">Ganti Password</button>
+                        <a href="{{ route('karyawans.changepassword', ['id' => Auth::user()->karyawan->id]) }}" class="btn btn-outline-secondary mt-2">
+                            Ganti Password
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -263,5 +266,7 @@
                 inputField.value = "---"; // Display "---" if no date is available
             }
         });
+
+
     </script>
 @endpush

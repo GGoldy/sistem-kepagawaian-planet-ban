@@ -57,7 +57,7 @@
                 <hr>
                 <!-- Extra Links -->
                 <p class="mb-1">
-                    <a href="#">Lupa Password</a>
+                    <a href="{{ route('password.request') }}">Lupa Password</a>
                 </p>
             </div>
         </div>

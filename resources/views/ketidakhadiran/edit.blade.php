@@ -94,9 +94,9 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="approved_by" class="form-label">Disetujui Oleh (Atasan)</label>
-                                <select name="approved_by" id="approved_by" class="form-control select2">
+                                <select name="approved_by" id="approved_by" class="form-control select2" disabled>
                                     <option value="">-- Select Karyawan --</option>
                                     @php
                                         $selected = $errors->any()
@@ -118,7 +118,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label for="approved_by_hcm" class="form-label">Disetujui Oleh (HCM)</label>
-                                <select name="approved_by_hcm" id="approved_by_hcm" class="form-control select2">
+                                <select name="approved_by_hcm" id="approved_by_hcm" class="form-control select2" disabled>
                                     <option value="">-- Select Karyawan --</option>
                                     @php
                                         $selected = $errors->any()
@@ -136,7 +136,7 @@
                                 @error('approved_by_hcm')
                                     <div class="text-danger"><small>{{ $message }}</small></div>
                                 @enderror
-                            </div> --}}
+                            </div>
 
                             <div class="col-md-6 mb-3 {{ old('jenis_ketidakhadiran', $ketidakhadiran->jenis_ketidakhadiran) == 'Penggantian Hari' ? '' : 'd-none' }}"
                                 id="hari_pengganti_container">

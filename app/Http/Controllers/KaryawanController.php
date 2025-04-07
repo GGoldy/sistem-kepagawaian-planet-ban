@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\User;
 use App\Models\StatusPegawai;
 use App\Models\Penugasan;
 use App\Models\Gaji;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use Illuminate\Support\Facades\Hash;
 class KaryawanController extends Controller
 {
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show'
-        $this->middleware('role:admin')->except(['show', 'profile']);
+        $this->middleware('role:admin')->except(['show', 'profile', 'password', 'changePassword']);
     }
     /**
      * Display a listing of the resource.
@@ -333,5 +334,49 @@ class KaryawanController extends Controller
                 })
                 ->toJson();
         }
+    }
+    public function password(string $id)
+    {
+        $pageTitle = 'Mengatur Ulang Password';
+
+        $karyawan = Karyawan::findOrFail($id);
+        $user = $karyawan->users()->first(); // get the first associated user
+
+        return view('karyawan.changepassword', compact('pageTitle', 'karyawan', 'user'));
+    }
+    public function changePassword(string $id, Request $request)
+    {
+        $messages = [
+            'required' => ':Attribute harus diisi.',
+            'email' => 'Isi :attribute dengan format yang benar',
+            'numeric' => 'Isi :attribute dengan angka',
+            'date' => 'Isi :attribute dengan format tanggal yang benar (YYYY-MM-DD)',
+            'min' => ':Attribute minimal harus :min karakter.',
+            'same' => ':Attribute harus sama dengan password baru.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'previous_password' => 'required',
+            'new_password' => 'required|min:8',
+            'confirm_password' => 'required|min:8|same:new_password',
+        ], $messages);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::where('karyawan_id', $id)->first();
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['user' => 'User tidak ditemukan.']);
+        }
+
+        if (!Hash::check($request->previous_password, $user->password)) {
+            return redirect()->back()->withErrors(['previous_password' => 'Password lama tidak sesuai.']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        Alert::success('Changes Successfully', 'Your password has been updated.');
+        return redirect()->route('karyawans.profile', auth()->user()->karyawan_id);
     }
 }
