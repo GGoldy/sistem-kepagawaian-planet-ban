@@ -615,8 +615,6 @@
                 }
 
                 fetchData(month, year, karyawan_id);
-
-
                 console.log('BUTTON WORKS')
             });
         })

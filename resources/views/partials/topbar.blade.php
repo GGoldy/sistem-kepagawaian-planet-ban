@@ -44,6 +44,12 @@
 
             <div class="dropdown-menu dropdown-menu-right">
                 <!-- Profile Option -->
+                @if (Auth::user()->hasRole('admin'))
+                <a class="dropdown-item" href="{{ route('users.index') }}">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-600"></i>
+                    Mengelola Pengguna
+                </a>
+                @endif
                 <a class="dropdown-item" href="{{ route('karyawans.profile', ['id' => Auth::user()->karyawan->id]) }}">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-600"></i>
                     Profil

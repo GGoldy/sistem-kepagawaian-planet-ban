@@ -11,6 +11,7 @@ use App\Http\Controllers\KetidakhadiranController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\UserController;
 use App\Models\Karyawan;
 use App\Models\Ketidakhadiran;
 use App\Models\Penilaian;
@@ -35,11 +36,21 @@ Route::get('/login', function () {
     return view('welcome');
 });
 
-Auth::routes(['register' => false]);
+Route::group(['middleware' => 'prevent-back-button'], function () {
+    Auth::routes(['register' => false]);
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+});
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+// Auth::routes(['register' => false]);
+// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
 Route::get('/filter', [App\Http\Controllers\HomeController::class, 'getFilteredData'])->name('filter');
 Route::post('/login', [LoginController::class, 'authenticate']);
+
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('getUsers', [UserController::class, 'getData'])->name('users.getData');
+    Route::resource('/', UserController::class)->parameters(['' => 'user']);
+});
 
 Route::prefix('karyawans')->name('karyawans.')->group(function () {
     Route::get('profile/{id}', [KaryawanController::class, 'profile'])->name('profile');
