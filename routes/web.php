@@ -35,6 +35,9 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('welcome');
 });
+Route::get('/test', function (){
+    return view('layouts.default');
+});
 
 Route::group(['middleware' => 'prevent-back-button'], function () {
     Auth::routes(['register' => false]);

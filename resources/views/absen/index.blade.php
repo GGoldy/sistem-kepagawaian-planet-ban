@@ -366,7 +366,7 @@
                             alert("Could not retrieve accurate location. Please enable GPS and try again.");
                         }, {
                             enableHighAccuracy: true,
-                            timeout: 10000,
+                            timeout: 15000,
                             maximumAge: 0
                         }
                     );

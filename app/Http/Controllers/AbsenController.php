@@ -12,6 +12,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use Location\Coordinate;
 use Location\Distance\Vincenty;
+use Illuminate\Support\Facades\Http;
 
 class AbsenController extends Controller
 {
@@ -26,6 +27,17 @@ class AbsenController extends Controller
     public function index()
     {
         $pageTitle = 'Absen';
+
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        // ])->post(
+        //     'https://www.googleapis.com/geolocation/v1/geolocate?key=' . env('GOOGLE_API_KEY'),
+        //     (object)[] // Required empty JSON object
+        // );
+
+        // $data = $response->json();
+
+        // dd($data);
 
         $lokasi_kerja = LokasiKerja::all();
         $absens = Absen::all();
