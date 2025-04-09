@@ -58,9 +58,9 @@
                             <div class="col-md-6 mb-3">
                                 <label for="confirm_password" class="form-label">Konfirmasi Password</label>
                                 <div class="input-group">
-                                    <input class="form-control @error('confirm_password') is-invalid @enderror" type="password"
-                                        name="confirm_password" id="confirm_password" value="{{ old('confirm_password') }}"
-                                        placeholder="Enter Password">
+                                    <input class="form-control @error('confirm_password') is-invalid @enderror"
+                                        type="password" name="confirm_password" id="confirm_password"
+                                        value="{{ old('confirm_password') }}" placeholder="Enter Password">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="fas fa-eye toggle-password" data-target="confirm_password"
@@ -94,8 +94,9 @@
                             Batal</a>
                     </div>
                     <div class="col-md-6 d-grid">
-                        <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>
-                            Simpan</button>
+                        <button type="button" id="submitBtn" class="btn btn-dark btn-lg mt-3">
+                            <i class="bi-check-circle me-2"></i> Simpan
+                        </button>
                     </div>
                 </div>
             </form>
@@ -146,5 +147,44 @@
                 }
             });
         })(jQuery);
+
+        document.getElementById('submitBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            var form = $(this).closest("form");
+            const karyawanId = document.getElementById('karyawan').value;
+
+            if (!karyawanId) {
+                Swal.fire('Peringatan', 'Silakan pilih karyawan terlebih dahulu.', 'warning');
+                return;
+            }
+
+            fetch(`check-karyawan-user/${karyawanId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        Swal.fire({
+                            title: 'Karyawan sudah memiliki pengguna!',
+                            text: 'Apakah Anda yakin ingin melanjutkan?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, lanjutkan',
+                            cancelButtonText: 'Batal',
+                            footer: '<small>Tidak disarankan, Karyawan dengan pengguna ganda dapat menyebabkan kesalahan.</small>'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // document.querySelector('form').submit();
+                                form.submit();
+                            }
+                        });
+                    } else {
+                        // document.querySelector('form').submit();
+                        form.submit();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Gagal memeriksa data pengguna.', 'error');
+                });
+        });
     </script>
 @endpush

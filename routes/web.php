@@ -35,9 +35,6 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('welcome');
 });
-Route::get('/test', function (){
-    return view('layouts.default');
-});
 
 Route::group(['middleware' => 'prevent-back-button'], function () {
     Auth::routes(['register' => false]);
@@ -52,6 +49,7 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('getUsers', [UserController::class, 'getData'])->name('users.getData');
+    Route::get('check-karyawan-user/{id}', [UserController::class, 'checkKaryawanUser'])->name('checkKaryawan');
     Route::resource('/', UserController::class)->parameters(['' => 'user']);
 });
 
@@ -117,6 +115,10 @@ Route::prefix('penilaians')->name('penilaians.')->group(function () {
     Route::get('getPenilaians', [PenilaianController::class, 'getData'])->name('penilaians.getData');
     Route::resource('/', PenilaianController::class)->parameters(['' => 'penilaian']);
 });
+
+// Route::get('/test', function (){
+//     return view('layouts.default');
+// });
 
 // Route::get('/test-mail', function () {
 //     Mail::raw('This is a test email from Laravel to Mailpit.', function ($message) {

@@ -162,4 +162,9 @@ class UserController extends Controller
                 ->toJson();
         }
     }
+    public function checkKaryawanUser($id)
+    {
+        $exists = User::where('karyawan_id', $id)->exists();
+        return response()->json(['exists' => $exists]);
+    }
 }
