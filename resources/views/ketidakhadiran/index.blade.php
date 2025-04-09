@@ -49,8 +49,7 @@
                                 <th>Jenis Ketidakhadiran</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Berakhir</th>
-                                {{-- <th>Status Pengajuan</th> --}}
-                                <th>Disetujui Oleh:</th>
+                                <th>Status Pengajuan</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -103,21 +102,18 @@
                         data: "tanggal_berakhir",
                         name: "tanggal_berakhir"
                     },
+                    {
+                        data: "status_pengajuan",
+                        name: "status_pengajuan",
+                    },
                     // {
-                    //     data: "status_pengajuan",
-                    //     name: "status_pengajuan",
+                    //     data: "approved_by.nama",
+                    //     name: "approved_by.nama",
+                    //     defaultContent: "-",
                     //     render: function(data, type, row) {
-                    //         return data == 1 ? "Disetujui" : "Pending";
+                    //         return data ? data : "-";
                     //     }
                     // },
-                    {
-                        data: "approved_by.nama",
-                        name: "approved_by.nama",
-                        defaultContent: "-",
-                        render: function(data, type, row) {
-                            return data ? data : "-";
-                        }
-                    },
                     {
                         data: "actions",
                         name: "actions",

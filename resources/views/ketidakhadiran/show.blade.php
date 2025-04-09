@@ -42,16 +42,30 @@
                             <input type="text" class="form-control"
                                 value="{{ $ketidakhadiran->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
                         </div> --}}
+                        @php
+                            $disetujui =
+                                $ketidakhadiran->approved_by && !$ketidakhadiran->signature
+                                    ? 'Tidak Disetujui Oleh'
+                                    : 'Disetujui Oleh';
+                        @endphp
+
                         <div class="form-group">
-                            <label for="approved_by">Disetujui Oleh</label>
+                            <label for="approved_by">{{ $disetujui }}</label>
                             <input type="text" class="form-control"
-                                value="{{ optional($ketidakhadiran->approvedBy)->nama ?? 'Belum Disetujui'}}" readonly>
+                                value="{{ optional($ketidakhadiran->approvedBy)->nama ?? 'Belum Disetujui' }}" readonly>
 
                         </div>
+
+                        @php
+                            $disetujuiHCM =
+                                $ketidakhadiran->approved_by_hcm && !$ketidakhadiran->signature_hcm
+                                    ? 'Tidak Disetujui Oleh HCM'
+                                    : 'Disetujui Oleh HCM';
+                        @endphp
                         <div class="form-group">
-                            <label for="approved_by_hcm">Disetujui Oleh HCM</label>
+                            <label for="approved_by_hcm">{{ $disetujuiHCM }}</label>
                             <input type="text" class="form-control"
-                                value="{{ optional($ketidakhadiran->approvedByHcm)->nama ?? 'Belum Disetujui'}}" readonly>
+                                value="{{ optional($ketidakhadiran->approvedByHcm)->nama ?? 'Belum Disetujui' }}" readonly>
                         </div>
                         <div class="form-group">
                             <label>Tanggal Pengajuan:</label>

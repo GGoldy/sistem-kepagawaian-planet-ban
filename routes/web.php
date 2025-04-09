@@ -82,8 +82,10 @@ Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
     Route::get('showany/{id}', [KetidakhadiranController::class, 'showany'])->name('showany');
     Route::get('approval/{id}', [KetidakhadiranController::class, 'approval'])->name('approval');
     Route::put('signApproval/{id}', [KetidakhadiranController::class, 'signApproval'])->name('signApproval');
+    Route::put('rejectApproval/{id}', [KetidakhadiranController::class, 'rejectApproval'])->name('rejectApproval');
     Route::get('approvalHCM/{id}', [KetidakhadiranController::class, 'approvalHCM'])->name('approvalHCM');
     Route::put('signApprovalHCM/{id}', [KetidakhadiranController::class, 'signApprovalHCM'])->name('signApprovalHCM');
+    Route::put('rejectApprovalHCM/{id}', [KetidakhadiranController::class, 'rejectApprovalHCM'])->name('rejectApprovalHCM');
     Route::get('getKetidakhadiranSelf', [KetidakhadiranController::class, 'getDataSelf'])->name('ketidakhadirans.getDataSelf');
     Route::get('getKetidakhadiranAll', [KetidakhadiranController::class, 'getDataAll'])->name('ketidakhadirans.getDataAll');
     Route::get('getKetidakhadiranFiltered', [KetidakhadiranController::class, 'getDataFiltered'])->name('ketidakhadirans.getDataFiltered');

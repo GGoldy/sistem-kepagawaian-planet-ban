@@ -112,6 +112,19 @@ class KetidakhadiranController extends Controller
         return redirect()->route('ketidakhadirans.approve');
     }
 
+    public function rejectApproval(Request $request, string $id)
+    {
+        $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+        $ketidakhadiran->approved_by = Auth::user()->karyawan->id;
+
+        $ketidakhadiran->save();
+
+        Alert::success('Rejected Successfully', 'Form Has Been Rejected Successfully.');
+
+        return redirect()->route('ketidakhadirans.approve');
+    }
+
     public function approvalHCM(string $id)
     {
         $pageTitle = 'Form Ketidakhadiran';
@@ -146,6 +159,20 @@ class KetidakhadiranController extends Controller
 
         return redirect()->route('ketidakhadirans.approve');
     }
+
+    public function rejectApprovalHCM(Request $request, string $id)
+    {
+        $ketidakhadiran = Ketidakhadiran::findOrFail($id);
+
+        $ketidakhadiran->approved_by_hcm = Auth::user()->karyawan->id;
+
+        $ketidakhadiran->save();
+
+        Alert::success('Rejected Successfully', 'Form Has Been Rejected Successfully.');
+
+        return redirect()->route('ketidakhadirans.approve');
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -319,6 +346,15 @@ class KetidakhadiranController extends Controller
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)
                 ->addIndexColumn()
+                ->addColumn('status_pengajuan', function ($ketidakhadiran) {
+                    if ($ketidakhadiran->approved_by && !$ketidakhadiran->signature) {
+                        return 'Tidak Disetujui';
+                    }
+                    if ($ketidakhadiran->approved_by_hcm && !$ketidakhadiran->signature_hcm) {
+                        return 'Tidak Disetujui';
+                    }
+                    return $ketidakhadiran->status_pengajuan == 1 ? 'Disetujui' : 'Pending';
+                })
                 ->addColumn('actions', function ($ketidakhadiran) {
                     return view('ketidakhadiran.actionsrestricted', compact('ketidakhadiran'));
                 })
@@ -331,6 +367,15 @@ class KetidakhadiranController extends Controller
         if ($request->ajax()) {
             return datatables()->of($ketidakhadirans)
                 ->addIndexColumn()
+                ->addColumn('status_pengajuan', function ($ketidakhadiran) {
+                    if ($ketidakhadiran->approved_by && !$ketidakhadiran->signature) {
+                        return 'Tidak Disetujui';
+                    }
+                    if ($ketidakhadiran->approved_by_hcm && !$ketidakhadiran->signature_hcm) {
+                        return 'Tidak Disetujui';
+                    }
+                    return $ketidakhadiran->status_pengajuan == 1 ? 'Disetujui' : 'Pending';
+                })
                 ->addColumn('actions', function ($ketidakhadiran) {
                     return view('ketidakhadiran.actions', compact('ketidakhadiran'));
                 })
