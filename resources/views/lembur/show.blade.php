@@ -47,15 +47,26 @@
                             <input type="text" class="form-control"
                                 value="{{ $lembur->status_pengajuan ? 'Disetujui' : 'Pending' }}" readonly>
                         </div>
+                        @php
+                            $disetujui =
+                                $lembur->approved_by && !$lembur->signature
+                                    ? 'Tidak Disetujui Oleh'
+                                    : 'Disetujui Oleh';
+                        @endphp
                         <div class="form-group">
-                            <label for="approved_by">Disetujui Oleh</label>
+                            <label for="approved_by">{{ $disetujui }}</label>
                             <input type="text" class="form-control"
                                 value="{{ optional($lembur->approvedBy)->nama ?? 'Belum Disetujui' }}" readonly>
 
                         </div>
-
+                        @php
+                            $disetujuiHCM =
+                                $lembur->approved_by_hcm && !$lembur->signature_hcm
+                                    ? 'Tidak Disetujui Oleh HCM'
+                                    : 'Disetujui Oleh HCM';
+                        @endphp
                         <div class="form-group">
-                            <label for="approved_by_hcm">Disetujui Oleh HCM</label>
+                            <label for="approved_by_hcm">{{ $disetujuiHCM }}</label>
                             <input type="text" class="form-control"
                                 value="{{ optional($lembur->approvedByHcm)->nama ?? 'Belum Disetujui' }}" readonly>
                         </div>

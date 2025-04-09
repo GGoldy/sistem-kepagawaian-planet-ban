@@ -51,15 +51,23 @@
                             <label>Tugas Lembur:</label>
                             <textarea class="form-control" readonly>{{ $lembur->tugas }}</textarea>
                         </div>
-
+                        @php
+                            $disetujui =
+                                $lembur->approved_by && !$lembur->signature ? 'Tidak Disetujui Oleh' : 'Disetujui Oleh';
+                        @endphp
                         <div class="form-group">
-                            <label for="approved_by">Disetujui Oleh</label>
+                            <label for="approved_by">{{ $disetujui }}</label>
                             <input type="text" class="form-control"
                                 value="{{ optional($lembur->approvedBy)->nama ?? 'Belum Disetujui' }}" readonly>
                         </div>
-
+                        @php
+                            $disetujuiHCM =
+                                $lembur->approved_by_hcm && !$lembur->signature_hcm
+                                    ? 'Tidak Disetujui Oleh HCM'
+                                    : 'Disetujui Oleh HCM';
+                        @endphp
                         <div class="form-group">
-                            <label for="approved_by_hcm">Disetujui Oleh HCM</label>
+                            <label for="approved_by_hcm">{{ $disetujuiHCM }}</label>
                             <input type="text" class="form-control"
                                 value="{{ optional($lembur->approvedByHcm)->nama ?? 'Belum Disetujui' }}" readonly>
                         </div>
@@ -96,6 +104,16 @@
                             </div>
                         </div>
                     </form>
+                    <form id="rejectForm" action="{{ route('lemburs.rejectApproval', ['id' => $lembur->id]) }}"
+                        method="POST">
+                        @csrf
+                        @method('put')
+                        <div class="d-flex justify-content-center">
+                            <button type="button" id="rejectBtn" class="btn btn-danger btn-lg mt-3">
+                                <i class="bi-x-circle me-2"></i> Tolak
+                            </button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
@@ -125,5 +143,24 @@
             document.getElementById('signature-input').value = signaturePad.toDataURL('image/png');
             return true;
         }
+
+        document.getElementById('rejectBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini akan menolak pengajuan.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, tolak',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('rejectForm').submit();
+                }
+            });
+        });
     </script>
 @endpush

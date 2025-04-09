@@ -95,6 +95,19 @@ class LemburController extends Controller
         return redirect()->route('lemburs.approve');
     }
 
+    public function rejectApproval(Request $request, string $id)
+    {
+        $lembur = Lembur::findOrFail($id);
+
+        $lembur->approved_by = Auth::user()->karyawan->id;
+
+        $lembur->save();
+
+        Alert::success('Rejected Successfully', 'Form Has Been Rejected Successfully.');
+
+        return redirect()->route('lemburs.approve');
+    }
+
     public function approvalHCM(string $id)
     {
         $pageTitle = 'Form Lembur';
@@ -126,6 +139,19 @@ class LemburController extends Controller
         $lembur->save();
 
         Alert::success('Approved Successfully', 'Form Has Been Approved Successfully.');
+
+        return redirect()->route('lemburs.approve');
+    }
+
+    public function rejectApprovalHCM(Request $request, string $id)
+    {
+        $lembur = Lembur::findOrFail($id);
+
+        $lembur->approved_by_hcm = Auth::user()->karyawan->id;
+
+        $lembur->save();
+
+        Alert::success('Rejected Successfully', 'Form Has Been Rejected Successfully.');
 
         return redirect()->route('lemburs.approve');
     }
@@ -276,6 +302,15 @@ class LemburController extends Controller
         if ($request->ajax()) {
             return datatables()->of($lemburs)
                 ->addIndexColumn()
+                ->addColumn('status_pengajuan', function ($lembur) {
+                    if ($lembur->approved_by && !$lembur->signature) {
+                        return 'Tidak Disetujui';
+                    }
+                    if ($lembur->approved_by_hcm && !$lembur->signature_hcm) {
+                        return 'Tidak Disetujui';
+                    }
+                    return $lembur->status_pengajuan == 1 ? 'Disetujui' : 'Pending';
+                })
                 ->addColumn('actions', function ($lembur) {
                     return view('lembur.actionsrestricted', compact('lembur'));
                 })
@@ -288,6 +323,15 @@ class LemburController extends Controller
         if ($request->ajax()) {
             return datatables()->of($lemburs)
                 ->addIndexColumn()
+                ->addColumn('status_pengajuan', function ($lembur) {
+                    if ($lembur->approved_by && !$lembur->signature) {
+                        return 'Tidak Disetujui';
+                    }
+                    if ($lembur->approved_by_hcm && !$lembur->signature_hcm) {
+                        return 'Tidak Disetujui';
+                    }
+                    return $lembur->status_pengajuan == 1 ? 'Disetujui' : 'Pending';
+                })
                 ->addColumn('actions', function ($lembur) {
                     return view('lembur.actions', compact('lembur'));
                 })

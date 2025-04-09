@@ -11,7 +11,7 @@
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 float-end">
                     <li class="list-inline-item">
-                        <a href="" class="btn btn-primary">
+                        <a href="{{ route('lemburs.approve') }}" class="btn btn-primary">
                             <i class="bi bi-plus-circle me-1"></i> Menyetujui Lembur
                         </a>
                     </li>
@@ -32,6 +32,7 @@
                                 <th>ID</th>
                                 <th>No.</th>
                                 <th>Tanggal Pengajuan</th>
+                                <th>Karyawan</th>
                                 <th>Atasan</th>
                                 <th>Tugas</th>
                                 <th>Tanggal Mulai</th>
@@ -76,6 +77,10 @@
                         name: "tanggal_pengajuan"
                     },
                     {
+                        data: "karyawan.nama",
+                        name: "karyawan.nama"
+                    },
+                    {
                         data: "perintahatasan.nama",
                         name: "perintahatasan.nama"
                     },
@@ -94,9 +99,6 @@
                     {
                         data: "status_pengajuan",
                         name: "status_pengajuan",
-                        render: function(data, type, row) {
-                            return data == 1 ? "Disetujui" : "Pending";
-                        }
                     },
                     {
                         data: "actions",

@@ -99,8 +99,10 @@ Route::prefix('lemburs')->name('lemburs.')->group(function () {
     Route::get('showany/{id}', [LemburController::class, 'showany'])->name('showany');
     Route::get('approval/{id}', [LemburController::class, 'approval'])->name('approval');
     Route::put('signApproval/{id}', [LemburController::class, 'signApproval'])->name('signApproval');
+    Route::put('rejectApproval/{id}', [LemburController::class, 'rejectApproval'])->name('rejectApproval');
     Route::get('approvalHCM/{id}', [LemburController::class, 'approvalHCM'])->name('approvalHCM');
     Route::put('signApprovalHCM/{id}', [LemburController::class, 'signApprovalHCM'])->name('signApprovalHCM');
+    Route::put('rejectApprovalHCM/{id}', [LemburController::class, 'rejectApprovalHCM'])->name('rejectApprovalHCM');
     Route::get('getLemburSelf', [LemburController::class, 'getDataSelf'])->name('lemburs.getDataSelf');
     Route::get('getLemburAll', [LemburController::class, 'getDataAll'])->name('lemburs.getDataAll');
     Route::get('getLemburFiltered', [LemburController::class, 'getDataFiltered'])->name('lemburs.getDataFiltered');
