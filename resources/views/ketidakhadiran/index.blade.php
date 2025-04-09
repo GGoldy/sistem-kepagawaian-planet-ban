@@ -4,7 +4,7 @@
 
 @section('content')
     <div>
-        <div class="row mb-0">
+        {{-- <div class="row mb-0">
             <div class="col-lg-9 col-xl-6">
                 <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
             </div>
@@ -29,7 +29,33 @@
                     </li>
                 </ul>
             </div>
+        </div> --}}
+        <div class="row mb-3 align-items-center">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+
+                    @if (Auth::user()->hasRole('admin'))
+                        <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-dark" title="Lihat seluruh data">
+                            <i class="bi bi-folder2-open me-1"></i> Mengelola
+                        </a>
+                    @endif
+
+                    <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-success" title="Setujui permintaan">
+                        <i class="bi bi-check2-circle me-1"></i> Menyetujui
+                    </a>
+
+                    <a href="{{ route('ketidakhadirans.create') }}" class="btn btn-warning text-dark" title="Ajukan ketidakhadiran baru">
+                        <i class="bi bi-pencil-square me-1"></i> Mengajukan
+                    </a>
+
+                </div>
+            </div>
         </div>
+
+
         <hr>
 
         <div class="card shadow mb-4">
@@ -69,6 +95,21 @@
                 serverSide: true,
                 processing: true,
                 // ajax: "/ketidakhadirans/getKetidakhadiranSelf",
+                dom: 'Bfrtip',
+                // buttons: [
+                //     'copy', 'csv', 'excel', 'pdf'
+                // ],
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf',
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('ketidakhadirans.selfexport.excel') }}";
+                        }
+                    }
+                ],
+
                 ajax: {
                     url: "/ketidakhadirans/getKetidakhadiranSelf",
                     data: function(d) {

@@ -4,20 +4,19 @@
 
 @section('content')
     <div>
-        <div class="row mb-0">
-            <div class="col-lg-9 col-xl-6">
-                <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="row mb-3 align-items-center">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
             </div>
-            <div class="col-lg-3 col-xl-6">
-                <ul class="list-inline mb-0 float-end">
-                    <li class="list-inline-item">
-                        <a href="{{ route('lemburs.approve') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Menyetujui Lembur
-                        </a>
-                    </li>
-                </ul>
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                    <a href="{{ route('lemburs.approve') }}" class="btn btn-success" title="Setujui pengajuan lembur">
+                        <i class="bi bi-check2-circle me-1"></i> Menyetujui Lembur
+                    </a>
+                </div>
             </div>
         </div>
+
         <hr>
 
         <div class="card shadow mb-4">
@@ -55,6 +54,17 @@
             $("#lemburTable").DataTable({
                 serverSide: true,
                 processing: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf',
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('lemburs.export.excel') }}";
+                        }
+                    }
+                ],
                 ajax: {
                     url: "/lemburs/getLemburAll",
                     data: function(d) {

@@ -90,6 +90,8 @@ Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
     Route::get('getKetidakhadiranAll', [KetidakhadiranController::class, 'getDataAll'])->name('ketidakhadirans.getDataAll');
     Route::get('getKetidakhadiranFiltered', [KetidakhadiranController::class, 'getDataFiltered'])->name('ketidakhadirans.getDataFiltered');
     Route::get('getKetidakhadiranAllFiltered', [KetidakhadiranController::class, 'getDataAllFiltered'])->name('ketidakhadirans.getDataAllFiltered');
+    Route::get('export/excel', [KetidakhadiranController::class, 'exportExcel'])->name('export.excel');
+    Route::get('selfexport/excel', [KetidakhadiranController::class, 'selfExportExcel'])->name('selfexport.excel');
     Route::resource('/', KetidakhadiranController::class)->parameters(['' => 'ketidakhadiran']);
 });
 
@@ -107,6 +109,8 @@ Route::prefix('lemburs')->name('lemburs.')->group(function () {
     Route::get('getLemburAll', [LemburController::class, 'getDataAll'])->name('lemburs.getDataAll');
     Route::get('getLemburFiltered', [LemburController::class, 'getDataFiltered'])->name('lemburs.getDataFiltered');
     Route::get('getLemburAllFiltered', [LemburController::class, 'getDataAllFiltered'])->name('lemburs.getDataAllFiltered');
+    Route::get('export/excel', [LemburController::class, 'exportExcel'])->name('export.excel');
+    Route::get('selfexport/excel', [LemburController::class, 'selfExportExcel'])->name('selfexport.excel');
     Route::resource('/', LemburController::class)->parameters(['' => 'lembur']);
 });
 
