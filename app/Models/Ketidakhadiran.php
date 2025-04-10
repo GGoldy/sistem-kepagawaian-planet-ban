@@ -9,6 +9,8 @@ class Ketidakhadiran extends Model
 {
     use HasFactory;
 
+    protected $table = 'ketidakhadirans';
+
     protected $fillable = ['tanggal_pengganti'];
 
     protected $casts = [
@@ -20,13 +22,18 @@ class Ketidakhadiran extends Model
         return $this->belongsTo(Karyawan::class, 'karyawan_id');
     }
 
-    public function approved_by()
+    // public function approved_by()
+    // {
+    //     return $this->belongsTo(Karyawan::class, 'approved_by', 'id');
+    // }
+
+    public function approvedBy()
     {
-        return $this->belongsTo(Karyawan::class, 'approved_by');
+        return $this->belongsTo(Karyawan::class, 'approved_by', 'id');
     }
 
-    public function approved_by_hcm()
+    public function approvedByHcm()
     {
-        return $this->belongsTo(Karyawan::class, 'approved_by_hcm');
+        return $this->belongsTo(Karyawan::class, 'approved_by_hcm', 'id');
     }
 }

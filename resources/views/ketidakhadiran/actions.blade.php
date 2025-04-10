@@ -1,5 +1,5 @@
 <div class="d-flex">
-    <a href="{{ route('ketidakhadirans.show', ['ketidakhadiran' => $ketidakhadiran->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
+    <a href="{{ route('ketidakhadirans.showany', ['id' => $ketidakhadiran->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
             class="fas fa-fw fa-book"></i></a>
     <a href="{{ route('ketidakhadirans.edit', ['ketidakhadiran' => $ketidakhadiran->id]) }}" class="btn btn-outline-dark btn-sm me-2"><i
             class="fas fa-fw fa-pencil-alt"></i></a>

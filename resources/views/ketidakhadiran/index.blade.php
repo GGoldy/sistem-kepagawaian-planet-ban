@@ -11,11 +11,11 @@
             <div class="col-lg-3 col-xl-6">
                 <ul class="list-inline mb-0 float-end">
                     @if (Auth::user()->hasRole('admin'))
-                    <li class="list-inline-item">
-                        <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Mengelola Ketidakhadiran
-                        </a>
-                    </li>
+                        <li class="list-inline-item">
+                            <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-1"></i> Mengelola Ketidakhadiran
+                            </a>
+                        </li>
                     @endif
                     <li class="list-inline-item">
                         <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-primary">
@@ -34,7 +34,8 @@
 
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Izin Ketidakhadiran Milik {{Auth::user()->karyawan->nama}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Izin Ketidakhadiran Milik {{ Auth::user()->karyawan->nama }}
+                </h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -104,10 +105,15 @@
                     {
                         data: "status_pengajuan",
                         name: "status_pengajuan",
-                        render: function(data, type, row) {
-                            return data == 1 ? "Disetujui" : "Pending";
-                        }
                     },
+                    // {
+                    //     data: "approved_by.nama",
+                    //     name: "approved_by.nama",
+                    //     defaultContent: "-",
+                    //     render: function(data, type, row) {
+                    //         return data ? data : "-";
+                    //     }
+                    // },
                     {
                         data: "actions",
                         name: "actions",
@@ -123,26 +129,6 @@
                     [10, 25, 50, 100, "All"],
                 ],
             });
-
-            $('.datatable').on("click", '.btn-delete', function(e) {
-                e.preventDefault();
-
-                var form = $(this).closest("form");
-                var name = $(this).data('name');
-
-                Swal.fire({
-                    title: "Are you sure you want to delete this ?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: 'bg-primary',
-                    confirmButtonText: "Yes, delete it!",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                })
-            })
         });
     </script>
 @endpush

@@ -96,10 +96,7 @@
                     },
                     {
                         data: "status_pengajuan",
-                        name: "status_pengajuan",
-                        render: function(data, type, row) {
-                            return data == 1 ? "Disetujui" : "Pending";
-                        }
+                        name: "status_pengajuan"
                     },
                     {
                         data: "actions",

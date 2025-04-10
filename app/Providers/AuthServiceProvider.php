@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Auth\KaryawanUserProvider;
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::provider('karyawan_provider', function ($app, array $config) {
+            return new KaryawanUserProvider($app['hash'], $config['model']);
+        });
     }
 }

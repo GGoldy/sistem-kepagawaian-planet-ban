@@ -12,13 +12,14 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use Location\Coordinate;
 use Location\Distance\Vincenty;
+use Illuminate\Support\Facades\Http;
 
 class AbsenController extends Controller
 {
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
-        $this->middleware('role:admin')->except(['index', 'store', 'calculateDistance']);
+        $this->middleware('role:admin')->except(['self', 'getDataSelf', 'index', 'store', 'calculateDistance']);
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +27,17 @@ class AbsenController extends Controller
     public function index()
     {
         $pageTitle = 'Absen';
+
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        // ])->post(
+        //     'https://www.googleapis.com/geolocation/v1/geolocate?key=' . env('GOOGLE_API_KEY'),
+        //     (object)[] // Required empty JSON object
+        // );
+
+        // $data = $response->json();
+
+        // dd($data);
 
         $lokasi_kerja = LokasiKerja::all();
         $absens = Absen::all();
@@ -47,6 +59,12 @@ class AbsenController extends Controller
             'karyawans' => $karyawans,
             'absens' => $absens,
         ]);
+    }
+
+    public function self()
+    {
+        $pageTitle = 'Data Absen';
+        return view('absen.dataself', compact('pageTitle'));
     }
     /**
      * Show the form for creating a new resource.
@@ -125,7 +143,10 @@ class AbsenController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // $karyawanID = $id;
+        // $pageTitle = 'Data Absen';
+
+        // return view('absen.show', compact('pageTitle'));
     }
 
     /**
@@ -204,6 +225,18 @@ class AbsenController extends Controller
                 ->toJson();
         }
     }
+    public function getDataSelf(Request $request)
+    {
+        $karyawanID = $request->karyawan_id;
+        $absens = Absen::with(['karyawan', 'lokasi_kerja'])->where('karyawan_id', $karyawanID);
+
+        if ($request->ajax()) {
+            return datatables()->of($absens)
+                ->addIndexColumn()
+                ->toJson();
+        }
+    }
+
     public function calculateDistance(Request $request)
     {
         // Get user's latitude and longitude from the request
