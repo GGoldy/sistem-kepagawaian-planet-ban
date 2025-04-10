@@ -182,8 +182,13 @@
         console.log("CURRENT AUTHENTICATED USER" + authKaryawanId);
 
         (function($) {
-            if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
-                console.error('jQuery or Select2 is not loaded properly!');
+            // if (typeof $ === 'undefined' || typeof $.fn.select2 === 'undefined') {
+            //     console.error('jQuery or Select2 is not loaded properly!');
+            //     return;
+            // }
+
+            if (typeof $.fn.select2 === 'undefined') {
+                console.error('Select2 is not loaded properly!');
                 return;
             }
 

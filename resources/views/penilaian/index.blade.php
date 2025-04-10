@@ -5,17 +5,21 @@
 @section('content')
     <div>
         <div class="row mb-3 align-items-center">
-            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+            <div class="col-12 col-lg-6">
+                <h1 class="h3 text-gray-800 mb-0">{{ $pageTitle }}</h1>
             </div>
             <div class="col-12 col-lg-6">
-                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                <div class="d-flex justify-content-lg-end justify-content-start flex-wrap gap-2">
                     <a href="{{ route('penilaians.create') }}" class="btn btn-info text-white" title="Tambah penilaian baru">
                         <i class="bi bi-clipboard-plus me-1"></i> Tambah Penilaian
+                    </a>
+                    <a href="{{ route('penilaians.rekapexport.excel') }}" class="btn btn-success text-white" title="Export Rekap Penilaian">
+                        <i class="bi bi-file-earmark-excel me-1"></i> Export Rekap
                     </a>
                 </div>
             </div>
         </div>
+
 
 
         <hr>
@@ -52,6 +56,40 @@
             $("#penilaianTable").DataTable({
                 serverSide: true,
                 processing: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('penilaians.export.excel') }}";
+                        }
+                    }
+                ],
                 ajax: "/penilaians/getPenilaians",
                 columns: [{
                         data: "id",

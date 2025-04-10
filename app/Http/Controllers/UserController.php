@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 class UserController extends Controller
 {
@@ -166,5 +168,9 @@ class UserController extends Controller
     {
         $exists = User::where('karyawan_id', $id)->exists();
         return response()->json(['exists' => $exists]);
+    }
+    public function exportExcel()
+    {
+        return Excel::download(new UsersExport, 'user_all.xlsx');
     }
 }

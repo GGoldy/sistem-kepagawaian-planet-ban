@@ -9,10 +9,28 @@
                 <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
             </div>
 
+            <div class="col-lg-3 col-xl-6 text-right">
+                <form action="{{ route('absens.export.excel') }}" method="GET" class="form-inline justify-content-end">
+                    <select name="month" class="form-control mr-2">
+                        @foreach(range(1, 12) as $m)
+                            <option value="{{ $m }}" {{ $m == now()->month ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::create()->month($m)->format('F') }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <select name="year" class="form-control mr-2">
+                        @for($y = now()->year; $y >= now()->year - 5; $y--)
+                            <option value="{{ $y }}" {{ $y == now()->year ? 'selected' : '' }}>
+                                {{ $y }}
+                            </option>
+                        @endfor
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Export Rekap</button>
+                </form>
+            </div>
         </div>
-
-
-
         <hr>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -48,6 +66,33 @@
             $("#absenTable").DataTable({
                 serverSide: true,
                 processing: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6]
+                        }
+                    },
+                ],
                 ajax: "/absens/getAbsens",
                 columns: [{
                         data: "id",

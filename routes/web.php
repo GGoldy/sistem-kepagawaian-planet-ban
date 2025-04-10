@@ -50,6 +50,7 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('getUsers', [UserController::class, 'getData'])->name('users.getData');
     Route::get('check-karyawan-user/{id}', [UserController::class, 'checkKaryawanUser'])->name('checkKaryawan');
+    Route::get('export/excel', [UserController::class, 'exportExcel'])->name('export.excel');
     Route::resource('/', UserController::class)->parameters(['' => 'user']);
 });
 
@@ -68,6 +69,7 @@ Route::prefix('absens')->name('absens.')->group(function () {
     Route::post('calculateDistance', [AbsenController::class, 'calculateDistance'])->name('calculateDistance');
     Route::get('getAbsens', [AbsenController::class, 'getData'])->name('absens.getData');
     Route::get('getAbsenSelf', [AbsenController::class, 'getDataSelf'])->name('absens.getDataSelf');
+    Route::get('export/excel', [AbsenController::class, 'exportExcel'])->name('export.excel');
     Route::resource('/', AbsenController::class)->parameters(['' => 'absen']);
 });
 
@@ -122,6 +124,8 @@ Route::prefix('laporans')->name('laporans.')->group(function () {
 
 Route::prefix('penilaians')->name('penilaians.')->group(function () {
     Route::get('getPenilaians', [PenilaianController::class, 'getData'])->name('penilaians.getData');
+    Route::get('export/excel', [PenilaianController::class, 'exportExcel'])->name('export.excel');
+    Route::get('rekapexport/excel', [PenilaianController::class, 'rekapExportExcel'])->name('rekapexport.excel');
     Route::resource('/', PenilaianController::class)->parameters(['' => 'penilaian']);
 });
 

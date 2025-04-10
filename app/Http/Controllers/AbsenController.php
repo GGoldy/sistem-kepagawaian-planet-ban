@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Location\Coordinate;
 use Location\Distance\Vincenty;
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AbsensExport;
 
 class AbsenController extends Controller
 {
@@ -282,6 +284,23 @@ class AbsenController extends Controller
 
         $calculator = new Vincenty();
 
-        echo $calculator->getDistance($coordinate1, $coordinate2);
+        // echo $calculator->getDistance($coordinate1, $coordinate2);
     }
+    public function exportExcel(Request $request)
+    {
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
+
+        $monthNames = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret',
+            4 => 'April', 5 => 'Mei', 6 => 'Juni',
+            7 => 'Juli', 8 => 'Agustus', 9 => 'September',
+            10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        $monthName = $monthNames[(int) $month] ?? $month;
+
+        return Excel::download(new AbsensExport($month, $year), "Rekap_Absen_{$monthName}_{$year}.xlsx");
+    }
+
 }

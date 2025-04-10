@@ -10,7 +10,8 @@
             </div>
             <div class="col-12 col-lg-6">
                 <div class="d-flex flex-wrap justify-content-lg-end gap-2">
-                    <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-success" title="Setujui permintaan ketidakhadiran">
+                    <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-success"
+                        title="Setujui permintaan ketidakhadiran">
                         <i class="bi bi-check2-circle me-1"></i> Menyetujui Ketidakhadiran
                     </a>
                 </div>
@@ -57,8 +58,30 @@
                 processing: true,
                 // ajax: "/ketidakhadirans/getKetidakhadiranSelf",
                 dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf',
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8] // exclude index 0 (id)
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
                     {
                         text: 'Excel (All)',
                         className: 'btn btn-success',
