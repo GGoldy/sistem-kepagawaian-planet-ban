@@ -82,6 +82,17 @@
             $("#karyawanTable").DataTable({
                 serverSide: true,
                 processing: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf',
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('karyawans.export.excel') }}";
+                        }
+                    }
+                ],
                 ajax: "/karyawans/getKaryawans",
                 columns: [{
                         data: "id",

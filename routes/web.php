@@ -58,6 +58,7 @@ Route::prefix('karyawans')->name('karyawans.')->group(function () {
     Route::get('changepassword/{id}', [KaryawanController::class, 'password'])->name('changepassword');
     Route::put('updatepassword/{id}', [KaryawanController::class, 'changePassword'])->name('updatepassword');
     Route::get('getKaryawans', [KaryawanController::class, 'getData'])->name('karyawans.getData');
+    Route::get('export/excel', [KaryawanController::class, 'exportExcel'])->name('export.excel');
     Route::resource('/', KaryawanController::class)->parameters(['' => 'karyawan']);
 });
 
