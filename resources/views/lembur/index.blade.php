@@ -54,6 +54,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 @endsection
@@ -63,9 +64,8 @@
             $("#lemburTable").DataTable({
                 serverSide: true,
                 processing: true,
-                dom: 'Bfrtip',
-                buttons: [
-                    {
+                dom: 'Blfrtip',
+                buttons: [{
                         extend: 'copy',
                         exportOptions: {
                             columns: [1, 2, 3, 4, 5, 6, 7, 8]
@@ -152,6 +152,9 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"],
                 ],
+            });
+            $('#lemburTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
             });
         });
     </script>

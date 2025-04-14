@@ -58,6 +58,13 @@
                     </div>
                 @endif
             </div>
+
+            <div class="pb-5">
+                <a href="{{ route('ketidakhadirans.index') }}" class="btn btn-outline-dark btn-lg w-100">
+                    <i class="bi bi-arrow-left me-1"></i> {{ $text ?? 'Kembali' }}
+                </a>
+            </div>
+
         </div>
     </div>
 

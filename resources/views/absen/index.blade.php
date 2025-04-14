@@ -33,7 +33,6 @@
 
         <hr class="my-3 border-top border-secondary">
 
-
         <form action="{{ route('absens.store') }}" method="POST" id="absen-form">
             @csrf
             <input type="hidden" name="waktu" id="waktu">

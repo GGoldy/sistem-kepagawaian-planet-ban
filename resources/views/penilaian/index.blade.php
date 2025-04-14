@@ -56,7 +56,7 @@
             $("#penilaianTable").DataTable({
                 serverSide: true,
                 processing: true,
-                dom: 'Bfrtip',
+                dom: 'Blfrtip',
                 buttons: [
                     {
                         extend: 'copy',
@@ -152,6 +152,10 @@
                     }
                 })
             })
+
+            $('#penilaianTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

@@ -39,6 +39,8 @@
             </div>
         </div>
     </div>
+
+    <x-back-button url="{{ route('absens.index') }}"/>
 </div>
 @endsection
 @push('scripts')
@@ -48,7 +50,7 @@
             $("#lokasiKerjaTable").DataTable({
                 serverSide: true,
                 processing: true,
-                dom: 'Bfrtip',
+                dom: 'Blfrtip',
                 buttons: [
                     {
                         extend: 'copy',
@@ -134,6 +136,10 @@
                     }
                 })
             })
+
+            $('#lokasiKerjaTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

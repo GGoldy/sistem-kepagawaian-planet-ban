@@ -46,6 +46,8 @@
                 </div>
             </div>
         </div>
+
+        <x-back-button />
     </div>
 
 @endsection
@@ -57,7 +59,7 @@
                 serverSide: true,
                 processing: true,
                 // ajax: "/ketidakhadirans/getKetidakhadiranSelf",
-                dom: 'Bfrtip',
+                dom: 'Blfrtip',
                 buttons: [{
                         extend: 'copy',
                         exportOptions: {
@@ -166,6 +168,10 @@
                     }
                 })
             })
+
+            $('#ketidakhadiranTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

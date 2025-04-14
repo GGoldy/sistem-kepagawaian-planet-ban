@@ -57,6 +57,8 @@
                 </div>
             </div>
         </div>
+
+        <x-back-button />
     </div>
 @endsection
 @push('scripts')
@@ -66,7 +68,7 @@
             $("#absenTable").DataTable({
                 serverSide: true,
                 processing: true,
-                dom: 'Bfrtip',
+                dom: 'Blfrtip',
                 buttons: [
                     {
                         extend: 'copy',
@@ -167,6 +169,10 @@
                     }
                 })
             })
+
+            $('#absenTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

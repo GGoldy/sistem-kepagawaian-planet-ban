@@ -249,6 +249,8 @@
                     </div>
                 </div>
             </div>
+
+            <x-back-button />
         </div>
 
     </div>

@@ -85,6 +85,7 @@
                     </form>
                 </div>
             </div>
+            <x-back-button />
         </div>
     </div>
 @endsection

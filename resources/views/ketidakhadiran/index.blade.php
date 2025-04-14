@@ -95,7 +95,7 @@
                 serverSide: true,
                 processing: true,
                 // ajax: "/ketidakhadirans/getKetidakhadiranSelf",
-                dom: 'Bfrtip',
+                dom: 'Blfrtip',
                 // buttons: [
                 //     'copy', 'csv', 'excel', 'pdf'
                 // ],
@@ -192,6 +192,9 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"],
                 ],
+            });
+            $('#ketidakhadiranTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
             });
         });
     </script>
