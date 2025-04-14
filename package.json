@@ -13,6 +13,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@supabase/supabase-js": "^2.49.4",
         "admin-lte": "^3.2.0",
         "bootstrap-icons": "^1.11.3",
         "datatables.net": "^2.2.2",
