@@ -6,6 +6,11 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Ketidakhadiran' => route('ketidakhadirans.index'),
+                            'Data' => route('ketidakhadirans.data'),
+                            'Edit' => '#'
+                        ]" />
             <form action="{{ route('ketidakhadirans.update', ['ketidakhadiran' => $ketidakhadiran->id]) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf

@@ -30,13 +30,20 @@
                 </ul>
             </div>
         </div> --}}
-        <div class="row mb-3 align-items-center">
+        <div class="row mb-3 align-items-start">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <div class="d-flex flex-column justify-content-center h-100">
+                    <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                    <div class="mt-n1">
+                        <x-breadcrumb :links="[
+                            'Ketidakhadiran' => '#',
+                        ]" />
+                    </div>
+                </div>
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
 
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2 align-items-start">
                     @if (Auth::user()->hasRole('admin'))
                         <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-dark" title="Lihat seluruh data">
                             <i class="bi bi-folder2-open me-1"></i> Mengelola
@@ -50,10 +57,10 @@
                     <a href="{{ route('ketidakhadirans.create') }}" class="btn btn-warning text-dark" title="Ajukan ketidakhadiran baru">
                         <i class="bi bi-pencil-square me-1"></i> Mengajukan
                     </a>
-
                 </div>
             </div>
         </div>
+
 
 
         <hr>

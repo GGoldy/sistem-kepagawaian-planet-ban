@@ -5,6 +5,11 @@
 @section('content')
     <div>
         <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+        <x-breadcrumb :links="[
+            'Karyawan' => route('karyawans.index'),
+            'Create' => '#',
+        ]" />
+
         <form action="{{ route('karyawans.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">

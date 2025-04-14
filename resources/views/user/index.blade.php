@@ -7,6 +7,9 @@
         <div class="row mb-3 align-items-center">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <x-breadcrumb :links="[
+                    'User' => '#',
+                ]" />
             </div>
             <div class="col-12 col-lg-6">
                 <div class="d-flex flex-wrap justify-content-lg-end gap-2">
@@ -81,8 +84,7 @@
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copy',
                         exportOptions: {
                             columns: [1, 2, 3, 4, 5]
@@ -154,7 +156,7 @@
                 ],
             });
 
-            $('.datatable').on("click", '.btn-delete', function(e){
+            $('.datatable').on("click", '.btn-delete', function(e) {
                 e.preventDefault();
 
                 var form = $(this).closest("form");

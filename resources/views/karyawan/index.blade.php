@@ -4,12 +4,21 @@
 
 @section('content')
     <div>
-        <div class="row mb-3 align-items-center">
+
+        <div class="row align-items-start mb-3">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <div class="d-flex flex-column justify-content-center h-100">
+                    <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                    <div class="mt-n1">
+                        <x-breadcrumb :links="[
+                            'Karyawan' => '#',
+                        ]" />
+                    </div>
+                </div>
             </div>
+
             <div class="col-12 col-lg-6">
-                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                <div class="d-flex justify-content-lg-end gap-2 align-items-start">
                     <a href="{{ route('karyawans.create') }}" class="btn btn-info text-white" title="Tambah karyawan baru">
                         <i class="bi bi-person-plus me-1"></i> Tambah Karyawan
                     </a>
@@ -25,7 +34,8 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped mb-0 bg-white datatable" id="karyawanTable">
+                    <table class="table table-bordered table-hover table-striped mb-0 bg-white datatable"
+                        id="karyawanTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -83,8 +93,7 @@
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copy',
                         exportOptions: {
                             columns: [1, 2, 3, 4, 5, 6, 7]
@@ -164,7 +173,7 @@
                 ],
             });
 
-            $('.datatable').on("click", '.btn-delete', function(e){
+            $('.datatable').on("click", '.btn-delete', function(e) {
                 e.preventDefault();
 
                 var form = $(this).closest("form");

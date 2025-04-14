@@ -5,6 +5,10 @@
 @section('content')
     <div>
         <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <x-breadcrumb :links="[
+            'Karyawan' => route('karyawans.index'),
+            'Edit' => '#',
+        ]" />
         <form action="{{ route('karyawans.update', ['karyawan' => $karyawan->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')

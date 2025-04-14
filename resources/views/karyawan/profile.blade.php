@@ -6,6 +6,11 @@
     <div>
         <h1 class="text-center my-4">{{ $pageTitle }}</h1>
 
+        <x-breadcrumb :links="[
+            'Karyawan' => '#',
+            'Profil' => '#',
+        ]" />
+
         {{-- <div class="row">
             <!-- Karyawan Card -->
             <div class="col-lg-4">

@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-11">
             <h1 class="text-center my-3">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Ketidakhadiran' => route('ketidakhadirans.index'),
+                            'Approve' => '#'
+                        ]" />
             <div class="row no-gutters justify-content-center">
                 <div class="col-lg-6 col-md-8 col-sm-10">
                     <div class="card shadow-sm">

@@ -4,15 +4,23 @@
 
 @section('content')
     <div>
-        <div class="row mb-3 align-items-center">
+        <div class="row mb-3 align-items-start">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <div class="d-flex flex-column justify-content-center h-100">
+                    <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                    <div class="mt-n1">
+                        <x-breadcrumb :links="[
+                            'Absen' => '#',
+                        ]" />
+                    </div>
+                </div>
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
 
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2 align-items-start">
                     @if (Auth::check() && Auth::user()->karyawan)
-                        <a href="{{ route('absens.self') }}" class="btn btn-info text-white" title="Lihat riwayat absen pribadi">
+                        <a href="{{ route('absens.self') }}" class="btn btn-info text-white"
+                           title="Lihat riwayat absen pribadi">
                             <i class="bi bi-clock-history me-1"></i> Riwayat Absen
                         </a>
                     @endif
@@ -22,14 +30,16 @@
                             <i class="bi bi-geo-alt me-1"></i> Mengelola Lokasi Kerja
                         </a>
 
-                        <a href="{{ route('absens.data') }}" class="btn btn-secondary text-white" title="Kelola data absensi">
+                        <a href="{{ route('absens.data') }}" class="btn btn-secondary text-white"
+                           title="Kelola data absensi">
                             <i class="bi bi-folder2-open me-1"></i> Mengelola Data Absen
                         </a>
                     @endif
-
                 </div>
             </div>
         </div>
+
+
 
         <hr class="my-3 border-top border-secondary">
 

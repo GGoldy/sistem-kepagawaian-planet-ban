@@ -4,18 +4,28 @@
 
 @section('content')
 <div>
-    <div class="row mb-3 align-items-center">
+    <div class="row mb-3 align-items-start">
         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-            <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+            <div class="d-flex flex-column justify-content-center h-100">
+                <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                <div class="mt-n1">
+                    <x-breadcrumb :links="[
+                        'Absen' => route('absens.index'),
+                        'Lokasi Kerja' => '#',
+                    ]" />
+                </div>
+            </div>
         </div>
+
         <div class="col-12 col-lg-6">
-            <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+            <div class="d-flex flex-wrap justify-content-lg-end gap-2 align-items-start">
                 <a href="{{ route('lokasikerjas.create') }}" class="btn btn-dark" title="Tambah lokasi kerja baru">
                     <i class="bi bi-geo-alt me-1"></i> Create Lokasi Kerja
                 </a>
             </div>
         </div>
     </div>
+
 
     <hr>
     <div class="card shadow mb-4">

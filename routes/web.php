@@ -42,7 +42,7 @@ Route::group(['middleware' => 'prevent-back-button'], function () {
 });
 
 // Auth::routes(['register' => false]);
-// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/filter', [App\Http\Controllers\HomeController::class, 'getFilteredData'])->name('filter');
 Route::post('/login', [LoginController::class, 'authenticate']);

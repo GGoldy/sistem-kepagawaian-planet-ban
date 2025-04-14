@@ -7,6 +7,10 @@
         <div class="row mb-3 align-items-center">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <x-breadcrumb :links="[
+                            'Lembur' => route('lemburs.index'),
+                            'Data' => '#',
+                        ]" />
             </div>
             <div class="col-12 col-lg-6">
                 <div class="d-flex flex-wrap justify-content-lg-end gap-2">

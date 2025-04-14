@@ -7,6 +7,10 @@
         <div class="row mb-0">
             <div class="col-lg-9 col-xl-6">
                 <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+                <x-breadcrumb :links="[
+                        'Absen' => route('absens.index'),
+                        'Data' => '#',
+                    ]" />
             </div>
 
             <div class="col-lg-3 col-xl-6 text-right">
