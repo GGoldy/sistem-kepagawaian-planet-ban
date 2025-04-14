@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Penilaian' => route('penilaians.index'),
+                            'Create' => '#',
+                        ]" />
             <form action="{{ route('penilaians.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card shadow mb-4">

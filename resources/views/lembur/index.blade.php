@@ -4,32 +4,38 @@
 
 @section('content')
     <div>
-        <div class="row mb-0">
-            <div class="col-lg-9 col-xl-6">
-                <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="row mb-3 align-items-start">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <div class="d-flex flex-column justify-content-center h-100">
+                    <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                    <div class="mt-n1">
+                        <x-breadcrumb :links="[
+                            'Lembur' => '#',
+                        ]" />
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-3 col-xl-6">
-                <ul class="list-inline mb-0 float-end">
+
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2 align-items-start">
                     @if (Auth::user()->hasRole('admin'))
-                    <li class="list-inline-item">
-                        <a href="{{ route('lemburs.data') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Mengelola Lembur
+                        <a href="{{ route('lemburs.data') }}" class="btn btn-dark" title="Kelola semua data lembur">
+                            <i class="bi bi-folder2-open me-1"></i> Mengelola Lembur
                         </a>
-                    </li>
                     @endif
-                    <li class="list-inline-item">
-                        <a href="{{ route('lemburs.approve') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Menyetujui Lembur
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="{{ route('lemburs.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Mengajukan Lembur
-                        </a>
-                    </li>
-                </ul>
+
+                    <a href="{{ route('lemburs.approve') }}" class="btn btn-success" title="Setujui pengajuan lembur">
+                        <i class="bi bi-check2-circle me-1"></i> Menyetujui Lembur
+                    </a>
+
+                    <a href="{{ route('lemburs.create') }}" class="btn btn-warning text-dark" title="Ajukan lembur baru">
+                        <i class="bi bi-pencil-square me-1"></i> Mengajukan Lembur
+                    </a>
+                </div>
             </div>
         </div>
+
+
         <hr>
 
         <div class="card shadow mb-4">
@@ -57,6 +63,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 @endsection
@@ -64,8 +71,42 @@
     <script type="module">
         $(document).ready(function() {
             $("#lemburTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
+                dom: 'Blfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                        }
+                    },
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('lemburs.selfexport.excel') }}";
+                        }
+                    }
+                ],
                 ajax: {
                     url: "/lemburs/getLemburSelf",
                     data: function(d) {
@@ -121,6 +162,9 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"],
                 ],
+            });
+            $('#lemburTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
             });
         });
     </script>

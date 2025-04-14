@@ -10,12 +10,14 @@ use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LembursExport;
 
 class LemburController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'showany', 'getDataAll', 'approvalHCM', 'signApprovalHCM']);
+        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'showany', 'getDataAll', 'approvalHCM', 'signApprovalHCM', 'exportExcel']);
     }
     /**
      * Display a listing of the resource.
@@ -84,7 +86,7 @@ class LemburController extends Controller
 
         $lembur->approved_by = Auth::user()->karyawan->id;
 
-        if (!is_null($lembur->approved_by_hcm)) {
+        if (!is_null($lembur->approved_by_hcm) && !is_null($lembur->signature_hcm)) {
             $lembur->status_pengajuan = true;
             $lembur->tanggal_sah = Carbon::now()->toDateTimeString(); // Set to today's date
         }
@@ -132,7 +134,7 @@ class LemburController extends Controller
 
         $lembur->approved_by_hcm = Auth::user()->karyawan->id;
 
-        if (!is_null($lembur->approved_by)) {
+        if (!is_null($lembur->approved_by) && !is_null($lembur->signature)) {
             $lembur->status_pengajuan = true;
             $lembur->tanggal_sah = Carbon::now()->toDateTimeString(); // Set to today's date
         }
@@ -375,5 +377,13 @@ class LemburController extends Controller
                 })
                 ->toJson();
         }
+    }
+    public function exportExcel()
+    {
+        return Excel::download(new LembursExport, 'lembur_all.xlsx');
+    }
+    public function selfExportExcel()
+    {
+        return Excel::download(new LembursExport(auth()->user()->karyawan_id), 'lembur_self.xlsx');
     }
 }

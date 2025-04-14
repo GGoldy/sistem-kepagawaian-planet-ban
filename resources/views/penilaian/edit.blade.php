@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Penilaian' => route('penilaians.index'),
+                            'Edit' => '#',
+                        ]" />
             <div class="card">
                 <div class="card-header bg-primary text-white">Detail Penilaian</div>
                 <div class="card-body">

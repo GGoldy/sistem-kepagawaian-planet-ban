@@ -7,6 +7,10 @@
         <div class="row mb-0">
             <div class="col-lg-9 col-xl-6">
                 <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+                <x-breadcrumb :links="[
+                    'Absen' => route('absens.index'),
+                    'Riwayat' => '#',
+                ]" />
             </div>
 
         </div>
@@ -35,15 +39,43 @@
                 </div>
             </div>
         </div>
+
+        <x-back-button />
     </div>
 @endsection
 @push('scripts')
-
     <script type="module">
         $(document).ready(function() {
             $("#absenTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
+                dom: 'Blfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                ],
                 ajax: {
                     url: "/absens/getAbsenSelf",
                     data: function(d) {
@@ -88,6 +120,10 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"],
                 ],
+            });
+
+            $('#absenTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
             });
         });
     </script>

@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Lembur' => route('lemburs.index'),
+                            'Create' => '#',
+                        ]" />
             <form action="{{ route('lemburs.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="card shadow mb-4">

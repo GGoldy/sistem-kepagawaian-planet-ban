@@ -4,37 +4,44 @@
 
 @section('content')
     <div>
-        <div class="row mb-0">
-            <div class="col-lg-9 col-xl-6">
-                <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="row mb-3 align-items-start">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <div class="d-flex flex-column justify-content-center h-100">
+                    <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                    <div class="mt-n1">
+                        <x-breadcrumb :links="[
+                            'Absen' => '#',
+                        ]" />
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-3 col-xl-6">
-                <ul class="list-inline mb-0 my-2 float-end">
 
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2 align-items-start">
                     @if (Auth::check() && Auth::user()->karyawan)
-                        <a href="{{ route('absens.self') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Riwayat Absen
+                        <a href="{{ route('absens.self') }}" class="btn btn-info text-white"
+                           title="Lihat riwayat absen pribadi">
+                            <i class="bi bi-clock-history me-1"></i> Riwayat Absen
                         </a>
                     @endif
 
                     @if (Auth::user()->hasRole('admin'))
-                        <li class="list-inline-item">
-                            <a href="{{ route('lokasikerjas.index') }}" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-1"></i> Mengelola Lokasi kerja
-                            </a>
-                        </li>
+                        <a href="{{ route('lokasikerjas.index') }}" class="btn btn-dark" title="Kelola lokasi kerja">
+                            <i class="bi bi-geo-alt me-1"></i> Mengelola Lokasi Kerja
+                        </a>
 
-                        <li class="list-inline-item">
-                            <a href="{{ route('absens.data') }}" class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-1"></i> Mengelola Data Absen
-                            </a>
-                        </li>
+                        <a href="{{ route('absens.data') }}" class="btn btn-secondary text-white"
+                           title="Kelola data absensi">
+                            <i class="bi bi-folder2-open me-1"></i> Mengelola Data Absen
+                        </a>
                     @endif
-                </ul>
+                </div>
             </div>
         </div>
-        <hr class="my-3 border-top border-secondary">
 
+
+
+        <hr class="my-3 border-top border-secondary">
 
         <form action="{{ route('absens.store') }}" method="POST" id="absen-form">
             @csrf

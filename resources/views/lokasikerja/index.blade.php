@@ -4,21 +4,29 @@
 
 @section('content')
 <div>
-    <div class="row mb-0">
-        <div class="col-lg-9 col-xl-6">
-            <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
-        </div>
-        <div class="col-lg-3 col-xl-6">
-            <ul class="list-inline mb-0 float-end">
-                <li class="list-inline-item">
-                    <a href="{{ route('lokasikerjas.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-1"></i> Create Lokasi Kerja
-                    </a>
-                </li>
-            </ul>
+    <div class="row mb-3 align-items-start">
+        <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+            <div class="d-flex flex-column justify-content-center h-100">
+                <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+                <div class="mt-n1">
+                    <x-breadcrumb :links="[
+                        'Absen' => route('absens.index'),
+                        'Lokasi Kerja' => '#',
+                    ]" />
+                </div>
+            </div>
         </div>
 
+        <div class="col-12 col-lg-6">
+            <div class="d-flex flex-wrap justify-content-lg-end gap-2 align-items-start">
+                <a href="{{ route('lokasikerjas.create') }}" class="btn btn-dark" title="Tambah lokasi kerja baru">
+                    <i class="bi bi-geo-alt me-1"></i> Create Lokasi Kerja
+                </a>
+            </div>
+        </div>
     </div>
+
+
     <hr>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -41,6 +49,8 @@
             </div>
         </div>
     </div>
+
+    <x-back-button url="{{ route('absens.index') }}"/>
 </div>
 @endsection
 @push('scripts')
@@ -48,8 +58,36 @@
     <script type="module">
         $(document).ready(function() {
             $("#lokasiKerjaTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                ],
                 ajax: "/getLokasiKerjas",
                 columns: [{
                         data: "id",
@@ -109,6 +147,10 @@
                     }
                 })
             })
+
+            $('#lokasiKerjaTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

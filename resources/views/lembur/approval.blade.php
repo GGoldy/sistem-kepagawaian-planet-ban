@@ -6,11 +6,16 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Lembur' => route('lemburs.index'),
+                            'Approve' => route('lemburs.approve'),
+                            'Form' => '#',
+                        ]" />
             <div class="card">
                 <div class="card-header bg-primary text-white">Detail Lembur</div>
                 <div class="card-body">
-                    <form action="{{ route('lemburs.signApproval', ['id' => $lembur->id]) }}" method="POST"
-                        onsubmit="return validateSignature()">
+                    <form action="{{ route('lemburs.signApproval', ['id' => $lembur->id]) }}" method="POST">
+                        {{-- onsubmit="return validateSignature()"> --}}
                         @csrf
                         @method('put')
                         <div class="form-group">
@@ -94,13 +99,14 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-6 d-grid">
-                                <a href="{{ route('ketidakhadirans.approve') }}"
+                                <a href="{{ route('lemburs.approve') }}"
                                     class="btn btn-outline-dark btn-lg mt-3"><i class="bi-arrow-left-circle me-2"></i>
                                     Batal</a>
                             </div>
                             <div class="col-md-6 d-grid">
-                                <button type="submit" class="btn btn-dark btn-lg mt-3"><i class="bi-check-circle me-2"></i>
-                                    Setuju</button>
+                                <button type="button" id="approveBtn" class="btn btn-dark btn-lg mt-3"><i
+                                    class="bi-check-circle me-2"></i>
+                                Setuju</button>
                             </div>
                         </div>
                     </form>
@@ -143,6 +149,36 @@
             document.getElementById('signature-input').value = signaturePad.toDataURL('image/png');
             return true;
         }
+
+        document.getElementById('approveBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (signaturePad.isEmpty()) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Please sign in the provided signature pad.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Tindakan ini akan menyetujui pengajuan.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, setujui',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('signature-input').value = signaturePad.toDataURL('image/png');
+                    document.querySelector('form[action*="signApproval"]').submit();
+                }
+            });
+        });
 
         document.getElementById('rejectBtn').addEventListener('click', function(e) {
             e.preventDefault();

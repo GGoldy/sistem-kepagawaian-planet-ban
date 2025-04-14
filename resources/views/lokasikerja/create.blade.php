@@ -5,6 +5,11 @@
 @section('content')
     <div>
         <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+        <x-breadcrumb :links="[
+                        'Absen' => route('absens.index'),
+                        'Lokasi Kerja' => route('lokasikerjas.index'),
+                        'Create' => '#',
+                    ]" />
         <form action="{{ route('lokasikerjas.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
@@ -65,7 +70,7 @@
                 </div>
             </div>
             <hr>
-            <div class="row">
+            <div class="row pb-5">
                 <div class="col-md-6 d-grid">
                     <a href="{{ route('lokasikerjas.index') }}" class="btn btn-outline-dark btn-lg mt-3"><i
                             class="bi-arrow-left-circle me-2"></i>

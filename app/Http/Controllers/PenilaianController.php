@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PenilaiansExport;
+use App\Exports\RekapPenilaianExport;
 
 class PenilaianController extends Controller
 {
@@ -184,5 +187,13 @@ class PenilaianController extends Controller
                 })
                 ->toJson();
         }
+    }
+    public function exportExcel()
+    {
+        return Excel::download(new PenilaiansExport, 'penilaian_all.xlsx');
+    }
+    public function rekapExportExcel()
+    {
+        return Excel::download(new RekapPenilaianExport, 'rekap_penilaian_all.xlsx');
     }
 }

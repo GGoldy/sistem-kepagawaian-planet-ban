@@ -4,20 +4,23 @@
 
 @section('content')
     <div>
-        <div class="row mb-0">
-            <div class="col-lg-9 col-xl-6">
-                <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="row mb-3 align-items-center">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <x-breadcrumb :links="[
+                            'Lembur' => route('lemburs.index'),
+                            'Data' => '#',
+                        ]" />
             </div>
-            <div class="col-lg-3 col-xl-6">
-                <ul class="list-inline mb-0 float-end">
-                    <li class="list-inline-item">
-                        <a href="{{ route('lemburs.approve') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Menyetujui Lembur
-                        </a>
-                    </li>
-                </ul>
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                    <a href="{{ route('lemburs.approve') }}" class="btn btn-success" title="Setujui pengajuan lembur">
+                        <i class="bi bi-check2-circle me-1"></i> Menyetujui Lembur
+                    </a>
+                </div>
             </div>
         </div>
+
         <hr>
 
         <div class="card shadow mb-4">
@@ -46,6 +49,13 @@
                 </div>
             </div>
         </div>
+
+        <div class="pb-5">
+            <a href="{{ route('lemburs.index') }}" class="btn btn-outline-dark btn-lg w-100">
+                <i class="bi bi-arrow-left me-1"></i> {{ $text ?? 'Kembali' }}
+            </a>
+        </div>
+
     </div>
 
 @endsection
@@ -53,8 +63,43 @@
     <script type="module">
         $(document).ready(function() {
             $("#lemburTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        }
+                    },
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('lemburs.export.excel') }}";
+                        }
+                    }
+                ],
                 ajax: {
                     url: "/lemburs/getLemburAll",
                     data: function(d) {
@@ -135,6 +180,10 @@
                     }
                 })
             })
+
+            $('#lemburTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

@@ -11,13 +11,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\KetidakhadiransExport;
 
 class KetidakhadiranController extends Controller
 {
     public function __construct()
     {
         // Apply 'role:admin' middleware to all routes except 'show', 'index', and 'store'
-        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'showany', 'getDataAll', 'approvalHCM', 'signApprovalHCM']);
+        $this->middleware('role:admin')->only(['update', 'destroy', 'edit', 'data', 'showany', 'getDataAll', 'approvalHCM', 'signApprovalHCM', 'exportExcel']);
     }
     /**
      * Display a listing of the resource.
@@ -100,7 +102,7 @@ class KetidakhadiranController extends Controller
 
         $ketidakhadiran->approved_by = Auth::user()->karyawan->id;
 
-        if (!is_null($ketidakhadiran->approved_by_hcm)) {
+        if (!is_null($ketidakhadiran->approved_by_hcm) && !is_null($ketidakhadiran->signature_hcm)) {
             $ketidakhadiran->status_pengajuan = true;
             $ketidakhadiran->tanggal_sah = Carbon::now()->toDateString(); // Set to today's date
             $ketidakhadiran->tanggal_aktif = Carbon::now()->toDateString(); // Set to today's date
@@ -148,7 +150,7 @@ class KetidakhadiranController extends Controller
         }
 
         $ketidakhadiran->approved_by_hcm = Auth::user()->karyawan->id;
-        if (!is_null($ketidakhadiran->approved_by)) {
+        if (!is_null($ketidakhadiran->approved_by) && !is_null($ketidakhadiran->signature)) {
             $ketidakhadiran->status_pengajuan = true;
             $ketidakhadiran->tanggal_sah = Carbon::now()->toDateString(); // Set to today's date
             $ketidakhadiran->tanggal_aktif = Carbon::now()->toDateString(); // Set to today's date
@@ -421,5 +423,13 @@ class KetidakhadiranController extends Controller
                 })
                 ->toJson();
         }
+    }
+    public function exportExcel()
+    {
+        return Excel::download(new KetidakhadiransExport, 'ketidakhadiran_all.xlsx');
+    }
+    public function selfExportExcel()
+    {
+        return Excel::download(new KetidakhadiransExport(auth()->user()->karyawan_id), 'ketidakhadiran_self.xlsx');
     }
 }
