@@ -63,6 +63,7 @@
     <script type="module">
         $(document).ready(function() {
             $("#penilaianTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',

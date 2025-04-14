@@ -76,6 +76,7 @@
     <script defer>
         $(document).ready(function() {
             $("#lemburTable1").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: "/lemburs/getLemburFiltered",
@@ -119,6 +120,7 @@
             });
 
             $("#lemburTable2").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: "/lemburs/getLemburAllFiltered",

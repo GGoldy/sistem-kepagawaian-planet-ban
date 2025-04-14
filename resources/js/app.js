@@ -19,6 +19,10 @@ import 'admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js';
 import 'datatables.net-bs5';
 import 'datatables.net-buttons-bs5';
 
+// Import DataTables Responsive plugin
+import 'datatables.net-responsive-bs5';
+import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
+
 // Export Buttons functionality
 import 'datatables.net-buttons/js/buttons.html5.min.js';
 import 'datatables.net-buttons/js/buttons.print.min.js';

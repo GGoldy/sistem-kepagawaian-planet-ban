@@ -60,6 +60,7 @@
     <script type="module">
         $(document).ready(function() {
             $("#ketidakhadiranTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 // ajax: "/ketidakhadirans/getKetidakhadiranSelf",

@@ -77,6 +77,7 @@
     <script defer>
         $(document).ready(function() {
             $("#ketidakhadiranTable1").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: "/ketidakhadirans/getKetidakhadiranFiltered",
@@ -120,6 +121,7 @@
             });
 
             $("#ketidakhadiranTable2").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: "/ketidakhadirans/getKetidakhadiranAllFiltered",

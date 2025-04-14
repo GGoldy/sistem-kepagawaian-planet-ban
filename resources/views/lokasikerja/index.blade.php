@@ -58,6 +58,7 @@
     <script type="module">
         $(document).ready(function() {
             $("#lokasiKerjaTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',

@@ -47,6 +47,7 @@
     <script type="module">
         $(document).ready(function() {
             $("#absenTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',

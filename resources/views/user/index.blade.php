@@ -81,6 +81,7 @@
     <script type="module">
         $(document).ready(function() {
             $("#userTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',

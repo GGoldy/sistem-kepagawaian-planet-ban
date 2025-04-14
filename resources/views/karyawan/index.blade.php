@@ -90,6 +90,7 @@
     <script type="module">
         $(document).ready(function() {
             $("#karyawanTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',
