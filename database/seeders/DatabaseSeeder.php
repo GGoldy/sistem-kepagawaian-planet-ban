@@ -10,6 +10,7 @@ use App\Models\Ketidakhadiran;
 use App\Models\Pensiun;
 use App\Models\StatusPegawai;
 use App\Models\Penugasan;
+use App\Models\Gaji;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,7 +26,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $karyawans = Karyawan::factory(20)->create();
+        // $karyawans = Karyawan::factory(30)->create();
 
         // $karyawans->each(function ($karyawan) {
 
@@ -37,17 +38,17 @@ class DatabaseSeeder extends Seeder
         //         'karyawan_id' => $karyawan->id
         //     ]);
 
-        //     if (rand(0, 5) === 1) {
-        //         Pensiun::factory()->create([
-        //             'karyawan_id' => $karyawan->id
-        //         ]);
-        //     }
+        //     Gaji::factory()->create([
+        //         'karyawan_id' => $karyawan->id
+        //     ]);
         // });
 
         $this->call([
             // LokasiKerjaSeeder::class
             // KetidakhadiranSeeder::class
-            RoleSeeder::class
+            // RoleSeeder::class,
+            // LokasiKerjaSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

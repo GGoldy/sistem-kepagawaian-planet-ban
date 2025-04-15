@@ -21,7 +21,6 @@ class KaryawanFactory extends Factory
     public function definition(): array
     {
         return [
-            'personne_data' => $this->faker->sentence(),
             'jabatan' => $this->faker->jobTitle(),
             'nik' => $this->faker->unique()->numerify('############'),
             'nama' => $this->faker->name(),
