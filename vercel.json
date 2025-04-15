@@ -14,7 +14,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://your-project-name.vercel.app",
+        "APP_URL": "https://sistem-kepagawaian-planet-ban.vercel.app/",
         "APP_KEY": "base64:+IL4Zb9fvgN7hjCvYKzJyWB9ubWbQmrcgi1w3MQsUlw=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
