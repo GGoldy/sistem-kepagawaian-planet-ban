@@ -26,28 +26,28 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $karyawans = Karyawan::factory(30)->create();
+        $karyawans = Karyawan::factory(30)->create();
 
-        // $karyawans->each(function ($karyawan) {
+        $karyawans->each(function ($karyawan) {
 
-        //     StatusPegawai::factory()->create([
-        //         'karyawan_id' => $karyawan->id
-        //     ]);
+            StatusPegawai::factory()->create([
+                'karyawan_id' => $karyawan->id
+            ]);
 
-        //     Penugasan::factory()->create([
-        //         'karyawan_id' => $karyawan->id
-        //     ]);
+            Penugasan::factory()->create([
+                'karyawan_id' => $karyawan->id
+            ]);
 
-        //     Gaji::factory()->create([
-        //         'karyawan_id' => $karyawan->id
-        //     ]);
-        // });
+            Gaji::factory()->create([
+                'karyawan_id' => $karyawan->id
+            ]);
+        });
 
         $this->call([
             // LokasiKerjaSeeder::class
             // KetidakhadiranSeeder::class
-            // RoleSeeder::class,
-            // LokasiKerjaSeeder::class,
+            RoleSeeder::class,
+            LokasiKerjaSeeder::class,
             UserSeeder::class,
         ]);
     }
