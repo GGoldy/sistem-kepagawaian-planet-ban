@@ -4,6 +4,9 @@
         "dev": "vite",
         "build": "vite build"
     },
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
         "axios": "^1.1.2",
