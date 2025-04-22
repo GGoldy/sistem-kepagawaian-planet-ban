@@ -5,6 +5,11 @@
 @section('content')
     <div>
         <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+        <x-breadcrumb :links="[
+                        'Absen' => route('absens.index'),
+                        'Lokasi Kerja' => route('lokasikerjas.index'),
+                        'Show' => '#',
+                    ]" />
         <input type="hidden" id="latitude" value="{{ $lokasi_kerja->latitude }}">
         <input type="hidden" id="longitude" value="{{ $lokasi_kerja->longitude }}">
 
@@ -13,6 +18,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Lokasi Kerja Details</h6>
+
                     </div>
                     <div id="map" style="height: 400px;"></div> <!-- Map Container -->
                     <div class="card-body">

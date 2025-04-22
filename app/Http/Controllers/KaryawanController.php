@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\KaryawansExport;
 class KaryawanController extends Controller
 {
     public function __construct()
@@ -378,5 +380,9 @@ class KaryawanController extends Controller
 
         Alert::success('Changes Successfully', 'Your password has been updated.');
         return redirect()->route('karyawans.profile', auth()->user()->karyawan_id);
+    }
+    public function exportExcel()
+    {
+        return Excel::download(new KaryawansExport, 'karyawan_all.xlsx');
     }
 }

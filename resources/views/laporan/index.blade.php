@@ -35,7 +35,7 @@
                     <i class="fas fa-filter"></i> Filter
                 </button>
             </div>
-            <div class="col-md-6 text-end">
+            <div class="col-md-6">
                 <select name="karyawan" id="karyawan" class="form-control select2 w-100">
                     <option value="">-- Select Karyawan --</option>
                     @php
@@ -176,7 +176,7 @@
     </div>
 @endsection
 @push('scripts')
-    <script type="module">
+    <script>
         // fetchData(currentMonth, currentYear, Auth::user()->karyawan_id);
         let authKaryawanId = "{{ Auth::user()->karyawan->id }}";
         console.log("CURRENT AUTHENTICATED USER" + authKaryawanId);

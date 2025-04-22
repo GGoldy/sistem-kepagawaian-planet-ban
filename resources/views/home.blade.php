@@ -7,6 +7,7 @@
         <div class="row mb-0">
             <div class="col-lg-9 col-xl-6">
                 <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
+
             </div>
 
         </div>
@@ -202,9 +203,11 @@
                         let gajiPokok = response.gajiPokok;
                         let tunjanganBpjs = response.tunjanganBpjs;
                         let totalUangMakan = parseInt(response.absenCount) * uangMakan;
-                        let falseKetidakhadiran = response.falseCutiCount + response.falseSakitCount + response.falsePenggantianHariCount;
+                        let falseKetidakhadiran = response.falseCutiCount + response.falseSakitCount +
+                            response.falsePenggantianHariCount;
                         let totalKetidakhadiranAmount = falseKetidakhadiran * 10000
-                        let totalGaji = gajiPokok + totalUangMakan + tunjanganBpjs + totalLemburAmount - totalKetidakhadiranAmount
+                        let totalGaji = gajiPokok + totalUangMakan + tunjanganBpjs + totalLemburAmount -
+                            totalKetidakhadiranAmount
 
                         // Format currency (Rupiah)
                         // let formattedLemburAmount = totalLemburAmount.toLocaleString('id-ID', {

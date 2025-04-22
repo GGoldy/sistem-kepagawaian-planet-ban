@@ -5,6 +5,10 @@
 @section('content')
     <div>
         <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+        <x-breadcrumb :links="[
+            'Karyawan' => route('karyawans.index'),
+            'Show' => '#',
+        ]" />
 
         {{-- <div class="row">
             <!-- Karyawan Card -->
@@ -241,6 +245,9 @@
                     </div>
                 </div>
             </div>
+
+            <x-back-button />
+
         </div>
 
     </div>

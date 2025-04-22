@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                'User' => route('users.index'),
+                'Edit' => '#',
+            ]" />
             <form action="{{ route('users.update', ['user' => $user->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('put')

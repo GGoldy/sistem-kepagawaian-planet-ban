@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-11">
             <h1 class="text-center my-3">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Ketidakhadiran' => route('ketidakhadirans.index'),
+                            'Approve' => '#'
+                        ]" />
             <div class="row no-gutters justify-content-center">
                 <div class="col-lg-6 col-md-8 col-sm-10">
                     <div class="card shadow-sm">
@@ -58,6 +62,13 @@
                     </div>
                 @endif
             </div>
+
+            <div class="pb-5">
+                <a href="{{ route('ketidakhadirans.index') }}" class="btn btn-outline-dark btn-lg w-100">
+                    <i class="bi bi-arrow-left me-1"></i> {{ $text ?? 'Kembali' }}
+                </a>
+            </div>
+
         </div>
     </div>
 
@@ -66,6 +77,7 @@
     <script defer>
         $(document).ready(function() {
             $("#ketidakhadiranTable1").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: "/ketidakhadirans/getKetidakhadiranFiltered",
@@ -109,6 +121,7 @@
             });
 
             $("#ketidakhadiranTable2").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
                 ajax: "/ketidakhadirans/getKetidakhadiranAllFiltered",

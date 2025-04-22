@@ -6,6 +6,10 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Ketidakhadiran' => route('ketidakhadirans.index'),
+                            'Show' => '#'
+                        ]" />
             <div class="card">
                 <div class="card-header bg-primary text-white">Detail Ketidakhadiran</div>
                 <div class="card-body">
@@ -82,6 +86,8 @@
                     </form>
                 </div>
             </div>
+
+            <x-back-button/>
         </div>
     </div>
 @endsection

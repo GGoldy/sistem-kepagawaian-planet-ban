@@ -42,7 +42,7 @@ Route::group(['middleware' => 'prevent-back-button'], function () {
 });
 
 // Auth::routes(['register' => false]);
-// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/filter', [App\Http\Controllers\HomeController::class, 'getFilteredData'])->name('filter');
 Route::post('/login', [LoginController::class, 'authenticate']);
@@ -50,6 +50,7 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 Route::prefix('users')->name('users.')->group(function () {
     Route::get('getUsers', [UserController::class, 'getData'])->name('users.getData');
     Route::get('check-karyawan-user/{id}', [UserController::class, 'checkKaryawanUser'])->name('checkKaryawan');
+    Route::get('export/excel', [UserController::class, 'exportExcel'])->name('export.excel');
     Route::resource('/', UserController::class)->parameters(['' => 'user']);
 });
 
@@ -58,6 +59,7 @@ Route::prefix('karyawans')->name('karyawans.')->group(function () {
     Route::get('changepassword/{id}', [KaryawanController::class, 'password'])->name('changepassword');
     Route::put('updatepassword/{id}', [KaryawanController::class, 'changePassword'])->name('updatepassword');
     Route::get('getKaryawans', [KaryawanController::class, 'getData'])->name('karyawans.getData');
+    Route::get('export/excel', [KaryawanController::class, 'exportExcel'])->name('export.excel');
     Route::resource('/', KaryawanController::class)->parameters(['' => 'karyawan']);
 });
 
@@ -67,6 +69,7 @@ Route::prefix('absens')->name('absens.')->group(function () {
     Route::post('calculateDistance', [AbsenController::class, 'calculateDistance'])->name('calculateDistance');
     Route::get('getAbsens', [AbsenController::class, 'getData'])->name('absens.getData');
     Route::get('getAbsenSelf', [AbsenController::class, 'getDataSelf'])->name('absens.getDataSelf');
+    Route::get('export/excel', [AbsenController::class, 'exportExcel'])->name('export.excel');
     Route::resource('/', AbsenController::class)->parameters(['' => 'absen']);
 });
 
@@ -90,6 +93,8 @@ Route::prefix('ketidakhadirans')->name('ketidakhadirans.')->group(function () {
     Route::get('getKetidakhadiranAll', [KetidakhadiranController::class, 'getDataAll'])->name('ketidakhadirans.getDataAll');
     Route::get('getKetidakhadiranFiltered', [KetidakhadiranController::class, 'getDataFiltered'])->name('ketidakhadirans.getDataFiltered');
     Route::get('getKetidakhadiranAllFiltered', [KetidakhadiranController::class, 'getDataAllFiltered'])->name('ketidakhadirans.getDataAllFiltered');
+    Route::get('export/excel', [KetidakhadiranController::class, 'exportExcel'])->name('export.excel');
+    Route::get('selfexport/excel', [KetidakhadiranController::class, 'selfExportExcel'])->name('selfexport.excel');
     Route::resource('/', KetidakhadiranController::class)->parameters(['' => 'ketidakhadiran']);
 });
 
@@ -107,6 +112,8 @@ Route::prefix('lemburs')->name('lemburs.')->group(function () {
     Route::get('getLemburAll', [LemburController::class, 'getDataAll'])->name('lemburs.getDataAll');
     Route::get('getLemburFiltered', [LemburController::class, 'getDataFiltered'])->name('lemburs.getDataFiltered');
     Route::get('getLemburAllFiltered', [LemburController::class, 'getDataAllFiltered'])->name('lemburs.getDataAllFiltered');
+    Route::get('export/excel', [LemburController::class, 'exportExcel'])->name('export.excel');
+    Route::get('selfexport/excel', [LemburController::class, 'selfExportExcel'])->name('selfexport.excel');
     Route::resource('/', LemburController::class)->parameters(['' => 'lembur']);
 });
 
@@ -117,6 +124,8 @@ Route::prefix('laporans')->name('laporans.')->group(function () {
 
 Route::prefix('penilaians')->name('penilaians.')->group(function () {
     Route::get('getPenilaians', [PenilaianController::class, 'getData'])->name('penilaians.getData');
+    Route::get('export/excel', [PenilaianController::class, 'exportExcel'])->name('export.excel');
+    Route::get('rekapexport/excel', [PenilaianController::class, 'rekapExportExcel'])->name('rekapexport.excel');
     Route::resource('/', PenilaianController::class)->parameters(['' => 'penilaian']);
 });
 

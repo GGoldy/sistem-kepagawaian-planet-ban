@@ -4,20 +4,22 @@
 
 @section('content')
     <div>
-        <div class="row mb-0">
-            <div class="col-lg-9 col-xl-6">
-                <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="row mb-3 align-items-center">
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+                <x-breadcrumb :links="[
+                    'User' => '#',
+                ]" />
             </div>
-            <div class="col-lg-3 col-xl-6">
-                <ul class="list-inline mb-0 float-end">
-                    <li class="list-inline-item">
-                        <a href="{{ route('users.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle me-1"></i> Tambah Pengguna
-                        </a>
-                    </li>
-                </ul>
+            <div class="col-12 col-lg-6">
+                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
+                    <a href="{{ route('users.create') }}" class="btn btn-info text-white" title="Tambah pengguna baru">
+                        <i class="bi bi-person-plus me-1"></i> Tambah Pengguna
+                    </a>
+                </div>
             </div>
         </div>
+
 
         <hr>
         <div class="card shadow mb-4">
@@ -79,8 +81,42 @@
     <script type="module">
         $(document).ready(function() {
             $("#userTable").DataTable({
+                responsive: true,
                 serverSide: true,
                 processing: true,
+                dom: 'Blfrtip',
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        text: 'Excel (All)',
+                        className: 'btn btn-success',
+                        action: function() {
+                            window.location.href = "{{ route('users.export.excel') }}";
+                        }
+                    }
+                ],
                 ajax: "/users/getUsers",
                 columns: [{
                         data: "id",
@@ -121,7 +157,7 @@
                 ],
             });
 
-            $('.datatable').on("click", '.btn-delete', function(e){
+            $('.datatable').on("click", '.btn-delete', function(e) {
                 e.preventDefault();
 
                 var form = $(this).closest("form");
@@ -140,6 +176,10 @@
                     }
                 })
             })
+
+            $('#userTable').on('init.dt', function() {
+                $('.dt-buttons').addClass('mb-3'); // margin-bottom
+            });
         });
     </script>
 @endpush

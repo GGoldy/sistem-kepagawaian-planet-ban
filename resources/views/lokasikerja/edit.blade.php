@@ -5,6 +5,11 @@
 @section('content')
     <div>
         <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+        <x-breadcrumb :links="[
+                        'Absen' => route('absens.index'),
+                        'Lokasi Kerja' => route('lokasikerjas.index'),
+                        'Edit' => '#',
+                    ]" />
         <form action="{{ route('lokasikerjas.update', ['lokasikerja' => $lokasi_kerja->id]) }}" method="POST"
             enctype="multipart/form-data">
             @csrf

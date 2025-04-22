@@ -6,6 +6,11 @@
     <div class="d-flex justify-content-center">
         <div class="col-lg-8">
             <h1 class="text-center my-4">{{ $pageTitle }}</h1>
+            <x-breadcrumb :links="[
+                            'Ketidakhadiran' => route('ketidakhadirans.index'),
+                            'Data' => route('ketidakhadirans.data'),
+                            'Edit' => '#'
+                        ]" />
             <form action="{{ route('ketidakhadirans.update', ['ketidakhadiran' => $ketidakhadiran->id]) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
@@ -191,7 +196,7 @@
                     </div>
                 </div>
                 <hr>
-                <div class="row">
+                <div class="row pb-5">
                     <div class="col-md-6 d-grid">
                         <a href="{{ route('ketidakhadirans.data') }}" class="btn btn-outline-dark btn-lg mt-3"><i
                                 class="bi-arrow-left-circle me-2"></i>
