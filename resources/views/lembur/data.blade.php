@@ -4,22 +4,26 @@
 
 @section('content')
     <div>
-        <div class="row mb-3 align-items-center">
-            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="mb-3">
+            <!-- Title -->
+            <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+
+            <!-- Breadcrumbs full width -->
+            <div class="mb-3">
                 <x-breadcrumb :links="[
-                            'Lembur' => route('lemburs.index'),
-                            'Data' => '#',
-                        ]" />
+                    'Lembur' => route('lemburs.index'),
+                    'Data' => '#',
+                ]" />
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
-                    <a href="{{ route('lemburs.approve') }}" class="btn btn-success" title="Setujui pengajuan lembur">
-                        <i class="bi bi-check2-circle me-1"></i> Menyetujui Lembur
-                    </a>
-                </div>
+
+            <!-- Button floated right -->
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('lemburs.approve') }}" class="btn btn-success" title="Setujui pengajuan lembur">
+                    <i class="bi bi-check2-circle me-1"></i> Menyetujui Lembur
+                </a>
             </div>
         </div>
+
 
         <hr>
 

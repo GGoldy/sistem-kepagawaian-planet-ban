@@ -8,17 +8,12 @@
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <div class="d-flex flex-column justify-content-center h-100">
                     <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
-                    <div class="mt-n1">
-                        <x-breadcrumb :links="[
-                            'Penilaian' => '#',
-                        ]" />
-                    </div>
                 </div>
             </div>
 
             <div class="col-12 col-lg-6">
                 <div class="d-flex justify-content-lg-end justify-content-start flex-wrap gap-2 align-items-start">
-                    <a href="{{ route('penilaians.create') }}" class="btn btn-info text-white" title="Tambah penilaian baru">
+                    <a href="{{ route('penilaians.create') }}" class="btn btn-primary text-white" title="Tambah penilaian baru">
                         <i class="bi bi-clipboard-plus me-1"></i> Tambah Penilaian
                     </a>
                     <a href="{{ route('penilaians.rekapexport.excel') }}" class="btn btn-success text-white" title="Export Rekap Penilaian">

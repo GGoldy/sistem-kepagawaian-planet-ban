@@ -355,11 +355,7 @@
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <div class="d-flex flex-column justify-content-center h-100">
                     <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
-                    <div class="mt-n1">
-                        <x-breadcrumb :links="[
-                            'Absen' => '#',
-                        ]" />
-                    </div>
+
                 </div>
             </div>
 

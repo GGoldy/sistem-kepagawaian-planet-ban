@@ -1,12 +1,23 @@
 @extends('layouts.auth')
 
 @section('title', 'Login')
+@push('style')
+<style>
+    body, .login-page {
+            background: url('{{ Vite::asset('resources/images/bengkel.webp') }}') no-repeat center center fixed !important;
+            background-size: cover !important;
+            background-color: transparent !important;
+        }
+</style>
+@endpush
+
 
 @section('content')
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="#" class="h1"><b>Admin</b>LTE</a>
+                {{-- <a href="#" class="h1"><b>Planet </b>Ban</a> --}}
+                <img src="{{ Vite::asset('resources/images/planetban.png') }}" alt="Planet Ban" style="max-width: 180px;">
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Silahkan Sign in untuk masuk</p>
@@ -35,7 +46,8 @@
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                             placeholder="Password" name="password" required>
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-secondary border-0 input-group-text" id="togglePassword">
+                            <button type="button" class="btn btn-outline-secondary border-0 input-group-text"
+                                id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
