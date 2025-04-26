@@ -303,7 +303,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body data-page="{{ Route::currentRouteName() }}">
 
     <!-- Top Navbar -->
     @include('partials.topbar')
@@ -352,6 +352,31 @@
         } else {
             console.log('jQuery version:', jQuery.fn.jquery);
             // Initialize any global components here
+        }
+
+        const currentPage = document.body.dataset.page;
+
+        const toastRoutes = [
+            'karyawans.index',
+            'users.index',
+            'absens.data',
+            'absens.self',
+            'lokasikerjas.index',
+            'ketidakhadirans.index',
+            'lemburs.index',
+            'penilaians.index'
+        ];
+
+        if (toastRoutes.includes(currentPage) && !sessionStorage.getItem('warn-table-toast')) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Tombol tabel (Copy, CSV, Excel, PDF) akan menggunakan data yang sedang ditampilkan pada tabel',
+                showConfirmButton: true,
+            });
+
+            sessionStorage.setItem('warn-table-toast', 'true');
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
