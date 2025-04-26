@@ -4,23 +4,27 @@
 
 @section('content')
     <div>
-        <div class="row mb-3 align-items-center">
-            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                <h1 class="h3 text-gray-800">{{ $pageTitle }}</h1>
+        <div class="mb-3">
+            <!-- Title -->
+            <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
+
+            <!-- Breadcrumbs full width -->
+            <div class="mb-3">
                 <x-breadcrumb :links="[
-                            'Ketidakhadiran' => route('ketidakhadirans.index'),
-                            'Data' => '#'
-                        ]" />
+                    'Ketidakhadiran' => route('ketidakhadirans.index'),
+                    'Data' => '#'
+                ]" />
             </div>
-            <div class="col-12 col-lg-6">
-                <div class="d-flex flex-wrap justify-content-lg-end gap-2">
-                    <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-success"
-                        title="Setujui permintaan ketidakhadiran">
-                        <i class="bi bi-check2-circle me-1"></i> Menyetujui Ketidakhadiran
-                    </a>
-                </div>
+
+            <!-- Button floated right -->
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('ketidakhadirans.approve') }}" class="btn btn-success"
+                    title="Setujui permintaan ketidakhadiran">
+                    <i class="bi bi-check2-circle me-1"></i> Menyetujui Ketidakhadiran
+                </a>
             </div>
         </div>
+
 
         <hr>
 
@@ -51,7 +55,11 @@
             </div>
         </div>
 
-        <x-back-button />
+        <div class="pb-5">
+            <a href="{{ route('ketidakhadirans.index') }}" class="btn btn-dark btn-lg w-100">
+                <i class="bi bi-arrow-left me-1"></i> {{ $text ?? 'Kembali' }}
+            </a>
+        </div>
     </div>
 
 @endsection

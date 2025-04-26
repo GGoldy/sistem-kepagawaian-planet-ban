@@ -34,11 +34,6 @@
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <div class="d-flex flex-column justify-content-center h-100">
                     <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
-                    <div class="mt-n1">
-                        <x-breadcrumb :links="[
-                            'Ketidakhadiran' => '#',
-                        ]" />
-                    </div>
                 </div>
             </div>
 
@@ -54,7 +49,7 @@
                         <i class="bi bi-check2-circle me-1"></i> Menyetujui
                     </a>
 
-                    <a href="{{ route('ketidakhadirans.create') }}" class="btn btn-warning text-dark" title="Ajukan ketidakhadiran baru">
+                    <a href="{{ route('ketidakhadirans.create') }}" class="btn btn-primary text-white" title="Ajukan ketidakhadiran baru">
                         <i class="bi bi-pencil-square me-1"></i> Mengajukan
                     </a>
                 </div>

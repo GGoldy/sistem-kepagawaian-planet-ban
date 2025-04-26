@@ -64,7 +64,7 @@
             </div>
 
             <div class="pb-5">
-                <a href="{{ route('lemburs.index') }}" class="btn btn-outline-dark btn-lg w-100">
+                <a href="{{ route('lemburs.index') }}" class="btn btn-dark btn-lg w-100">
                     <i class="bi bi-arrow-left me-1"></i> {{ $text ?? 'Kembali' }}
                 </a>
             </div>

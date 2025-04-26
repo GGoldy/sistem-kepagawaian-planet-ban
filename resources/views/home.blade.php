@@ -2,6 +2,8 @@
 
 @section('title', 'Dashboard')
 
+
+
 @section('content')
     <div>
         <div class="row mb-0">
@@ -41,13 +43,13 @@
 
 
         <div class="container-fluid">
-            <div class="row">
+            <div class="row align-items-start">
                 <!-- Left Side: Summary Cards & Table -->
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex flex-column gap-3">
                     <div class="row">
                         <!-- Ketidakhadiran Card -->
                         <div class="col-md-4 mb-3">
-                            <div class="small-box bg-danger card-clickable" data-target="ketidakhadiran">
+                            <div class="small-box bg-danger card-clickable" style="cursor: pointer; min-height: 150px" data-target="ketidakhadiran">
                                 <div class="inner">
                                     <h3>{{ $ketidakhadirans->count() }}</h3>
                                     <p>Total Ketidakhadiran</p>
@@ -60,7 +62,7 @@
 
                         <!-- Absen Card -->
                         <div class="col-md-4 mb-3">
-                            <div class="small-box bg-warning card-clickable" data-target="absen">
+                            <div class="small-box bg-warning card-clickable" style="cursor: pointer; min-height: 150px" data-target="absen">
                                 <div class="inner">
                                     <h3>{{ $absens->count() }}</h3>
                                     <p>Total Absen</p>
@@ -73,7 +75,7 @@
 
                         <!-- Lembur Card -->
                         <div class="col-md-4 mb-3">
-                            <div class="small-box bg-success card-clickable" data-target="lembur">
+                            <div class="small-box bg-success card-clickable" style="cursor: pointer; min-height: 150px;" data-target="lembur">
                                 <div class="inner">
                                     <h5>Total Lembur</h5>
                                     <h4></h4>
@@ -87,7 +89,7 @@
 
                     <!-- Dynamic Table Section -->
                     <div class="card shadow-sm">
-                        <div class="card-header bg-secondary text-white">
+                        <div class="card-header bg-primary text-white">
                             <h5 class="card-title mb-0">Detail</h5>
                         </div>
                         <div class="card-body">
@@ -99,11 +101,11 @@
                 </div>
 
                 <!-- Right Side: Employee Info & Salary Card -->
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex flex-column gap-3">
                     <!-- Employee Info -->
-                    <div class="card shadow-sm mb-3">
+                    <div class="card shadow-sm">
                         <div class="card-header bg-primary text-white text-center">
-                            <h5 class="card-title mb-0">Informasi Karyawan</h5>
+                            <h5 class="card-title">Informasi Karyawan</h5>
                         </div>
                         <div class="card-body text-center">
                             <h3 class="font-weight-bold">{{ $karyawan->first()->nama ?? 'Nama Tidak Ditemukan' }}</h3>
@@ -114,7 +116,7 @@
                     <!-- Salary Details -->
                     <div class="card shadow-sm">
                         <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">Gaji Karyawan</h4>
+                            <h5 class="mb-0">Gaji Karyawan</h5>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered">
@@ -133,19 +135,19 @@
                                     </tr>
                                     <tr id="lemburRow">
                                         <th>Lembur (0 Jam x Rp 175.000)</th> <!-- This will be updated dynamically -->
-                                        <td>Rp. 0</td> <!-- This will be updated dynamically -->
+                                        <td>Rp. -</td> <!-- This will be updated dynamically -->
                                     </tr>
                                     <tr id="absenRow">
                                         <th>Absen (Total Absen x Uang Makan)</th>
-                                        <td>Rp. 1.000.999</td>
+                                        <td>Rp. -</td>
                                     </tr>
                                     <tr class="table-danger" id="ketidakhadiranRow">
                                         <th>Potongan (Ketidakhadiran Belum Disetujui)</th>
-                                        <td>Rp. 1.000.999</td>
+                                        <td>Rp. -</td>
                                     </tr>
                                     <tr class="table-success" id="totalRow">
                                         <th>Total Gaji</th>
-                                        <td>Rp. 1.000.999</td>
+                                        <td>Rp. -</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -276,7 +278,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="{{ route('ketidakhadirans.index') }}" class="btn btn-secondary">
+                <a href="{{ route('ketidakhadirans.index') }}" class="btn btn-primary">
                     <i class="nav-icon fas fa-book-open"></i> Detail
                 </a>
             `;
@@ -296,7 +298,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="{{ route('absens.self') }}" class="btn btn-secondary">
+                <a href="{{ route('absens.self') }}" class="btn btn-primary">
                     <i class="nav-icon fas fa-book-open"></i> Detail
                 </a>
             `;
@@ -316,7 +318,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <a href="{{ route('lemburs.index') }}" class="btn btn-secondary">
+                <a href="{{ route('lemburs.index') }}" class="btn btn-primary">
                     <i class="nav-icon fas fa-book-open"></i> Detail
                 </a>
             `;

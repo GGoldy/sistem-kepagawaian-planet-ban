@@ -355,11 +355,7 @@
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <div class="d-flex flex-column justify-content-center h-100">
                     <h1 class="h3 text-gray-800 mb-2">{{ $pageTitle }}</h1>
-                    <div class="mt-n1">
-                        <x-breadcrumb :links="[
-                            'Absen' => '#',
-                        ]" />
-                    </div>
+
                 </div>
             </div>
 
@@ -455,7 +451,7 @@
                                         style="width: 3rem; height: 3rem;">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
-                                    <p class="mt-2 text-secondary">Fetching location...</p>
+                                    <p class="mt-2 text-secondary">Mengambil lokasi...</p>
                                 </div>
 
                                 <!-- Nearest Location Text (Hidden Initially) -->
@@ -496,6 +492,11 @@
         }
 
         function resetToLoading() {
+            document.getElementById("loading-animation").style.display = "block", document.getElementById("location-text-1")
+                .classList.add("d-none"), document.getElementById("location-text-2").classList.add("d-none")
+        }
+
+        function resetToFailure() {
             document.getElementById("loading-animation").style.display = "block", document.getElementById("location-text-1")
                 .classList.add("d-none"), document.getElementById("location-text-2").classList.add("d-none")
         }
@@ -601,9 +602,9 @@
                 title: "Location Error",
                 text: t,
                 icon: "error",
-                confirmButtonText: "Enter Manually",
+                confirmButtonText: "Masukan Lokasi Secara Manual",
                 showCancelButton: !0,
-                cancelButtonText: "Cancel"
+                cancelButtonText: "Batal"
             }).then(e => {
                 e.isConfirmed && offerManualLocationEntry()
             })
@@ -611,16 +612,17 @@
 
         function offerManualLocationEntry() {
             Swal.fire({
-                title: "Enter Location Manually",
+                title: "Masukan Lokasi Secara Manual",
                 html: `
             <div class="text-left mb-3">
-                <p>Browser geolocation is not working accurately. You can:</p>
+                <p>Fitur geolokasi browser sedang tidak bekerja secara akurat. Anda dapat:</p>
                 <ol>
-                    <li>Try using a different device</li>
-                    <li>Use a mobile device with GPS</li>
-                    <li>Enter coordinates manually (if you know them)</li>
+                    <li>Menggunakan perangkat keras yang berbeda</li>
+                    <li>Menggunakan perangkat keras seluler dengan GPS</li>
+                    <li>Memasukan koordinat secara manual</li>
                 </ol>
             </div>
+            <div id="map" style="height: 300px; margin-bottom: 10px;"></div>
             <div class="form-group mb-3">
                 <label for="manual-latitude" class="form-label">Latitude</label>
                 <input type="number" id="manual-latitude" class="form-control" step="0.00000001" placeholder="e.g. -7.25381234">
@@ -630,9 +632,40 @@
                 <input type="number" id="manual-longitude" class="form-control" step="0.00000001" placeholder="e.g. 112.73425678">
             </div>
         `,
+        didOpen: () => {
+            // Initialize map
+            const initialLat = -7.257472;
+            const initialLng = 112.752090;
+            const initialZoom = 13;
+            const map = L.map('map').setView([initialLat, initialLng], initialZoom);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Create marker
+            let marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(map);
+            map.setView([initialLat, initialLng]);
+            // Update inputs when marker is dragged
+            marker.on('dragend', () => {
+                const latlng = marker.getLatLng();
+                document.getElementById('manual-latitude').value = latlng.lat.toFixed(8);
+                document.getElementById('manual-longitude').value = latlng.lng.toFixed(8);
+                map.setView(latlng);
+            });
+
+            // Move marker + update inputs on map click
+            map.on('click', (e) => {
+                marker.setLatLng(e.latlng);
+                document.getElementById('manual-latitude').value = e.latlng.lat.toFixed(8);
+                document.getElementById('manual-longitude').value = e.latlng.lng.toFixed(8);
+                map.setView(e.latlng);
+            });
+        },
                 showCancelButton: !0,
-                confirmButtonText: "Submit",
-                cancelButtonText: "Cancel",
+                confirmButtonText: "Simpan",
+                cancelButtonText: "Batal",
                 focusConfirm: !1,
                 preConfirm() {
                     let e = document.getElementById("manual-latitude").value,
@@ -676,13 +709,13 @@
                     o && o.closest_lokasi && o.distance <= 500 ? (document.getElementById("lokasi_kerja").value = o
                         .closest_lokasi.id, document.getElementById("lokasi_nama").value = o.closest_lokasi.nama,
                         updateLocationText(o.closest_lokasi.nama)) : (resetToLoading(), Swal.fire({
-                        title: "Location Notice",
+                        title: "Pemberitahuan Lokasi",
                         html: `
-                    <p>You are not within range of any registered work location.</p>
-                    <p><strong>Your current location:</strong><br>
+                    <p>Sedang tidak berada dalam jangkauan lokasi kerja terdaftar mana pun.</p>
+                    <p><strong>Lokasi saat ini:</strong><br>
                     Latitude: ${e}<br>
                     Longitude: ${t}</p>
-                    <p>Distance to nearest location: ${(o.distance/1e3).toFixed(2)} km</p>
+                    <p>Jarak menuju ke lokasi terdekat: ${(o.distance/1e3).toFixed(2)} km</p>
                 `,
                         icon: "warning",
                         confirmButtonText: "OK"
@@ -783,7 +816,7 @@
                     };
                 let i = document.createElement("button");
                 i.className = "btn btn-sm btn-outline-secondary", i.innerHTML =
-                    '<i class="fas fa-edit mr-1"></i> Enter Manually', i.onclick = function() {
+                    '<i class="fas fa-edit mr-1"></i> Masukan Lokasi Secara Manual', i.onclick = function() {
                         return offerManualLocationEntry(), !1
                     }, n.appendChild(a), n.appendChild(i);
                 let l = t.querySelector(".card-body") || t.querySelector(".text-center");

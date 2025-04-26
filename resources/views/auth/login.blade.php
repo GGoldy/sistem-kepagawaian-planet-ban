@@ -1,12 +1,19 @@
 @extends('layouts.auth')
 
 @section('title', 'Login')
+<style>
+    body, .login-page {
+            background: url('{{ Vite::asset('resources/images/bengkel.webp') }}') no-repeat center center fixed !important;
+            background-size: cover !important;
+            background-color: transparent !important;
+        }
+</style>
 
 @section('content')
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="#" class="h1"><b>Admin</b>LTE</a>
+                <img src="{{ Vite::asset('resources/images/planetban.png') }}" alt="Planet Ban" style="max-width: 180px;">
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Silahkan Sign in untuk masuk</p>

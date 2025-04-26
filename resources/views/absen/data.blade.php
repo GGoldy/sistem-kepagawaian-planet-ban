@@ -8,15 +8,15 @@
             <div class="col-lg-9 col-xl-6">
                 <h1 class="h3 mb-4 text-gray-800">{{ $pageTitle }}</h1>
                 <x-breadcrumb :links="[
-                        'Absen' => route('absens.index'),
-                        'Data' => '#',
-                    ]" />
+                    'Absen' => route('absens.index'),
+                    'Data' => '#',
+                ]" />
             </div>
 
             <div class="col-lg-3 col-xl-6 text-right">
                 <form action="{{ route('absens.export.excel') }}" method="GET" class="form-inline justify-content-end">
                     <select name="month" class="form-control mr-2">
-                        @foreach(range(1, 12) as $m)
+                        @foreach (range(1, 12) as $m)
                             <option value="{{ $m }}" {{ $m == now()->month ? 'selected' : '' }}>
                                 {{ \Carbon\Carbon::create()->month($m)->format('F') }}
                             </option>
@@ -24,7 +24,7 @@
                     </select>
 
                     <select name="year" class="form-control mr-2">
-                        @for($y = now()->year; $y >= now()->year - 5; $y--)
+                        @for ($y = now()->year; $y >= now()->year - 5; $y--)
                             <option value="{{ $y }}" {{ $y == now()->year ? 'selected' : '' }}>
                                 {{ $y }}
                             </option>
@@ -62,11 +62,14 @@
             </div>
         </div>
 
-        <x-back-button />
+        <div class="pb-5">
+            <a href="{{ route('absens.index') }}" class="btn btn-dark btn-lg w-100">
+                <i class="bi bi-arrow-left me-1"></i> {{ $text ?? 'Kembali' }}
+            </a>
+        </div>
     </div>
 @endsection
 @push('scripts')
-
     <script type="module">
         $(document).ready(function() {
             $("#absenTable").DataTable({
@@ -74,8 +77,7 @@
                 serverSide: true,
                 processing: true,
                 dom: 'Blfrtip',
-                buttons: [
-                    {
+                buttons: [{
                         extend: 'copy',
                         exportOptions: {
                             columns: [1, 2, 3, 4, 5, 6]
