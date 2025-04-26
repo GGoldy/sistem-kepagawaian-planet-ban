@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('title', 'Login')
-@push('style')
+
 <style>
     body, .login-page {
             background: url('{{ Vite::asset('resources/images/bengkel.webp') }}') no-repeat center center fixed !important;
@@ -9,7 +9,7 @@
             background-color: transparent !important;
         }
 </style>
-@endpush
+
 
 
 @section('content')
