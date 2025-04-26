@@ -104,10 +104,21 @@
     <hr class="dropdown-divider">
     <div class="user-panel mt-3 mb-3 d-flex align-items-center">
         <div class="info">
-            <a href="{{ route('karyawans.profile', [Auth::user()->karyawan->id]) }}" class="d-block">
-                <i class="nav-icon fas fa-user-circle"></i>
-                {{ Auth::user()->karyawan->nama ?? 'Guest' }}
-            </a>
+            @php
+                $karyawan = Auth::user()->karyawan;
+            @endphp
+
+            @if ($karyawan)
+                <a href="{{ route('karyawans.profile', [$karyawan->id]) }}" class="d-block">
+                    <i class="nav-icon fas fa-user-circle"></i>
+                    {{ $karyawan->nama }}
+                </a>
+            @else
+                <a href="#" class="d-block text-muted">
+                    <i class="nav-icon fas fa-user-circle"></i>
+                    Guest
+                </a>
+            @endif
         </div>
     </div>
     <hr class="dropdown-divider">
